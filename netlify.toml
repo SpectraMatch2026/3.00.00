@@ -1,0 +1,33 @@
+# Static marketing + UI shell for SpectraMatch (analysis runs in desktop app).
+# Connect repo https://github.com/SpectraMatch2026/3.0.0 to Netlify; use defaults below.
+
+[build]
+  command = "python tools/build_netlify_site.py"
+  publish = "netlify_publish"
+
+[build.environment]
+  PYTHON_VERSION = "3.12"
+
+# Serve the datasheets landing at /datasheets (no trailing slash) — static hosts
+# often 404 on /datasheets even when /datasheets/ works; 200 rewrites are reliable.
+[[redirects]]
+  from = "/datasheets"
+  to = "/datasheets/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/reports"
+  to = "/reports/index.html"
+  status = 200
+  force = true
+
+[[headers]]
+  for = "/static/css/reports.css"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

@@ -1,0 +1,9 @@
+flask
+opencv-python-headless
+numpy
+pypdf
+Pillow
+matplotlib
+scikit-image
+scipy
+reportlab

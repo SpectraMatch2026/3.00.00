@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+env/
+.env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Temp files
+*.tmp
+*.bak
+*.backup
+*.log
+
+# Installer build artifacts
+installer/output/
+installer/build/
+installer/dist/
+dist/
+build/
+netlify_publish/
+
+# Byte-compiled
+*.pyc
+
+# Thesis research data (local results, not source code)
+thesis/
+MY_THESIS/
+*MY_THESIS/
+
+# Local/generated helpers
+desktop/thesis_test_results.json
+docx_inspect_copy.docx
+tmp_pdf_extract/

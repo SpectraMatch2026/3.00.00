@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>SpectraMatch Desktop</title>
+    <link rel="stylesheet" href="/static/desktop/desktop.css">
+    <link rel="stylesheet" href="/static/css/alignment-studio.css">
+    <link rel="icon" type="image/png" href="/static/images/deslogo.png">
+</head>
+<body data-theme="dark">
+    <!-- Hidden file inputs -->
+    <input type="file" id="refFileInput" accept="image/*" style="display:none">
+    <input type="file" id="sampleFileInput" accept="image/*" style="display:none">
+
+    <!-- ══════ Menu Bar ══════ -->
+    <div class="menubar">
+        <div class="menubar-left">
+            <img src="/static/images/deslogo.png" class="menubar-logo"
+                 onerror="this.src='/static/images/logo_square_no_name_1024x1024.png'" alt="">
+            <div class="menu-item" data-menu="file">
+                <span class="menu-label" data-i18n="menu.file">File</span>
+                <div class="menu-dropdown">
+                    <div class="menu-action" data-action="open-ref"><span class="menu-shortcut-label" data-i18n="menu.open.ref">Open Reference Image...</span><span class="menu-shortcut">Ctrl+O</span></div>
+                    <div class="menu-action" data-action="open-sample"><span class="menu-shortcut-label" data-i18n="menu.open.sample">Open Sample Image...</span><span class="menu-shortcut">Ctrl+Shift+O</span></div>
+                    <div class="menu-divider"></div>
+                    <div class="menu-action" data-action="delete-images"><span class="menu-shortcut-label" data-i18n="menu.delete.all">Delete All Images</span><span class="menu-shortcut">Ctrl+D</span></div>
+                    <div class="menu-divider"></div>
+                    <div class="menu-action" data-action="reset-default" data-i18n="reset.title">Reset to Default</div>
+                    <div class="menu-divider"></div>
+                    <div class="menu-action" data-action="exit" data-i18n="menu.exit">Exit</div>
+                </div>
+            </div>
+            <div class="menu-item" data-menu="analysis">
+                <span class="menu-label" data-i18n="menu.analysis">Analysis</span>
+                <div class="menu-dropdown">
+                    <div class="menu-action" data-action="run"><span class="menu-shortcut-label" data-i18n="menu.run">Run Analysis</span><span class="menu-shortcut">F5</span></div>
+                    <div class="menu-divider"></div>
+                    <div class="menu-action" data-action="export-results" data-i18n="menu.export.results">Export Results</div>
+                    <div class="menu-action" data-action="generate-report" data-i18n="menu.generate.report">Generate Report</div>
+                    <div class="menu-divider"></div>
+                    <div class="menu-action" data-action="reset-settings" data-i18n="menu.reset">Reset All Settings</div>
+                </div>
+            </div>
+            <div class="menu-item" data-menu="tools">
+                <span class="menu-label" data-i18n="menu.tools">Tools</span>
+                <div class="menu-dropdown">
+                    <div class="menu-action" data-action="datasheet" data-i18n="menu.datasheet">Technical Datasheet</div>
+                    <div class="menu-action" data-action="feedback" data-i18n="menu.feedback">Send Feedback</div>
+                    <div class="menu-divider"></div>
+                    <div class="menu-action" data-action="contact" data-i18n="menu.contact">Contact</div>
+                </div>
+            </div>
+            <div class="menu-item" data-menu="view">
+                <span class="menu-label" data-i18n="menu.view">View</span>
+                <div class="menu-dropdown">
+                    <div class="menu-action" data-action="toggle-workspace" data-i18n="menu.toggle.workspace">Toggle Workspace Panel</div>
+                    <div class="menu-action" data-action="toggle-properties" data-i18n="menu.toggle.properties">Toggle Properties Panel</div>
+                    <div class="menu-action" data-action="toggle-console" data-i18n="menu.toggle.console">Toggle Console Panel</div>
+                </div>
+            </div>
+            <div class="menu-item" data-menu="help">
+                <span class="menu-label" data-i18n="menu.help">Help</span>
+                <div class="menu-dropdown">
+                    <div class="menu-action" data-action="shortcuts" data-i18n="menu.shortcuts">Keyboard Shortcuts</div>
+                    <div class="menu-action" data-action="documentation" data-i18n="menu.documentation">Documentation</div>
+                    <div class="menu-divider"></div>
+                    <div class="menu-action" data-action="release-notes" data-i18n="menu.release.notes">Release Notes</div>
+                    <div class="menu-action" data-action="check-updates" data-i18n="menu.check.updates">Check for Updates</div>
+                    <div class="menu-divider"></div>
+                    <div class="menu-action" data-action="about" data-i18n="menu.about">About SpectraMatch</div>
+                </div>
+            </div>
+        </div>
+        <div class="menubar-right">
+            <!-- Language Switcher -->
+            <div class="lang-switch" id="langSwitch" data-i18n-title="tb.title.lang.switch" title="Switch language">
+                <img class="lang-flag" id="langFlag" src="/static/images/tr.svg" alt="TR" width="20" height="14">
+                <span class="lang-code" id="langCode">TR</span>
+            </div>
+            <!-- Theme Toggle -->
+            <button class="theme-toggle" id="themeToggle" data-i18n-title="tb.title.theme" title="Toggle theme">
+                <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- ══════ Toolbar ══════ -->
+    <div class="toolbar">
+        <div class="tb-group">
+            <div class="tb-dropdown-wrap">
+                <button class="tb-btn" id="tbOpenRef" data-i18n-title="tb.title.open.ref" title="Open Reference Image (Ctrl+O)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                    <span data-i18n="tb.reference">Reference</span>
+                    <svg class="tb-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="tb-dropdown-menu" id="tbRefDropdown">
+                    <button class="tb-dropdown-item" data-action="ref-file">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        <span data-i18n="cam.import.computer">Import from Computer</span>
+                    </button>
+                    <button class="tb-dropdown-item" data-action="ref-camera">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                        <span data-i18n="cam.import.camera">Import from Camera</span>
+                    </button>
+                </div>
+            </div>
+            <div class="tb-dropdown-wrap">
+                <button class="tb-btn" id="tbOpenSample" data-i18n-title="tb.title.open.sample" title="Open Sample Image (Ctrl+Shift+O)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+                    <span data-i18n="tb.sample">Sample</span>
+                    <svg class="tb-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="tb-dropdown-menu" id="tbSampleDropdown">
+                    <button class="tb-dropdown-item" data-action="sample-file">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        <span data-i18n="cam.import.computer">Import from Computer</span>
+                    </button>
+                    <button class="tb-dropdown-item" data-action="sample-camera">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                        <span data-i18n="cam.import.camera">Import from Camera</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="tb-sep"></div>
+        <div class="tb-group">
+            <button class="tb-btn tb-primary" id="tbRun" data-i18n-title="tb.title.run" title="Run Analysis (F5)" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span data-i18n="tb.run">Run</span>
+            </button>
+        </div>
+        <div class="tb-sep"></div>
+        <div class="tb-group">
+            <button class="tb-btn" id="tbDelete" data-i18n-title="tb.title.delete" title="Delete Images (Ctrl+D)" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                <span data-i18n="tb.delete">Delete</span>
+            </button>
+        </div>
+        <div class="tb-sep"></div>
+        <!-- Region controls in toolbar -->
+        <div class="tb-group">
+            <label class="tb-toggle" data-i18n-title="tb.title.full.image" title="Process entire image">
+                <input type="checkbox" id="tbFullImage" checked>
+                <span class="tb-toggle-track"></span>
+                <span class="tb-toggle-label" data-i18n="tb.full.image">Full Image</span>
+            </label>
+        </div>
+        <div class="tb-region-controls" id="tbRegionControls">
+            <div class="tb-sep"></div>
+            <div class="tb-group">
+                <span class="tb-label" data-i18n="tb.shape">Shape:</span>
+                <select class="tb-select" id="tbShape">
+                    <option value="circle" data-i18n="circle">Circle</option>
+                    <option value="square" data-i18n="square">Square</option>
+                    <option value="rectangle" data-i18n="rectangle">Rectangle</option>
+                    <option value="pen" data-i18n="pen">Pen</option>
+                </select>
+            </div>
+            <div class="tb-group">
+                <span class="tb-label" data-i18n="tb.size">Size (px):</span>
+                <input type="range" id="tbSizeSlider" class="tb-slider" min="20" max="500" value="100">
+                <input type="number" id="tbSizeValue" class="tb-num" value="100" min="20" max="500">
+            </div>
+            <div class="tb-group" id="tbRectGroup" style="display:none">
+                <span class="tb-label" data-i18n="tb.height">H:</span>
+                <input type="range" id="tbHeightSlider" class="tb-slider" min="20" max="500" value="100">
+                <input type="number" id="tbHeightValue" class="tb-num" value="100" min="20" max="500">
+            </div>
+        </div>
+        <div class="tb-sep"></div>
+        <div class="tb-group">
+            <label class="tb-toggle" data-i18n-title="tb.title.single.mode" title="Single image analysis mode">
+                <input type="checkbox" id="tbSingleMode">
+                <span class="tb-toggle-track"></span>
+                <span class="tb-toggle-label" data-i18n="tb.single">Single Image</span>
+            </label>
+        </div>
+        <div class="tb-sep"></div>
+        <!-- Alignment Mode — toolbar quick access -->
+        <div class="tb-group">
+            <span class="tb-label" data-i18n="tb.align.label">Align:</span>
+            <select class="tb-select" id="tbAlignmentMode" data-i18n-title="tb.title.align.mode" title="Alignment Mode">
+                <option value="direct">Direct</option>
+                <option value="ai_smart_match">AI Smart</option>
+                <option value="bestch">BESTCH</option>
+            </select>
+            <button class="tb-btn tb-icon-btn tb-studio-btn" id="tbOpenStudio"
+                    data-i18n-title="tb.title.open.studio" title="Open Studio"
+                    onclick="Desktop.openAlignmentStudio()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/></svg>
+            </button>
+        </div>
+        <div class="tb-sep"></div>
+        <!-- Sampling Count — toolbar quick access -->
+        <div class="tb-group">
+            <span class="tb-label" data-i18n-title="tb.title.sampling.count" title="Sampling Count">N:</span>
+            <input type="number" id="tbSamplingCount" class="tb-num tb-num-sm"
+                   value="5" min="1" max="100"
+                   data-i18n-title="tb.title.sampling.count" title="Sampling Count">
+        </div>
+        <div class="tb-spacer"></div>
+        <div class="tb-group tb-right-tools" id="tbRightTools">
+            <button class="tb-btn tb-icon-btn tb-more-btn" id="tbMoreBtn"
+                    data-i18n-title="tb.title.more" title="More tools" type="button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/>
+                </svg>
+            </button>
+            <div class="tb-right-tools-inner" id="tbRightToolsInner">
+            <div class="tb-ready-test-wrap">
+                <button class="tb-btn tb-icon-btn tb-ready-test-btn" id="tbReadyTest" data-i18n-title="tb.title.ready.test" title="Ready-to-Test Images">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                    <span class="tb-btn-label" data-i18n="tb.title.ready.test">Ready-to-Test Images</span>
+                </button>
+                <div class="tb-ready-dropdown" id="tbReadyDropdown">
+                    <div class="tb-ready-header" data-i18n="rtt.title">Ready-to-Test Images</div>
+                    <div class="tb-ready-caption" data-i18n="rtt.caption">Load built-in sample images for quick testing</div>
+                    <div class="tb-ready-section" data-i18n="rtt.dual">Dual Mode (Reference + Sample)</div>
+                    <div class="tb-ready-item" data-ref="1.png" data-sample="2.png">
+                        <div class="tb-ready-thumbs">
+                            <img class="tb-ready-thumb" src="/static/READYTOTEST/1.png" alt="Test1">
+                            <img class="tb-ready-thumb" src="/static/READYTOTEST/2.png" alt="Test2">
+                        </div>
+                        <span><span data-i18n="rtt.pair">Pair</span> 1 — Test1 + Test2</span>
+                    </div>
+                    <div class="tb-ready-item" data-ref="3.png" data-sample="4.png">
+                        <div class="tb-ready-thumbs">
+                            <img class="tb-ready-thumb" src="/static/READYTOTEST/3.png" alt="Test3">
+                            <img class="tb-ready-thumb" src="/static/READYTOTEST/4.png" alt="Test4">
+                        </div>
+                        <span><span data-i18n="rtt.pair">Pair</span> 2 — Test3 + Test4</span>
+                    </div>
+                    <div class="tb-ready-item" data-ref="5.png" data-sample="6.png">
+                        <div class="tb-ready-thumbs">
+                            <img class="tb-ready-thumb" src="/static/READYTOTEST/5.png" alt="Test5">
+                            <img class="tb-ready-thumb" src="/static/READYTOTEST/6.png" alt="Test6">
+                        </div>
+                        <span><span data-i18n="rtt.pair">Pair</span> 3 — Test5 + Test6</span>
+                    </div>
+                    <div class="tb-ready-section" data-i18n="rtt.single">Single Image Mode</div>
+                    <div class="tb-ready-item" data-single="1.png"><img class="tb-ready-thumb" src="/static/READYTOTEST/1.png" alt="Test1"><span>Test1.png</span></div>
+                    <div class="tb-ready-item" data-single="2.png"><img class="tb-ready-thumb" src="/static/READYTOTEST/2.png" alt="Test2"><span>Test2.png</span></div>
+                    <div class="tb-ready-item" data-single="3.png"><img class="tb-ready-thumb" src="/static/READYTOTEST/3.png" alt="Test3"><span>Test3.png</span></div>
+                    <div class="tb-ready-item" data-single="4.png"><img class="tb-ready-thumb" src="/static/READYTOTEST/4.png" alt="Test4"><span>Test4.png</span></div>
+                    <div class="tb-ready-item" data-single="5.png"><img class="tb-ready-thumb" src="/static/READYTOTEST/5.png" alt="Test5"><span>Test5.png</span></div>
+                    <div class="tb-ready-item" data-single="6.png"><img class="tb-ready-thumb" src="/static/READYTOTEST/6.png" alt="Test6"><span>Test6.png</span></div>
+                </div>
+            </div>
+            <button class="tb-btn tb-icon-btn" id="tbDatasheet" data-i18n-title="tb.title.datasheet" title="Technical Datasheet">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span class="tb-btn-label" data-i18n="tb.title.datasheet">Technical Datasheet</span>
+            </button>
+            <button class="tb-btn tb-icon-btn" id="tbFeedback" data-i18n-title="tb.title.feedback" title="Send Feedback">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                <span class="tb-btn-label" data-i18n="tb.title.feedback">Send Feedback</span>
+            </button>
+            <button class="tb-btn tb-icon-btn" id="tbThesisTest" data-i18n-title="tb.title.thesis.test" title="Test for Thesis">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+                <span class="tb-btn-label" data-i18n="tb.title.thesis.test">Test for Thesis</span>
+            </button>
+            <button class="tb-btn tb-reset-btn" id="tbReset" data-i18n-title="tb.title.reset" title="Reset to Default" onclick="Desktop.resetToDefault()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+                <span data-i18n="tb.reset">Reset</span>
+            </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════ Main Body ══════ -->
+    <div class="app-body">
+        <!-- ── Workspace Panel (Left) ── -->
+        <div class="panel" id="panelWorkspace">
+            <div class="panel-header">
+                <span class="panel-title" data-i18n="panel.workspace">Workspace</span>
+                <span class="panel-header-spacer"></span>
+                <button class="panel-hide-btn" data-hide-panel="panelWorkspace" data-i18n-title="tb.title.hide.panel" title="Hide panel">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="panel-body">
+                <div class="ws-section">
+                    <div class="ws-section-title" data-i18n="ws.images">IMAGES</div>
+                    <div class="ws-card" id="wsRefCard" onclick="document.getElementById('refFileInput').click()">
+                        <div class="ws-thumb" id="wsRefThumb">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        </div>
+                        <div class="ws-meta">
+                            <div class="ws-name" id="wsRefName" data-i18n="ws.ref.name">Reference Image</div>
+                            <div class="ws-dims" id="wsRefDims" data-i18n="ws.no.file">No file loaded</div>
+                        </div>
+                        <button type="button" class="ws-cam-btn" onclick="event.stopPropagation(); Desktop.openDesktopCameraStudio('ref')" data-i18n-title="cam.import.camera" title="Import from Camera" aria-label="Import from Camera">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                        </button>
+                    </div>
+                    <div class="ws-card" id="wsSampleCard" onclick="document.getElementById('sampleFileInput').click()">
+                        <div class="ws-thumb" id="wsSampleThumb">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        </div>
+                        <div class="ws-meta">
+                            <div class="ws-name" id="wsSampleName" data-i18n="ws.sample.name">Sample Image</div>
+                            <div class="ws-dims" id="wsSampleDims" data-i18n="ws.no.file">No file loaded</div>
+                        </div>
+                        <button type="button" class="ws-cam-btn" onclick="event.stopPropagation(); Desktop.openDesktopCameraStudio('sample')" data-i18n-title="cam.import.camera" title="Import from Camera" aria-label="Import from Camera">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="ws-section">
+                    <div class="ws-section-title" data-i18n="ws.status">STATUS</div>
+                    <div class="ws-status-row">
+                        <span class="ws-status-dot" id="wsStatusDot"></span>
+                        <span class="ws-status-text" id="wsStatusText" data-i18n="ws.idle">Idle — Awaiting images</span>
+                    </div>
+                </div>
+                <div class="ws-section">
+                    <div class="ws-section-title" data-i18n="ws.downloads">DOWNLOADS</div>
+                    <div class="ws-downloads" id="wsDownloads">
+                        <div class="ws-download-empty" data-i18n="ws.no.reports">No reports available</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-resize-handle" id="resizeWorkspace" data-resize="panelWorkspace" data-dir="col"></div>
+        <!-- ── Image Viewer (Center) ── -->
+        <div class="panel panel-viewer" id="panelViewer">
+            <div class="panel-header">
+                <span class="panel-title" data-i18n="panel.viewer">Image Viewer</span>
+            </div>
+            <div class="panel-body viewer-body">
+                <div class="viewer-pane" id="refPane">
+                    <div class="viewer-label" data-i18n="viewer.reference">Reference</div>
+                    <div class="viewer-canvas" id="refCanvas">
+                        <div class="viewer-empty" id="refEmpty">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            <span data-i18n="viewer.click.ref">Click to load reference</span>
+                        </div>
+                        <img id="refPreview" class="viewer-image" style="display:none">
+                    </div>
+                </div>
+                <div class="viewer-divider"></div>
+                <div class="viewer-pane" id="samplePane">
+                    <div class="viewer-label" data-i18n="viewer.sample">Sample</div>
+                    <div class="viewer-canvas" id="sampleCanvas">
+                        <div class="viewer-empty" id="sampleEmpty">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            <span data-i18n="viewer.click.sample">Click to load sample</span>
+                        </div>
+                        <img id="samplePreview" class="viewer-image" style="display:none">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-resize-handle" id="resizeProperties" data-resize="panelProperties" data-dir="col"></div>
+        <!-- ── Properties Panel (Right) ── -->
+        <div class="panel" id="panelProperties">
+            <div class="panel-header">
+                <span class="panel-title" data-i18n="panel.properties">Properties</span>
+                <span class="panel-header-spacer"></span>
+                <button class="panel-hide-btn" data-hide-panel="panelProperties" data-i18n-title="tb.title.hide.panel" title="Hide panel">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="panel-body props-scroll">
+
+                <!-- General -->
+                <div class="prop-section open">
+                    <div class="prop-section-hdr" data-section="general">
+                        <svg class="prop-chev" width="10" height="10" viewBox="0 0 10 10"><path d="M3 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                        <span data-i18n="prop.general">General</span>
+                    </div>
+                    <div class="prop-section-body">
+                        <div class="prop-row"><label data-i18n="prop.operator">Operator</label><input type="text" id="propOperator" value="Operator"></div>
+                        <div class="prop-row">
+                            <label data-i18n="prop.timezone">Timezone</label>
+                            <select id="propTimezone">
+                                <option value="-12">UTC-12</option><option value="-11">UTC-11</option><option value="-10">UTC-10</option>
+                                <option value="-9">UTC-9</option><option value="-8">UTC-8</option><option value="-7">UTC-7</option>
+                                <option value="-6">UTC-6</option><option value="-5">UTC-5</option><option value="-4">UTC-4</option>
+                                <option value="-3">UTC-3</option><option value="-2">UTC-2</option><option value="-1">UTC-1</option>
+                                <option value="0">UTC±0</option><option value="1">UTC+1</option><option value="2">UTC+2</option>
+                                <option value="3" selected>UTC+3</option><option value="4">UTC+4</option><option value="5">UTC+5</option>
+                                <option value="5.5">UTC+5:30</option><option value="6">UTC+6</option><option value="7">UTC+7</option>
+                                <option value="8">UTC+8</option><option value="9">UTC+9</option><option value="10">UTC+10</option>
+                                <option value="11">UTC+11</option><option value="12">UTC+12</option>
+                            </select>
+                        </div>
+                        <div class="prop-row">
+                            <label data-i18n="prop.report.lang">Report Lang</label>
+                            <select id="propReportLang">
+                                <option value="en">English</option>
+                                <option value="tr" selected>Türkçe</option>
+                            </select>
+                        </div>
+                        <div class="prop-separator"></div>
+                        <div class="prop-row">
+                            <label data-i18n="desktop.alignment.mode">Alignment Mode</label>
+                            <select id="propAlignmentMode">
+                                <option value="direct" selected>Direct Pixel</option>
+                                <option value="ai_smart_match">AI SmartMatch</option>
+                                <option value="bestch">BESTCH</option>
+                            </select>
+                        </div>
+                        <div class="prop-row">
+                            <label data-i18n="desktop.alignment.studio">SPACTRA Studio</label>
+                            <button class="prop-btn-studio" id="propBtnAlignmentStudio" onclick="Desktop.openAlignmentStudio()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/></svg>
+                                <span data-i18n="desktop.open.studio">Open Studio</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Color Unit -->
+                <div class="prop-section open">
+                    <div class="prop-section-hdr" data-section="color">
+                        <svg class="prop-chev" width="10" height="10" viewBox="0 0 10 10"><path d="M3 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                        <span data-i18n="prop.color.unit">Color Unit</span>
+                    </div>
+                    <div class="prop-section-body">
+                        <div class="prop-row"><label data-i18n="prop.scoring.basis">Scoring Basis</label><select id="propColorScoringMethod"><option value="delta_e" selected>ΔE₀₀</option><option value="csi">CSI</option><option value="csi2000">CSI2000</option></select></div>
+                        <div class="prop-separator"></div>
+                        <div class="prop-row"><label data-i18n="prop.pass.thresh">Pass Threshold</label><input type="number" id="propColorPass" value="2.0" step="0.1" min="0.1" max="20.0"></div>
+                        <div class="prop-row"><label data-i18n="prop.cond.thresh">Conditional</label><input type="number" id="propColorCond" value="5.0" step="0.1" min="0.1" max="20.0"></div>
+                        <div class="prop-row"><label data-i18n="prop.global.accept">Global Accept.</label><input type="number" id="propColorGlobal" value="5.0" step="0.1" min="0.1" max="20.0"></div>
+                        <div class="prop-row"><label data-i18n="prop.csi.good">CSI Pass</label><input type="number" id="propCsiGood" value="2.0" step="0.1" min="0" max="100.0"></div>
+                        <div class="prop-row"><label data-i18n="prop.csi.warn">CSI Conditional</label><input type="number" id="propCsiWarn" value="5.0" step="0.1" min="0" max="100.0"></div>
+                        <div class="prop-row"><label data-i18n="prop.sampling.count">Sampling Count</label><input type="number" id="propRegionCount" value="5" min="1" max="100"></div>
+                        <div class="prop-separator"></div>
+                        <div class="prop-row"><label data-i18n="prop.lab.thresh.dl">ΔL* Threshold</label><input type="number" id="propLabDL" value="1.0" step="0.1" min="0.1" max="10.0"></div>
+                        <div class="prop-row"><label data-i18n="prop.lab.thresh.da">Δa* Threshold</label><input type="number" id="propLabDA" value="1.0" step="0.1" min="0.1" max="10.0"></div>
+                        <div class="prop-row"><label data-i18n="prop.lab.thresh.db">Δb* Threshold</label><input type="number" id="propLabDB" value="1.0" step="0.1" min="0.1" max="10.0"></div>
+                        <div class="prop-row"><label data-i18n="prop.lab.thresh.mag">Magnitude Threshold</label><input type="number" id="propLabMag" value="2.0" step="0.1" min="0.1" max="20.0"></div>
+                    </div>
+                </div>
+
+                <!-- Sampling / Point Selection -->
+                <div class="prop-section">
+                    <div class="prop-section-hdr" data-section="sampling">
+                        <svg class="prop-chev" width="10" height="10" viewBox="0 0 10 10"><path d="M3 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                        <span data-i18n="prop.sampling">Sampling Configuration</span>
+                    </div>
+                    <div class="prop-section-body">
+                        <div class="prop-row">
+                            <label data-i18n="prop.sampling.mode">Mode</label>
+                            <select id="propSamplingMode">
+                                <option value="random" selected data-i18n="random">Random</option>
+                                <option value="manual" data-i18n="manual">Manual</option>
+                            </select>
+                        </div>
+                        <div class="prop-row"><label data-i18n="prop.points.count">Points</label><input type="number" id="propPointsCount" value="5" min="1" max="100"></div>
+                        <div class="sampling-bar-row">
+                            <div class="sampling-progress">
+                                <div class="sampling-bar-manual" id="samplingBarManual" style="width:0%"></div>
+                                <div class="sampling-bar-random" id="samplingBarRandom" style="width:0%"></div>
+                            </div>
+                            <span class="sampling-label" id="samplingLabel">0 / 5</span>
+                        </div>
+                        <div class="sampling-legend">
+                            <span class="legend-dot manual"></span><span data-i18n="prop.manual.pts">Manual</span> <span id="manualCountVal">0</span>
+                            <span class="legend-dot random"></span><span data-i18n="prop.random.pts">Random</span> <span id="randomCountVal">0</span>
+                        </div>
+                        <div class="prop-btn-row">
+                            <button class="prop-btn" id="btnSelectPoints" data-i18n="prop.select.points">Select Points</button>
+                            <button class="prop-btn" id="btnCompleteRandom" data-i18n="prop.complete.random">Complete Randomly</button>
+                        </div>
+                        <div class="prop-separator"></div>
+                        <div class="prop-coord-entry">
+                            <label class="prop-coord-title" data-i18n="prop.coord.entry">Add Point by Coordinates</label>
+                            <div class="prop-coord-form">
+                                <div class="prop-coord-field">
+                                    <span class="prop-coord-label" data-i18n="prop.coord.x">X</span>
+                                    <input type="number" id="propCoordX" class="prop-coord-input" min="0" placeholder="0">
+                                </div>
+                                <div class="prop-coord-field">
+                                    <span class="prop-coord-label" data-i18n="prop.coord.y">Y</span>
+                                    <input type="number" id="propCoordY" class="prop-coord-input" min="0" placeholder="0">
+                                </div>
+                                <button class="prop-btn prop-coord-add-btn" id="btnCoordAdd" data-i18n="prop.coord.add">Add</button>
+                            </div>
+                            <div class="prop-coord-feedback" id="propCoordFeedback"></div>
+                            <div class="prop-coord-list-hdr">
+                                <span class="prop-coord-list-title" data-i18n="prop.coord.points">Entered Points</span>
+                                <button class="prop-coord-clear" id="btnCoordClear" data-i18n="prop.coord.clear" style="display:none;">Clear All</button>
+                            </div>
+                            <div class="prop-coord-list" id="propCoordList">
+                                <span class="prop-coord-empty" data-i18n="prop.coord.none">No coordinate points added yet.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pattern Unit -->
+                <div class="prop-section">
+                    <div class="prop-section-hdr" data-section="pattern">
+                        <svg class="prop-chev" width="10" height="10" viewBox="0 0 10 10"><path d="M3 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                        <span data-i18n="prop.pattern.unit">Pattern Unit</span>
+                    </div>
+                    <div class="prop-section-body">
+                        <div class="prop-row"><label data-i18n="prop.scoring.basis">Scoring Basis</label><select id="propPatternScoringMethod"><option value="all" selected>All (Average)</option><option value="ssim">Structural SSIM</option><option value="gradient">Gradient Similarity</option><option value="phase">Phase Correlation</option><option value="structural">Structural Match</option></select></div>
+                        <div class="prop-separator"></div>
+                        <div class="prop-row-dual"><label>SSIM</label><input type="number" id="propSsimPass" value="85.0" step="0.1" min="0.1" max="100" placeholder="Pass"><input type="number" id="propSsimCond" value="70.0" step="0.1" min="0.1" max="100" placeholder="Cond"></div>
+                        <div class="prop-row-dual"><label data-i18n="prop.gradient">Gradient</label><input type="number" id="propGradPass" value="85.0" step="0.1" min="0.1" max="99.9" placeholder="Pass"><input type="number" id="propGradCond" value="70.0" step="0.1" min="0.1" max="99.9" placeholder="Cond"></div>
+                        <div class="prop-row-dual"><label data-i18n="prop.phase">Phase</label><input type="number" id="propPhasePass" value="85.0" step="0.1" min="0.1" max="99.9" placeholder="Pass"><input type="number" id="propPhaseCond" value="70.0" step="0.1" min="0.1" max="99.9" placeholder="Cond"></div>
+                        <div class="prop-row-dual"><label data-i18n="prop.structural.match">Structural</label><input type="number" id="propStructuralPass" value="85.0" step="0.1" min="0.1" max="99.9" placeholder="Pass"><input type="number" id="propStructuralCond" value="70.0" step="0.1" min="0.1" max="99.9" placeholder="Cond"></div>
+                        <div class="prop-row"><label data-i18n="prop.global.thresh">Global Thresh.</label><input type="number" id="propPatternGlobal" value="75.0" step="0.1" min="0.1" max="99.9"></div>
+                        <div class="prop-separator"></div>
+                        <div class="prop-label-row" data-i18n="prop.diff.sensitivity">Difference Sensitivity</div>
+                        <div class="prop-row prop-row-slider">
+                            <label><span data-i18n="prop.grad.diff.sens">Gradient Diff</span> <span class="sci-param">(G<sub>e</sub>)</span></label>
+                            <input type="range" id="propGradDiffSens" class="prop-slider" min="1" max="10" step="1" value="7"
+                                   oninput="document.getElementById('propGradDiffSensVal').textContent=this.value">
+                            <span class="prop-slider-value" id="propGradDiffSensVal">7</span>
+                        </div>
+                        <div class="prop-row prop-row-slider">
+                            <label><span data-i18n="prop.phase.diff.sens">Phase Diff</span> <span class="sci-param">(F<sub>e</sub>)</span></label>
+                            <input type="range" id="propPhaseDiffSens" class="prop-slider" min="1" max="10" step="1" value="7"
+                                   oninput="document.getElementById('propPhaseDiffSensVal').textContent=this.value">
+                            <span class="prop-slider-value" id="propPhaseDiffSensVal">7</span>
+                        </div>
+                        <div class="prop-label-row" data-i18n="prop.boundary.sensitivity">Boundary Extraction Sensitivity</div>
+                        <div class="prop-row prop-row-slider">
+                            <label><span data-i18n="prop.grad.bound.sens">Gradient Boundary</span> <span class="sci-param">(G′<sub>e</sub>)</span></label>
+                            <input type="range" id="propGradBoundSens" class="prop-slider" min="1" max="10" step="1" value="4"
+                                   oninput="document.getElementById('propGradBoundSensVal').textContent=this.value">
+                            <span class="prop-slider-value" id="propGradBoundSensVal">4</span>
+                        </div>
+                        <div class="prop-row prop-row-slider">
+                            <label><span data-i18n="prop.phase.bound.sens">Phase Boundary</span> <span class="sci-param">(F′<sub>e</sub>)</span></label>
+                            <input type="range" id="propPhaseBoundSens" class="prop-slider" min="1" max="10" step="1" value="8"
+                                   oninput="document.getElementById('propPhaseBoundSensVal').textContent=this.value">
+                            <span class="prop-slider-value" id="propPhaseBoundSensVal">8</span>
+                        </div>
+                        <div class="prop-label-row" data-i18n="prop.structural.sensitivity">Structural Sensitivity</div>
+                        <div class="prop-row prop-row-slider">
+                            <label><span data-i18n="prop.structural.sens">Structural</span> <span class="sci-param">(Y<sub>e</sub>)</span></label>
+                            <input type="range" id="propStructuralSens" class="prop-slider" min="1" max="10" step="1" value="10"
+                                   oninput="document.getElementById('propStructuralSensVal').textContent=this.value">
+                            <span class="prop-slider-value" id="propStructuralSensVal">10</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Illuminant -->
+                <div class="prop-section">
+                    <div class="prop-section-hdr" data-section="illuminant">
+                        <svg class="prop-chev" width="10" height="10" viewBox="0 0 10 10"><path d="M3 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                        <span data-i18n="prop.illuminant">Illuminant</span>
+                    </div>
+                    <div class="prop-section-body">
+                        <div class="prop-row">
+                            <label data-i18n="prop.primary">Primary</label>
+                            <select id="propIlluminant">
+                                <option value="D65" selected>D65 (6500K)</option>
+                                <option value="D50">D50 (5000K)</option>
+                                <option value="TL84">TL84 (4000K)</option>
+                                <option value="A">A (2856K)</option>
+                                <option value="F2">F2 (Fluorescent)</option>
+                                <option value="CWF">CWF</option>
+                            </select>
+                        </div>
+                        <div class="prop-label-row" data-i18n="prop.test.illuminants">Test Illuminants</div>
+                        <div class="prop-check-grid">
+                            <label><input type="checkbox" name="propTestIll" value="D65" checked> D65</label>
+                            <label><input type="checkbox" name="propTestIll" value="D50" checked> D50</label>
+                            <label><input type="checkbox" name="propTestIll" value="TL84" checked> TL84</label>
+                            <label><input type="checkbox" name="propTestIll" value="A"> A</label>
+                            <label><input type="checkbox" name="propTestIll" value="F2"> F2</label>
+                            <label><input type="checkbox" name="propTestIll" value="CWF"> CWF</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Report Sections — Color -->
+                <div class="prop-section">
+                    <div class="prop-section-hdr" data-section="rpt-color">
+                        <svg class="prop-chev" width="10" height="10" viewBox="0 0 10 10"><path d="M3 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                        <span data-i18n="prop.rpt.color">Report: Color Sections</span>
+                    </div>
+                    <div class="prop-section-body">
+                        <div class="prop-check-list">
+                            <label><input type="checkbox" id="rptColorSpaces" checked> <span data-i18n="rpt.color.spaces">Color Spaces</span></label>
+                            <label><input type="checkbox" id="rptExecSummary" checked> <span data-i18n="rpt.exec.summary">Executive Overview</span></label>
+                            <label><input type="checkbox" id="rptVisualCompare" checked> <span data-i18n="rpt.visual.compare.section">Visual Comparison</span></label>
+                            <label><input type="checkbox" id="rptRgb" checked> <span data-i18n="rpt.rgb">RGB Values</span></label>
+                            <label><input type="checkbox" id="rptLab" checked> <span data-i18n="rpt.lab">Lab* Values</span></label>
+                            <label><input type="checkbox" id="rptXyz" checked> <span data-i18n="rpt.xyz">XYZ Values</span></label>
+                            <label><input type="checkbox" id="rptCmyk" checked> <span data-i18n="rpt.cmyk">CMYK Values</span></label>
+                            <label><input type="checkbox" id="rptDiffMetrics" checked> <span data-i18n="rpt.diff">Diff Metrics</span></label>
+                            <label><input type="checkbox" id="rptStats" checked> <span data-i18n="rpt.stats">Statistics</span></label>
+                            <label><input type="checkbox" id="rptDetailedLab" checked> <span data-i18n="rpt.detailed.lab">Detailed Lab</span></label>
+                            <label><input type="checkbox" id="rptVisualizations" checked> <span data-i18n="rpt.visualizations">Visualizations</span></label>
+                            <label><input type="checkbox" id="rptSpectral" checked> <span data-i18n="rpt.spectral">Spectral Proxy</span></label>
+                            <label><input type="checkbox" id="rptHistograms" checked> <span data-i18n="rpt.histograms">RGB Histograms</span></label>
+                            <label><input type="checkbox" id="rptVisualDiff" checked> <span data-i18n="rpt.visual.diff">Visual Diff</span></label>
+                            <label><input type="checkbox" id="rptIlluminant" checked> <span data-i18n="rpt.illuminant">Illuminant Analysis</span></label>
+                            <label><input type="checkbox" id="rptRecommendations" checked> <span data-i18n="rpt.recommendations">Recommendations</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Report Sections — Pattern -->
+                <div class="prop-section">
+                    <div class="prop-section-hdr" data-section="rpt-pattern">
+                        <svg class="prop-chev" width="10" height="10" viewBox="0 0 10 10"><path d="M3 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                        <span data-i18n="prop.rpt.pattern">Report: Pattern Sections</span>
+                    </div>
+                    <div class="prop-section-body">
+                        <div class="prop-label-row" data-i18n="prop.methods">Methods</div>
+                        <div class="prop-check-list">
+                            <label><input type="checkbox" id="rptEnableSsim" checked> <span data-i18n="rpt.ssim">Structural SSIM</span></label>
+                            <label><input type="checkbox" id="rptEnableGradient" checked> <span data-i18n="rpt.gradient">Gradient Similarity</span></label>
+                            <label><input type="checkbox" id="rptEnablePhase" checked> <span data-i18n="rpt.phase">Phase Correlation</span></label>
+                            <label><input type="checkbox" id="rptEnableStructural" checked> <span data-i18n="rpt.structural">Structural Difference</span></label>
+                            <label><input type="checkbox" id="rptEnableFourier" checked> <span data-i18n="rpt.fourier">Fourier Domain Analysis</span></label>
+                            <label><input type="checkbox" id="rptEnableGlcm" checked> <span data-i18n="rpt.glcm">GLCM Texture Analysis</span></label>
+
+                        </div>
+                        <div class="prop-label-row" data-i18n="prop.report">Report</div>
+                        <div class="prop-check-list">
+                            <label><input type="checkbox" id="rptGradBound" checked> <span data-i18n="rpt.grad.bound">Gradient Boundary</span></label>
+                            <label><input type="checkbox" id="rptPhaseBound" checked> <span data-i18n="rpt.phase.bound">Phase Boundary</span></label>
+                            <label><input type="checkbox" id="rptSummary" checked> <span data-i18n="rpt.summary">Summary</span></label>
+                            <label><input type="checkbox" id="rptConclusion" checked> <span data-i18n="rpt.conclusion">Conclusion</span></label>
+                            <label><input type="checkbox" id="rptPatternRec" checked> <span data-i18n="rpt.pattern.rec">Recommendations</span></label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════ Bottom Panel ══════ -->
+    <div class="panel-resize-handle horizontal" id="resizeBottom" data-resize="bottomPanel" data-dir="row"></div>
+    <div class="bottom-panel" id="bottomPanel">
+        <div class="bottom-tabs">
+            <button class="btab active" data-btab="console" data-i18n="btab.console">Console</button>
+            <button class="btab" data-btab="results" data-i18n="btab.results">Results</button>
+            <div class="btab-spacer"></div>
+            <button class="btab-action" id="btnClearConsole" data-i18n-title="tb.title.clear.console" title="Clear console" data-i18n="btab.clear">Clear</button>
+            <button class="panel-hide-btn" data-hide-panel="bottomPanel" data-i18n-title="tb.title.hide.panel" title="Hide panel">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="bottom-body">
+            <div class="btab-content active" id="tabConsole">
+                <div class="console-out" id="consoleOut"></div>
+            </div>
+            <div class="btab-content" id="tabResults">
+                <div class="results-area" id="resultsArea">
+                    <div class="results-empty" data-i18n="results.empty">Run an analysis to see results here.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════ Status Bar ══════ -->
+    <div class="statusbar">
+        <div class="sb-left">
+            <span class="sb-indicator" id="sbIndicator"></span>
+            <span id="sbStatus" data-i18n="sb.ready">Ready</span>
+        </div>
+        <div class="sb-center">
+            <img src="/static/images/deslogo.png" class="sb-logo" onerror="this.src='/static/images/logo_square_no_name_1024x1024.png'" alt="">
+            <span class="sb-copyright">&copy; 2026 Textile Engineering Solutions &mdash; Abdelbary Algamel PAU</span>
+        </div>
+        <div class="sb-right">
+            <span id="sbMode">Mode: Dual Image</span>
+            <span class="sb-sep">|</span>
+            <span id="sbRegion">Region: Full Image</span>
+            <span class="sb-sep">|</span>
+            <span id="sbImages">Images: 0/2</span>
+            <span class="sb-sep">|</span>
+            <span>v3.0.0</span>
+        </div>
+    </div>
+
+    <!-- ══════ Loading Overlay ══════ -->
+    <div class="loading-overlay" id="loadingOverlay" style="display:none">
+        <div class="loading-box">
+            <div class="loading-spinner"></div>
+            <div class="loading-title" id="loadingTitle">Processing Analysis</div>
+            <div class="loading-text" id="loadingText">Please wait...</div>
+            <div class="loading-bar"><div class="loading-bar-fill" id="loadingBarFill"></div></div>
+        </div>
+    </div>
+
+    <!-- ══════ Confirm Dialog ══════ -->
+    <div class="dialog-overlay" id="confirmDialog" style="display:none">
+        <div class="dialog dialog-sm">
+            <div class="dialog-header">
+                <span id="confirmTitle">Confirm</span>
+                <button class="dialog-close" id="confirmClose">&times;</button>
+            </div>
+            <div class="dialog-body">
+                <div class="dialog-icon" id="confirmIcon"></div>
+                <p id="confirmMsg"></p>
+            </div>
+            <div class="dialog-footer">
+                <button class="dlg-btn dlg-btn-secondary" id="confirmNo">Cancel</button>
+                <button class="dlg-btn dlg-btn-danger" id="confirmYes">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════ Alert Dialog ══════ -->
+    <div class="dialog-overlay" id="alertDialog" style="display:none">
+        <div class="dialog dialog-sm">
+            <div class="dialog-header">
+                <span id="alertTitle">Alert</span>
+                <button class="dialog-close" onclick="Desktop.closeAlert()">&times;</button>
+            </div>
+            <div class="dialog-body">
+                <div class="dialog-icon" id="alertIcon"></div>
+                <p id="alertMsg"></p>
+            </div>
+            <div class="dialog-footer">
+                <button class="dlg-btn dlg-btn-primary" onclick="Desktop.closeAlert()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════ About Dialog ══════ -->
+    <div class="dialog-overlay" id="aboutDialog" style="display:none">
+        <div class="dialog about-dialog">
+            <div class="about-banner">
+                <div class="about-banner-bg"></div>
+                <button class="about-close-btn" onclick="document.getElementById('aboutDialog').style.display='none'">&times;</button>
+                <img src="/static/images/logo_square_with_name_1024x1024.png" class="about-logo-main"
+                     onerror="this.src='/static/images/deslogo.png'" alt="SpectraMatch">
+            </div>
+            <div class="about-content">
+                <div class="about-app-name">SpectraMatch Desktop</div>
+                <div class="about-version-badge">v3.0.0</div>
+                <div class="about-tagline" id="aboutTagline">Professional Textile Color &amp; Pattern Quality Control</div>
+                <div class="about-separator"></div>
+                <div class="about-description" id="aboutDesc">
+                    SpectraMatch is a professional desktop application for textile quality control.
+                    It performs color difference analysis (Delta E 2000), pattern matching (SSIM, Gradient, Phase),
+                    and generates comprehensive PDF reports with detailed measurements, visualizations,
+                    and recommendations.
+                </div>
+                <div class="about-features">
+                    <div class="about-feature" id="aboutFeat1">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                        <span id="aboutFeatText1">Delta E 2000 Color Analysis</span>
+                    </div>
+                    <div class="about-feature" id="aboutFeat2">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+                        <span id="aboutFeatText2">SSIM, Gradient &amp; Phase Pattern Matching</span>
+                    </div>
+                    <div class="about-feature" id="aboutFeat3">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        <span id="aboutFeatText3">Comprehensive PDF Reports</span>
+                    </div>
+                    <div class="about-feature" id="aboutFeat4">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span id="aboutFeatText4">CIE Standard Illuminants (D65, D50, TL84)</span>
+                    </div>
+                </div>
+                <div class="about-separator"></div>
+                <div class="about-footer-info">
+                    <div class="about-copyright">&copy; 2026 Textile Engineering Solutions</div>
+                    <div class="about-author-line">Abdelbary Algamel &mdash; Pamukkale University (PAU)</div>
+                    <div class="about-email-line"><a href="mailto:aalgamel23@posta.pau.edu.tr">aalgamel23@posta.pau.edu.tr</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════ Datasheet Dialog ══════ -->
+    <div class="dialog-overlay" id="datasheetDialog" style="display:none">
+        <div class="dialog">
+            <div class="dialog-header">
+                <span data-i18n="ds.title">Technical Documentation</span>
+                <button class="dialog-close" onclick="document.getElementById('datasheetDialog').style.display='none'">&times;</button>
+            </div>
+            <div class="dialog-body">
+                <p data-i18n="ds.desc">The complete technical documentation is available in PDF format.</p>
+                <p class="dialog-note" data-i18n="ds.available">Available in English and Turkish</p>
+                <div class="dialog-btn-group">
+                    <button class="dlg-btn dlg-btn-primary" onclick="Desktop.saveAs('/static/DataSheets/Datasheet_EN.pdf','DATASHEET_EN.pdf');document.getElementById('datasheetDialog').style.display='none'">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        English PDF
+                    </button>
+                    <button class="dlg-btn dlg-btn-primary" onclick="Desktop.saveAs('/static/DataSheets/Datasheet_TR.pdf','DATASHEET_TR.pdf');document.getElementById('datasheetDialog').style.display='none'">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Türkçe PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════ Feedback Dialog ══════ -->
+    <div class="dialog-overlay" id="feedbackDialog" style="display:none">
+        <div class="dialog dialog-wide">
+            <div class="dialog-header">
+                <span data-i18n="fb.title">Send Feedback</span>
+                <button class="dialog-close" onclick="document.getElementById('feedbackDialog').style.display='none'">&times;</button>
+            </div>
+            <div class="dialog-body">
+                <p class="dialog-note" data-i18n="fb.note">All fields are optional. You can submit feedback anonymously.</p>
+                <div style="margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+                    <input type="checkbox" id="fbAnonymous" onchange="var g=document.getElementById('fbPersonalFields');if(g)g.style.display=this.checked?'none':'';">
+                    <label for="fbAnonymous" style="cursor:pointer;font-size:13px;opacity:0.85;" data-i18n="fb.anonymous">Send anonymously</label>
+                </div>
+                <div class="form-grid">
+                    <div id="fbPersonalFields" style="display:contents;">
+                        <div class="form-group"><label data-i18n="fb.name">Name</label><input type="text" id="fbName"></div>
+                        <div class="form-group"><label data-i18n="fb.email">Email</label><input type="email" id="fbEmail"></div>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="fb.type">Feedback Type</label>
+                        <select id="fbType">
+                            <option value="note" data-i18n="fb.type.note">Note</option>
+                            <option value="suggestion" data-i18n="fb.type.suggestion">Suggestion</option>
+                            <option value="complaint" data-i18n="fb.type.complaint">Complaint</option>
+                            <option value="question" data-i18n="fb.type.question">Question</option>
+                            <option value="other" data-i18n="fb.type.other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group form-full"><label data-i18n="fb.message">Message</label><textarea id="fbMessage" rows="4"></textarea></div>
+                </div>
+                <p class="dialog-note" style="margin-top:8px"><span data-i18n="fb.email.note">For attachments, please email</span>: <a href="mailto:aalgamel23@posta.pau.edu.tr">aalgamel23@posta.pau.edu.tr</a></p>
+            </div>
+            <div class="dialog-footer">
+                <button class="dlg-btn dlg-btn-secondary" onclick="document.getElementById('feedbackDialog').style.display='none'" data-i18n="btn.cancel">Cancel</button>
+                <button class="dlg-btn dlg-btn-primary" id="btnSendFeedback" data-i18n="btn.send">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════ Contact Dialog ══════ -->
+    <div class="dialog-overlay" id="contactDialog" style="display:none">
+        <div class="dialog dialog-sm">
+            <div class="dialog-header">
+                <span data-i18n="contact.title">Contact</span>
+                <button class="dialog-close" onclick="document.getElementById('contactDialog').style.display='none'">&times;</button>
+            </div>
+            <div class="dialog-body about-body">
+                <img src="/static/images/deslogo.png" class="about-logo" onerror="this.src='/static/images/logo_square_no_name_1024x1024.png'" alt="" style="width:48px;height:48px">
+                <div class="about-title" style="font-size:15px">Abdelbary Algamel</div>
+                <div class="about-desc">Pamukkale University (PAU)</div>
+                <div class="about-email"><a href="mailto:aalgamel23@posta.pau.edu.tr">aalgamel23@posta.pau.edu.tr</a></div>
+                <hr class="about-hr">
+                <div class="about-copy">&copy; 2026 Textile Engineering Solutions</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════ Point Selector Dialog ══════ -->
+    <div class="dialog-overlay" id="pointSelectorDialog" style="display:none">
+        <div class="dialog dialog-xl">
+            <div class="dialog-header">
+                <span data-i18n="ps.title">Select Sample Points</span>
+                <button class="dialog-close" id="psClose">&times;</button>
+            </div>
+            <div class="dialog-body ps-body">
+                <p class="dialog-note" data-i18n="ps.hint">Click on the image to place measurement points. Points are mirrored on both images.</p>
+                <div class="ps-viewer">
+                    <div class="ps-pane">
+                        <div class="ps-pane-label" data-i18n="viewer.reference">Reference</div>
+                        <div class="ps-canvas-wrap">
+                            <canvas id="psRefCanvas" class="ps-canvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="ps-pane">
+                        <div class="ps-pane-label" data-i18n="viewer.sample">Sample</div>
+                        <div class="ps-canvas-wrap">
+                            <canvas id="psSampleCanvas" class="ps-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="ps-info">
+                    <div class="sampling-bar-row" style="flex:1">
+                        <div class="sampling-progress">
+                            <div class="sampling-bar-manual" id="psBarManual" style="width:0%"></div>
+                            <div class="sampling-bar-random" id="psBarRandom" style="width:0%"></div>
+                        </div>
+                        <span class="sampling-label" id="psLabel">0 / 5</span>
+                    </div>
+                    <div class="sampling-legend">
+                        <span class="legend-dot manual"></span> <span data-i18n="prop.manual.pts">Manual</span> <span id="psManualCount">0</span>
+                        <span class="legend-dot random"></span> <span data-i18n="prop.random.pts">Random</span> <span id="psRandomCount">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="dialog-footer">
+                <button class="dlg-btn dlg-btn-secondary" id="psUndo" data-i18n="ps.undo">Undo Last</button>
+                <button class="dlg-btn dlg-btn-secondary" id="psClear" data-i18n="ps.clear">Clear All</button>
+                <button class="dlg-btn dlg-btn-primary" id="psRandomFill" data-i18n="ps.random.fill">Complete Randomly</button>
+                <div style="flex:1"></div>
+                <button class="dlg-btn dlg-btn-primary" id="psConfirm" data-i18n="ps.confirm">Confirm Selection</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════ Keyboard Shortcuts Dialog ══════ -->
+    <div class="dialog-overlay" id="shortcutsDialog" style="display:none">
+        <div class="dialog dialog-wide">
+            <div class="dialog-header">
+                <span data-i18n="menu.shortcuts">Keyboard Shortcuts</span>
+                <button class="dialog-close" onclick="document.getElementById('shortcutsDialog').style.display='none'">&times;</button>
+            </div>
+            <div class="dialog-body">
+                <div class="shortcuts-grid" id="shortcutsGrid">
+                    <div class="shortcut-row">
+                        <span class="shortcut-keys"><kbd>Ctrl</kbd>+<kbd>O</kbd></span>
+                        <span class="shortcut-desc" data-i18n="menu.open.ref">Open Reference Image</span>
+                    </div>
+                    <div class="shortcut-row">
+                        <span class="shortcut-keys"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd></span>
+                        <span class="shortcut-desc" data-i18n="menu.open.sample">Open Sample Image</span>
+                    </div>
+                    <div class="shortcut-row">
+                        <span class="shortcut-keys"><kbd>F5</kbd></span>
+                        <span class="shortcut-desc" data-i18n="menu.run">Run Analysis</span>
+                    </div>
+                    <div class="shortcut-row">
+                        <span class="shortcut-keys"><kbd>Ctrl</kbd>+<kbd>D</kbd></span>
+                        <span class="shortcut-desc" data-i18n="menu.delete.all">Delete All Images</span>
+                    </div>
+                    <div class="shortcut-row">
+                        <span class="shortcut-keys"><kbd>Esc</kbd></span>
+                        <span class="shortcut-desc" id="scCloseDialogs">Close all dialogs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════ Release Notes Dialog ══════ -->
+    <div class="dialog-overlay" id="releaseNotesDialog" style="display:none">
+        <div class="dialog dialog-wide">
+            <div class="dialog-header">
+                <span data-i18n="menu.release.notes">Release Notes</span>
+                <button class="dialog-close" onclick="document.getElementById('releaseNotesDialog').style.display='none'">&times;</button>
+            </div>
+            <div class="dialog-body">
+                <div style="margin-bottom:12px">
+                    <strong>v3.0.0</strong> <span style="opacity:0.6">(2026)</span>
+                </div>
+                <ul style="margin:0 0 12px 18px;line-height:1.8;font-size:13px;">
+                    <li data-i18n="rn.item1">Full Turkish language support for all UI elements</li>
+                    <li data-i18n="rn.item2">Complete toolbar with all analysis and help options</li>
+                    <li data-i18n="rn.item3">Freehand (Pen) region selection tool</li>
+                    <li data-i18n="rn.item4">Ready-to-Test built-in sample images</li>
+                    <li data-i18n="rn.item5">Session persistence and state restoration</li>
+                    <li data-i18n="rn.item6">Native Save-As dialog for PDF reports</li>
+                    <li data-i18n="rn.item7">Manual and random sampling point selection</li>
+                    <li data-i18n="rn.item8">GLCM texture and Fourier frequency analysis</li>
+                    <li data-i18n="rn.item9">Comprehensive PDF reports with visualizations</li>
+                    <li data-i18n="rn.item10">Panel resize and layout customization</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════ Check for Updates Dialog ══════ -->
+    <div class="dialog-overlay" id="checkUpdatesDialog" style="display:none">
+        <div class="dialog dialog-sm">
+            <div class="dialog-header">
+                <span data-i18n="menu.check.updates">Check for Updates</span>
+                <button class="dialog-close" onclick="document.getElementById('checkUpdatesDialog').style.display='none'">&times;</button>
+            </div>
+            <div class="dialog-body" style="text-align:center;padding:24px;">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.5;margin-bottom:12px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <div style="font-size:15px;font-weight:600;margin-bottom:6px" data-i18n="updates.current">You are up to date!</div>
+                <div style="font-size:13px;opacity:0.7">SpectraMatch Desktop v3.0.0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════ Exit Confirmation Dialog ══════ -->
+    <div class="dialog-overlay" id="exitDialog" style="display:none">
+        <div class="dialog exit-dialog">
+            <div class="exit-dialog-banner">
+                <div class="exit-dialog-banner-bg"></div>
+                <img src="/static/images/deslogo.png" class="exit-dialog-logo"
+                     onerror="this.src='/static/images/logo_square_no_name_1024x1024.png'" alt="SpectraMatch">
+            </div>
+            <div class="exit-dialog-body">
+                <div class="exit-dialog-title" data-i18n="exit.title">Close SpectraMatch?</div>
+                <div class="exit-dialog-warning">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    <span data-i18n="exit.warning">Unsaved data and reports may be lost.</span>
+                </div>
+                <div class="exit-dialog-actions">
+                    <button class="exit-btn exit-btn-cancel" onclick="document.getElementById('exitDialog').style.display='none'">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        <span data-i18n="exit.cancel">Cancel</span>
+                    </button>
+                    <button class="exit-btn exit-btn-close" onclick="window.close()">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                        <span data-i18n="exit.close">Close</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Camera Capture Studio Modal (Desktop) -->
+    <div class="cam-studio-overlay" id="dCamOverlay">
+        <div class="cam-studio-modal">
+            <div class="cam-studio-header">
+                <div class="cam-studio-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    <span data-i18n="cam.studio.title">Camera Capture Studio</span>
+                    <span class="cam-target-badge" id="dCamBadge"></span>
+                </div>
+                <div class="cam-studio-controls-top">
+                    <select id="dCamDeviceSelect" class="cam-device-select"></select>
+                    <button type="button" class="cam-btn-icon" id="dCamMirror" data-i18n-title="cam.mirror" title="Mirror">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 23 7 1"/><polyline points="17 1 17 23"/><path d="M11 5H3v14h8"/><path d="M13 5h8v14h-8"/></svg>
+                    </button>
+                    <button type="button" class="cam-btn-close" id="dCamClose" data-i18n-title="cam.close" aria-label="Close">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="cam-studio-body">
+                <div class="cam-preview-area" id="dCamPreview">
+                    <div class="cam-status-msg" id="dCamStatus" data-i18n="cam.requesting">Requesting camera access...</div>
+                    <video id="dCamVideo" autoplay playsinline muted></video>
+                    <canvas id="dCamCanvas" style="display:none;"></canvas>
+                    <img id="dCamImg" class="cam-captured-img" style="display:none;">
+                    <div class="cam-crop-overlay" id="dCamCropOverlay" style="display:none;">
+                        <div class="cam-crop-box" id="dCamCropBox">
+                            <div class="cam-crop-handle cam-crop-n"></div>
+                            <div class="cam-crop-handle cam-crop-nw"></div>
+                            <div class="cam-crop-handle cam-crop-e"></div>
+                            <div class="cam-crop-handle cam-crop-ne"></div>
+                            <div class="cam-crop-handle cam-crop-s"></div>
+                            <div class="cam-crop-handle cam-crop-sw"></div>
+                            <div class="cam-crop-handle cam-crop-w"></div>
+                            <div class="cam-crop-handle cam-crop-se"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cam-adjust-bar" id="dCamAdjust" style="display:none;">
+                    <div class="cam-adjust-group">
+                        <button type="button" class="cam-adj-btn" id="dCamRotL" data-i18n-title="cam.rotate.left" title="Rotate Left"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></button>
+                        <button type="button" class="cam-adj-btn" id="dCamRotR" data-i18n-title="cam.rotate.right" title="Rotate Right"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.13-9.36L23 10"/></svg></button>
+                        <button type="button" class="cam-adj-btn" id="dCamFlipH" data-i18n-title="cam.flip.h" title="Flip Horizontal"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 23 7 1"/><polyline points="17 1 17 23"/><path d="M11 5H3v14h8"/><path d="M13 5h8v14h-8"/></svg></button>
+                    </div>
+                    <div class="cam-adjust-group cam-sliders">
+                        <label class="cam-slider-label"><span data-i18n="cam.brightness">Brightness</span>
+                            <input type="range" id="dCamBright" min="-100" max="100" value="0" class="cam-slider">
+                        </label>
+                        <label class="cam-slider-label"><span data-i18n="cam.contrast">Contrast</span>
+                            <input type="range" id="dCamContrast" min="-100" max="100" value="0" class="cam-slider">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="cam-studio-footer">
+                <div class="cam-footer-left">
+                    <button type="button" class="cam-btn cam-btn-secondary" id="dCamCancel" data-i18n="cam.cancel">Cancel</button>
+                </div>
+                <div class="cam-footer-center">
+                    <button type="button" class="cam-btn cam-btn-capture" id="dCamCapture" data-i18n="cam.capture">Capture</button>
+                    <button type="button" class="cam-btn cam-btn-secondary" id="dCamRetake" style="display:none;" data-i18n="cam.retake">Retake</button>
+                </div>
+                <div class="cam-footer-right">
+                    <button type="button" class="cam-btn cam-btn-primary" id="dCamUse" style="display:none;" data-i18n="cam.use.image">Use Image</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/alignment-studio.js"></script>
+    <script src="/static/desktop/desktop.js"></script>
+</body>
+</html>

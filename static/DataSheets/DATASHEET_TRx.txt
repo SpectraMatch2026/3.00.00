@@ -1,0 +1,1688 @@
+% SPECTRAMATCH Teknik Veri Sayfası (Türkçe) — v3.0.0
+% Pamukkale Üniversitesi, Elektrik ve Elektronik Mühendisliği Bölümü
+\documentclass[11pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{parskip}
+\usepackage{microtype}
+\usepackage{tikz}
+
+\definecolor{specblue}{HTML}{2980B9}
+\definecolor{specblue2}{HTML}{3498DB}
+\definecolor{specgreen}{HTML}{27AE60}
+\definecolor{specred}{HTML}{E74C3C}
+\definecolor{specorange}{HTML}{F39C12}
+\definecolor{specdark}{HTML}{2C3E50}
+\definecolor{specgray}{HTML}{7F8C8D}
+\definecolor{speclightgray}{HTML}{BDC3C7}
+
+\hypersetup{colorlinks=true,linkcolor=specblue,urlcolor=specblue2,pdftitle={SpectraMatch Teknik Veri Sayfası},pdfauthor={Abdelbary Algamel}}
+
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textcolor{specblue}{\textbf{SpectraMatch}} \textcolor{specgray}{| Teknik Veri Sayfası}}
+\fancyhead[R]{\small\textcolor{specgray}{v3.0.0}}
+\fancyfoot[C]{\small\textcolor{specgray}{\thepage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.2pt}
+
+\titleformat{\chapter}[display]{\normalfont\Huge\bfseries\color{specdark}}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{\section}{\Large\bfseries\color{specblue}}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries\color{specblue2}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{specdark}}{\thesubsubsection}{1em}{}
+
+\newcommand{\dE}{$\Delta E$}
+\newcommand{\dEoo}{$\Delta E_{2000}$}
+
+\begin{document}
+
+% KAPAK SAYFASI
+\begin{titlepage}
+\begin{center}
+\vspace*{1cm}
+\begin{tikzpicture}[remember picture, overlay]
+  \draw[specblue, line width=2pt] ([shift={(1cm,-1cm)}]current page.north west) rectangle ([shift={(-1cm,1cm)}]current page.south east);
+  \draw[speclightgray, line width=0.5pt] ([shift={(1.15cm,-1.15cm)}]current page.north west) rectangle ([shift={(-1.15cm,1.15cm)}]current page.south east);
+\end{tikzpicture}
+\vspace{1.5cm}
+
+\includegraphics[width=5cm]{logo.png}
+
+\vspace{0.4cm}
+
+{\Huge\bfseries\textcolor{specdark}{SPECTRAMATCH}}\\[0.4cm]
+{\Large\textcolor{specblue}{Teknik Veri Sayfası}}\\[0.3cm]
+{\large\textcolor{specgray}{Tekstil Kalite Kontrol Sistemi}}\\[0.2cm]
+{\normalsize\textcolor{specgray}{Profesyonel Renk ve Desen Analizi}}
+
+\vspace{1.2cm}
+
+{\large\itshape\textcolor{specblue}{Sürüm: 3.0.0}}
+
+\vspace{1.2cm}
+\textbf{Hazırlayan:} Abdelbary Algamel\\[0.1cm]
+\textbf{Danışman:} Dr.\ Adem Ükte}
+{\normalsize
+\\[1.6cm]
+
+
+\textbf{||} Pamukkale Üniversitesi\\[0.1cm]
+Elektrik ve Elektronik Mühendisliği Bölümü, Denizli, Türkiye
+\vfill
+{\small\textcolor{specgray}{Bu belge, SpectraMatch v3.0.0 sürümünün mevcut yeteneklerini yansıtmaktadır.}}
+\end{center}
+\end{titlepage}
+
+\tableofcontents
+\clearpage
+
+% ════════════════════════════════════════════════════════════════════════════
+% BÖLÜM 1 — SİSTEME GENEL BAKIŞ
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Sisteme Genel Bakış}
+\label{ch:overview}
+
+\section{Tanım}
+
+SpectraMatch, tekstil endüstrisi için tasarlanmış, araştırma düzeyinde bir görüntü kalite kontrol sistemidir. Bir \textbf{referans} görüntü ile bir \textbf{numune} görüntüyü karşılaştırarak nicel renk ve desen analizi sağlar; ayrıntılı metrikler, görsel tanılamalar ve indirilebilir PDF raporlar üretir. Sistem, Pamukkale Üniversitesi (PAÜ) Elektrik ve Elektronik Mühendisliği Bölümü'nde yürütülen araştırma çalışmaları kapsamında geliştirilmiştir.
+
+\section{Amaçlar}
+
+\begin{itemize}[leftmargin=1.5em]
+  \item Tekstil numuneleri arasındaki renk farkının, yerleşik kolorimetrik standartlar (CIE \dEoo{}, CIELAB) kullanılarak nesnel ve nicel olarak ölçülmesini sağlamak.
+  \item Referans ile üretim numuneleri arasındaki yapısal benzerlik ve desen sadakatini görüntü analiz teknikleri (SSIM, GLCM, FFT, Phase Correlation) kullanarak değerlendirmek.
+  \item Referans gerektirmeksizin renk dağılımı, doku tekdüzeliği ve kusur göstergeleri için bağımsız tek görüntü analizini desteklemek.
+  \item Grafikler, tablolar ve eşik değerine duyarlı öneriler içeren profesyonel, çok sayfalı PDF raporları İngilizce ve Türkçe olarak oluşturmak.
+  \item Hem laboratuvar değerlendirmesi hem de üretim sahası kullanımı için uygun, pratik bir araç olarak hizmet etmek.
+\end{itemize}
+
+\section{Pratik Faydalar}
+
+\begin{itemize}[leftmargin=1.5em]
+  \item Sübjektif görsel incelemeyi tekrarlanabilir, sayısal ölçümlerle değiştirir.
+  \item Yapılandırılabilir geçti/koşullu/kaldı eşik değerleri, farklı kalite standartlarına uyum sağlanmasına olanak tanır.
+  \item İki dilli arayüz ve raporlar (İngilizce ve Türkçe), farklı ekiplerin kullanımını mümkün kılar.
+  \item Farklı görüntüleme koşullarını simüle etmek için birden fazla aydınlatıcıyı (D65, D50, A, C, F2, TL84) destekler.
+  \item Arşivleme, denetim ve birimler arası iletişim için uygun kapsamlı PDF belgeleri oluşturur.
+\end{itemize}
+
+\section{Sistem İş Akışı}
+
+Şekil~\ref{fig:workflow}, SpectraMatch'in tam işleme iş akışını göstermektedir.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{workflow.png}
+  \caption{SpectraMatch sistem iş akışı. Kullanıcı görüntüleri yükler, çalışma modunu seçer, gelişmiş ayarları yapılandırır ve sistem görüntüleri ilgili birimler aracılığıyla işler. Raporlar indirilebilir PDF dosyaları olarak oluşturulur.}
+  \label{fig:workflow}
+\end{figure}
+
+İş akışı aşağıdaki şekilde ilerler:
+
+\begin{enumerate}[leftmargin=1.5em]
+  \item \textbf{Görüntü Girişi:} Kullanıcı bir referans görüntü ve bir numune görüntü yükler (Çift Görüntü Modu) veya tek bir numune görüntü yükler (Tek Görüntü Modu).
+  \item \textbf{Mod Seçimi:} Kullanıcı, Çift Görüntü Modu (karşılaştırma için) veya Tek Görüntü Modu (bağımsız analiz için) arasında seçim yapar.
+  \item \textbf{Gelişmiş Ayarlar:} Kullanıcı, Ayarlar paneli aracılığıyla analiz parametrelerini yapılandırır.
+  \item \textbf{İşleme:} Sistem, görüntüleri ilgili birimlere yönlendirir:
+    \begin{itemize}
+      \item \textbf{Renk Birimi} --- renk farkı metriklerini hesaplar (\dEoo{}, CSI, aydınlatıcı analizi).
+      \item \textbf{Desen Birimi} --- yapısal benzerliği değerlendirir (SSIM, Gradient, Phase, Structural Match, Fourier, GLCM).
+      \item \textbf{Tek Görüntü Birimi} --- bağımsız renk dağılımı ve doku analizi gerçekleştirir.
+    \end{itemize}
+  \item \textbf{Rapor Oluşturma:} Sistem PDF raporları üretir:
+    \begin{itemize}
+    \item \textbf{Tam Rapor} --- kapak sayfası, renk sayfaları ve desen sayfalarını birleştiren bütünleşik rapor.
+      \item \textbf{Tek Görüntü Raporu} --- bağımsız analiz sonuçları.
+     
+      \item \textbf{Ayarlar Raporu (Makbuz)} --- kullanılan tüm yapılandırma parametrelerini belgeleyen ayrı bir PDF.
+    \end{itemize}
+\end{enumerate}
+
+\section{Uygulama Biçimleri}
+
+Sistem, aynı arka uç mantığını paylaşan iki biçimde sunulmaktadır:
+
+\subsection{Web Uygulaması}
+Yapılandırılmış sunucu adresinde bir tarayıcı üzerinden erişilebilir. Web arayüzü tüm analiz özelliklerini sağlar ve ayrıca kullanıcının masaüstü uygulamasını kullanıma hazır bir \texttt{.exe} yükleyicisi olarak indirmesine olanak tanır. Şekil~\ref{fig:webapp}, web uygulaması arayüzünü göstermektedir.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{webapp.png}
+  \caption{SpectraMatch web uygulaması arayüzü.}
+  \label{fig:webapp}
+\end{figure}
+
+\subsection{Masaüstü Uygulaması}
+Aynı Flask arka ucunu pywebview kullanarak bir masaüstü penceresi içinde çalıştıran yerel bir Windows uygulamasıdır. Başlatma sırasında bir açılış ekranı içerir, koyu ve açık mod desteği sunar ve klavye kısayolları içeren bir araç çubuğu sağlar. Şekil~\ref{fig:desktop}, masaüstü uygulaması arayüzünü göstermektedir.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth,keepaspectratio]{desktop.png}
+  \caption{SpectraMatch masaüstü uygulaması arayüzü.}
+  \label{fig:desktop}
+\end{figure}
+
+\newpage
+\subsection{Ortak Özellikler}
+Her iki uygulama biçimi aşağıdaki ortak özellikleri sağlar:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Geri Bildirim Gönder:} Deneme aşamasında ve süregelen geliştirme sürecinde kullanıcı gözlemlerini ve önerilerini toplamak için kullanılan bir düğme.
+  \item \textbf{Test İçin Hazır Görüntüler:} Kullanıcının kendi görüntülerini sağlamasına gerek kalmadan hızlı değerlendirme yapılabilmesi için önceden tanımlanmış örnek görüntü çiftleri (üç çift olarak düzenlenmiş altı yerleşik test görüntüsü) sunan, yalnızca deneme amaçlı bir özellik.
+  \item \textbf{Veri Sayfası:} Bu teknik belgeyi oluşturan ve erişim sağlayan bir düğme.
+\end{itemize}
+
+\section{Görüntü Giriş Ortamı}
+
+\subsection{Çift Görüntü Modu}
+Kullanıcı iki görüntü yükler: bir \textbf{referans} görüntü (standart) ve bir \textbf{numune} görüntü (değerlendirilecek üretim çıktısı). Her iki görüntü de Renk Birimi ve Desen Birimi aracılığıyla işlenir.
+
+\subsection{Tek Görüntü Modu}
+Kullanıcı tek bir \textbf{numune} görüntü yükler. Sistem, bir referansla karşılaştırma yapmaksızın renk dağılımı, doku tekdüzeliği ve spektral özelliklerin bağımsız analizini gerçekleştirir.
+
+\subsection{Bölge Seçimi}
+Analizden önce kullanıcı, aşağıdaki araçlardan birini kullanarak görüntüler üzerinde bir ilgi bölgesi tanımlayabilir:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Daire} --- ayarlanabilir çaplı dairesel seçim.
+  \item \textbf{Kare} --- ayarlanabilir kenar uzunluklu kare seçim.
+  \item \textbf{Dikdörtgen} --- bağımsız genişlik ve yükseklik kontrolüyle dikdörtgen seçim.
+  \item \textbf{Serbest Çizim (Kalem)} --- doğrudan görüntü üzerinde özel bir kapalı çokgen çizimi.
+\end{itemize}
+Tüm araçlar tıkla-yerleştir, sürükle-taşı ve kaydır-boyutlandır (Kalem hariç) desteği sağlar. Seçilen bölge, her iki görüntü üzerinde eş zamanlı olarak görsel olarak bindirilir. Bölge seçilmezse görüntünün tamamı kullanılır.
+
+\section{Nokta Seçimi}
+
+Renk Birimi ve Tek Görüntü Birimi, seçilen bölge içindeki ayrık noktalarda renk örneklemesi yapar. Sistem şunları destekler:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Manuel yerleştirme} --- kullanıcı her bir örnekleme noktasını yerleştirmek için doğrudan görüntü üzerine tıklar.
+  \item \textbf{Rastgele oluşturma} --- sistem, reddetme örneklemesi kullanarak seçilen bölge içinde düzgün dağılmış $N$ adet rastgele nokta otomatik olarak oluşturur.
+  \item \textbf{Karma} --- kullanıcı bazı noktaları manuel olarak yerleştirir ve sistem geri kalanını rastgele noktalarla tamamlar.
+\end{itemize}
+Arka uç sıkı doğrulama uygular: her nokta (manuel veya rastgele) tanımlanan bölge içinde ve görüntü sınırları dahilinde yer almalıdır. Bölge dışına yerleştirilen noktalar reddedilir. 
+\section{Gelişmiş Ayarlar}
+
+Gelişmiş Ayarlar paneli beş alt bölüm halinde düzenlenmiştir:
+
+\subsection{Genel}
+\begin{itemize}[leftmargin=1.5em]
+  \item Seçim şekli (daire, kare, dikdörtgen, kalem).
+\item Rapor dili (uygulama dilinden bağımsız)
+  \item Operatör adı (raporlara dahil edilir).
+  \item Saat dilimi farkı (UTC, rapor zaman damgaları ve kimlik oluşturma için kullanılır).
+  \item Görüntü hizalama modu (analiz öncesi uygulanan ön işleme tekniği).
+\end{itemize}
+
+\subsubsection{Görüntü Hizalama Ön İşleme}
+
+Gerçek dünya tekstil incelemesinde, referans ve numune görüntüleri nadiren mükemmel aynı koşullar altında çekilir. Kamera konumu, görüş açısı veya kumaş yerleşimindeki küçük farklılıklar bile iki görüntü arasında dönmeler, ölçek farkları veya uzaysal hizalama bozuklukları oluşturabilir. Görüntüler hizalanmadığında, piksel piksel karşılaştırma güvenilmez hale gelir: renk farkı puanları gerçek renk farklılıkları yerine geometrik kaymalardan şişer ve yapısal benzerlik metrikleri her hizalanmamış sınırda düşer.
+
+Sürüm 3.0.0, Renk Birimi ve Desen Birimi görüntüleri almadan önce otomatik olarak çalışan entegre bir ön işleme adımı olarak görüntü hizalamasını tanıtmaktadır. Bu, sistemdeki en önemli iyileştirmelerden biridir: görüntülerin nasıl çekildiğinden bağımsız olarak, karşılaştırmaların her zaman kumaşın geometrik olarak tutarlı bölgeleri arasında yapılmasını sağlar. Üç yöntem mevcuttur:
+
+\paragraph{Doğrudan Piksel Karşılaştırma.}
+Herhangi bir ön işleme uygulanmaz. Referans ve numune görüntüleri, yalnızca kullanıcı tanımlı bölge kırpması uygulanarak çekildiği gibi doğrudan karşılaştırılır. Bu, standart temel yöntemdir; görüntüler sabit kamera desteği kullanılarak tutarlı çerçeveleme ve ölçekle sıkı kontrollü koşullar altında çekildiğinde uygundur. En hızlı analizi sağlar ve diğer yöntemlerin değerlendirilebileceği referans noktası olarak işlev görür.
+
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=0.44\textwidth]{align_direct_sample_orig.png} &
+    \includegraphics[width=0.44\textwidth]{align_direct_ref_orig.png} \\[3pt]
+    {\small (1) Özgün Numune} & {\small (2) Referans Görüntü} \\[8pt]
+    \includegraphics[width=0.44\textwidth]{align_direct_sample_crop.png} &
+    \includegraphics[width=0.44\textwidth]{align_direct_ref_crop.png} \\[3pt]
+    {\small (3) Kırpılmış Numune} & {\small (4) Kırpılmış Referans} \\
+  \end{tabular}
+  \caption{Doğrudan Piksel Karşılaştırma --- görüntüler yalnızca bölge kırpma uygulanarak çekildiği gibi kullanılır.}
+  \label{fig:align_direct}
+\end{figure}
+
+\paragraph{Yapay Zeka Tabanlı Eşleşme.}
+Yapay Zeka Akıllı Eşleşme yöntemi, numune görüntüsünde referansa en iyi karşılık gelen bölgeyi otomatik olarak belirlemek ve kırpmak için çok aşamalı akıllı bir arama kullanır. Sistem, her iki görüntünün içeriğini birden fazla ölçekte analiz eder, en yüksek benzerlik alanını tespit eder ve analizden önce her iki görüntüyü bu bölgeye kırpar. Bu, herhangi bir manuel ayar gerektirmeksizin kamera kaymalarının, ölçek farklarının veya kısmi çerçeve uyumsuzluklarının etkisini ortadan kaldırır. Çekim koşullarının ölçümler arasında tam olarak standartlaştırılamadığı durumlarda özellikle kullanışlıdır.
+
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=0.44\textwidth]{align_ai_sample_orig.png} &
+    \includegraphics[width=0.44\textwidth]{align_ai_ref_orig.png} \\[3pt]
+    {\small (1) Özgün Numune} & {\small (2) Referans Görüntü} \\[8pt]
+    \includegraphics[width=0.44\textwidth]{align_ai_sample_crop.png} &
+    \includegraphics[width=0.44\textwidth]{align_ai_ref_crop.png} \\[3pt]
+    {\small (3) YZ Eşleşmeli Numune Kırpması} & {\small (4) YZ Eşleşmeli Referans Kırpması} \\
+  \end{tabular}
+  \caption{Yapay Zeka Tabanlı Eşleşme --- sistem, iki görüntü arasında en benzer bölgeyi otomatik olarak tespit eder ve kırpar.}
+  \label{fig:align_ai}
+\end{figure}
+
+\paragraph{BESTCH (En İyi Kanal Eşleşmesi).}
+BESTCH farklı bir zorluğu ele alır: dokuma veya baskılı kumaşlar gibi tekrarlayan tekstil desenleri için, görüntü alanının tamamını değerlendirmek her zaman gerekli veya güvenilir değildir. BESTCH, görüntü alanının yaklaşık \%25'ini oluşturan temsili bir bölge --- kumaşın temel renk ve desen özelliklerini en iyi yakalayan kırpmayı --- seçer. Analizin tam görüntü yerine bu temsili bölgeye yoğunlaştırılması, kenar efektleri, kenar gölgeleri ve temsil edilmeyen doku alanlarının etkisini azaltır. Bu yaklaşım, düzenli tekrarlayan desenlere sahip kumaşlar için uygundur; temsili bir örnek alan, genel renk ve desen tutarlılığını bütünsel olarak değerlendirmek için yeterlidir.
+
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=0.44\textwidth]{align_bestch_sample_orig.png} &
+    \includegraphics[width=0.44\textwidth]{align_bestch_ref_orig.png} \\[3pt]
+    {\small (1) Özgün Numune} & {\small (2) Referans Görüntü} \\[8pt]
+    \includegraphics[width=0.44\textwidth]{align_bestch_sample_crop.png} &
+    \includegraphics[width=0.44\textwidth]{align_bestch_ref_crop.png} \\[3pt]
+    {\small (3) BESTCH Seçili Bölge} & {\small (4) BESTCH Referans Bölgesi} \\
+  \end{tabular}
+  \caption{BESTCH --- odaklanmış, bütünsel değerlendirme için en temsili $\sim$\%25'lik bölgeyi seçer.}
+  \label{fig:align_bestch}
+\end{figure}
+
+Seçilen yöntem, herhangi bir metrik hesaplanmadan önce ön işleme sırasında otomatik olarak uygulanır. Genel ayarlar bölümünden erişilebilen SPACTRA Studio, bir seçime karar vermeden önce yüklenen görüntüler üzerinde üç yöntemin de etkileşimli önizlemesine ve karşılaştırılmasına olanak tanır.
+
+\subsection{Renk}
+\begin{itemize}[leftmargin=1.5em]
+  \item Renk puanlama yöntemi (\dEoo{}, CSI veya CSI2000).
+    \item Örnekleme noktası sayısı ($N$).
+  \item Örnekleme modu (manuel, rastgele, karma).
+  \item Geçme eşiği (bir noktanın GEÇTİ olarak sınıflandırıldığı parametre değerleri).
+  \item Koşullu eşik (bir noktanın KOŞULLU olarak sınıflandırıldığı parametre değerleri).
+  \item Puanlar (İyi / Uyarı) eşik değerleri.
+  \item Lab* bileşen eşik değerleri ($\Delta L^*$, $\Delta a^*$, $\Delta b^*$).
+\end{itemize}
+
+\subsection{Desen}
+\begin{itemize}[leftmargin=1.5em]
+  \item Genel desen eşiği.
+  \item Yönteme özgü eşik değerleri (SSIM, Gradient, Phase, Structural Match), her biri geçme ve koşullu değerleriyle.
+\end{itemize}
+
+\subsection{Aydınlatıcı}
+\begin{itemize}[leftmargin=1.5em]
+  \item Birincil aydınlatıcı seçimi (D65, D50, A, C, F2, CWF, TL84).
+  \item Test aydınlatıcıları listesi (çoklu aydınlatıcı karşılaştırması için bir veya daha fazla aydınlatıcı).
+\end{itemize}
+
+\subsection{Rapor Bölümleri}
+\begin{itemize}[leftmargin=1.5em]
+  \item Bireysel rapor bölümleri için açma/kapama düğmeleri 
+\end{itemize}
+
+\section{İşleme Süresi}
+
+İşleme süresi, görüntü boyutuna ve etkinleştirilen rapor bölümlerinin sayısına bağlıdır. Daha büyük görüntüler, piksel düzeyindeki işlemler (ısı haritaları, SSIM, FFT, yapısal analiz) için daha fazla hesaplama gerektirir. GLCM veya Fourier analizi gibi bölümlerin devre dışı bırakılması, bu hesaplamaları tamamen ortadan kaldırarak toplam işleme süresini azaltır.
+
+\section{Rapor Çıktısı}
+
+Raporlar, seçilen dilde PDF dosyaları olarak oluşturulur. Her rapor, otomatik olarak oluşturulan bir analiz kimliği kullanılarak adlandırılır: \texttt{SPEC\_YYMMDD\_HHMMSS} — burada zaman damgası yapılandırılmış saat dilimi farkını kullanır. Bir dil son eki (\texttt{\_EN} veya \texttt{\_TR}) eklenir. Analiz raporuyla birlikte aynı temel dosya adını paylaşan ve \texttt{\_AYARLAR} son ekine sahip ayrı bir \textbf{Ayarlar Raporu} (yapılandırma makbuzu) oluşturulur; bu rapor kullanılan tüm yapılandırma parametrelerini belgelendirir. Şekil~\ref{fig:settings_report}, bir Ayarlar Raporunun kapak sayfasını göstermektedir.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.65\textwidth]{settingcover.png}
+  \caption{Ayarlar Raporu --- Yapılandırma makbuzu PDF'inin kapak sayfası. Eşik değerleri, aydınlatıcı seçimleri, etkinleştirilen bölümler ve puanlama yöntemi dahil tüm analiz parametrelerini belgelendirir.}
+  \label{fig:settings_report}
+\end{figure}
+
+\section{Sürekli İyileştirme}
+
+Proje, v3.0.0 sürümünün ötesinde aktif olarak geliştirilmektedir. İyileştirmeler; gerçek kullanım gözlemleri, yapılandırılmış testler ve akademik araştırma gereksinimleri doğrultusunda yönlendirilmektedir.
+
+% ════════════════════════════════════════════════════════════════════════════
+% BÖLÜM 2 — SİSTEM İŞLEME BİRİMLERİ
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Sistem İşleme Birimleri}
+\label{ch:units}
+
+Bu bölüm, SpectraMatch'in arka uç işleme omurgasını tanımlar. Her işleme birimi, belirli bir analiz kategorisinden sorumludur ve oluşturulan PDF raporu içinde kendine ayrılmış bir bölüm üretir. Sistemin ürettiği her rapor bölümü, tablo ve şekil için bu bölüm şunları sağlar: (1)~tanım ve amaç, (2)~nasıl hesaplandığı, (3)~sonucun nasıl okunacağı ve (4)~nasıl değerlendirileceği.
+
+% ────────────────────────────────────────────────────────────────────────────
+\section{Renk Birimi}
+\label{sec:color_unit}
+
+Renk Birimi, referans görüntü ile numune görüntü arasında nicel renk karşılaştırması gerçekleştirir. $N$ örnekleme noktasında renk değerlerini çıkarır, bunları birden fazla renk uzayına dönüştürür, renk farkı metriklerini hesaplar ve eşik değerine duyarlı kararlar üretir.
+
+\subsection{Kapak Sayfası}
+
+\subsubsection{Tanım ve Amaç}
+Kapak sayfası, Renk Raporunun ilk sayfasıdır. Rapor kimliğini, meta verilerini ve genel renk analizi sonucunun yönetici özetini sunar.
+
+\subsubsection{Nasıl Oluşturulur}
+Kapak sayfası; şirket logosu, rapor başlığı, oluşturma zaman damgası, operatör adı, birincil aydınlatıcı, rapor kimliği ve yazılım sürümünü içerir. Bir Yönetici Özeti bandı, genel durumu (GEÇTİ, KOŞULLU veya KALDI) renk kodlamasıyla (yeşil, turuncu, kırmızı) gösterir. Bandın altında, birincil puanlama metriği (seçilen puanlama yöntemine göre: \dEoo{}, CSI veya CSI2000) görüntülenir ve ardından $\Delta E_{76}$, $\Delta E_{94}$ ve $\Delta E_{2000}$ için ortalama, standart sapma, minimum ve maksimum değerleri gösteren bir özet istatistik tablosu yer alır.
+
+\subsubsection{Sonuç Nasıl Okunur}
+Yönetici özeti bandı, genel renk eşleşme kalitesinin anında görsel bir göstergesini sağlar. Birincil puan, 100 üzerinden değeriyle belirgin şekilde gösterilir. İstatistik tablosu, tüm örnekleme noktalarındaki renk farkının dağılım özelliklerini verir.
+
+\newpage
+\subsubsection{Nasıl Değerlendirilir}
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{GEÇTİ} (yeşil): Numune tanımlanan kalite eşik değerlerini karşılamaktadır.
+  \item \textbf{KOŞULLU} (turuncu): Numune kalite sınırlarına yakındır; ek inceleme önerilir.
+  \item \textbf{KALDI} (kırmızı): Numune gerekli kalite standartlarını karşılamamaktadır.
+\end{itemize}
+
+\subsection{Giriş Görüntüleri}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{1.png}
+  \caption{Renk Birimi --- Giriş Görüntüleri. Referans (sol) ve numune (sağ) örnekleme noktası bindirmeleriyle. Yeşil daireler manuel olarak yerleştirilen noktaları; turuncu daireler rastgele oluşturulan noktaları gösterir.}
+  \label{fig:color_input}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Bu bölüm, örnekleme noktası konumları numaralı daireler olarak bindirilmiş şekilde referans ve numune görüntülerini yan yana gösterir.
+
+\subsubsection{Nasıl Oluşturulur}
+Sistem, her iki görüntüde de her örnekleme noktası konumunda daireler çizer. Noktalar renk kodludur: manuel olarak yerleştirilen noktalar için yeşil, rastgele oluşturulan noktalar için turuncu. Her nokta sıralı olarak numaralandırılmıştır.
+
+\subsubsection{Sonuç Nasıl Okunur}
+Bindirme, örnekleme noktalarının kumaşın amaçlanan alanlarına konumlandırıldığının görsel doğrulamasını sağlar. Numaralandırma, sonraki ölçüm tablolarındaki satırlara karşılık gelir.
+
+\subsubsection{Nasıl Değerlendirilir}
+Tüm örnekleme noktalarının ilgi bölgesi içinde ve kumaşın temsili alanlarında yer aldığını doğrulayın. Kenarlardaki, kıvrımlardaki veya artefaktlardaki noktalar güvenilmez ölçümler üretebilir.
+
+\subsection{RGB Değerleri}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{2.png}
+  \caption{Renk Birimi --- RGB Değerleri tablosu. Referans ve numune için nokta bazlı Kırmızı, Yeşil ve Mavi kanal değerleri (0--255).}
+  \label{fig:rgb_values}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+RGB Değerleri tablosu, her bir örnekleme noktasında hem referans hem de numune görüntüleri için çıkarılan ham Kırmızı, Yeşil ve Mavi kanal yoğunluklarını (0--255 ölçeği) sunar.
+
+\subsubsection{Nasıl Hesaplanır}
+Her örnekleme noktasında, dairesel bir piksel yaması çıkarılır. Geçerli alfa değerine (saydam olmayan) sahip piksellerin ortalaması alınarak ortalama RGB değeri elde edilir. Yama yarıçapı $r = \max(12, \lfloor 0.04 \times \min(h, w) \rfloor)$ olarak hesaplanır; burada $h$ ve $w$ görüntü boyutlarıdır.
+
+\subsubsection{Sonuç Nasıl Okunur}
+Her satır bir örnekleme noktasına karşılık gelir. Tablo; Referans R, Numune R, Referans G, Numune G, Referans B, Numune B değerlerini gösterir. Sütunlar renk kodludur (R için kırmızı arka plan, G için yeşil, B için mavi).
+
+\subsubsection{Nasıl Değerlendirilir}
+Herhangi bir kanalda referans ile numune değerleri arasındaki büyük farklar bir renk kaymasına işaret eder. RGB değerleri cihaza bağımlıdır ve algısal doğruluk için Lab* değerleriyle birlikte yorumlanmalıdır.
+
+\subsection{Lab* Değerleri}
+
+Aşağıdaki şekil, referans ve numune görüntüleri için ortalama CIELAB ($L^*$, $a^*$, $b^*$) değerleri tablosunu göstermektedir.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{3.png}
+  \caption{Ortalama CIELAB ($L^*$, $a^*$, $b^*$) değerleri ve bileşen bazlı farklar.}
+  \label{fig:lab_mean}
+\end{figure}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{LAB.png}
+  \caption{Renk Birimi --- Lab* Görselleştirmesi. a*b* krominans saçılım grafiği ve referans ile numune için ortalama L*, a*, b* gruplandırılmış çubuk grafiği.}
+  \label{fig:lab_values}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Lab* bölümü, algısal olarak tekdüze bir renk uzayı analizi sağlar. CIELAB, açıklığı ($L^*$) krominanstan ($a^*$: kırmızı--yeşil ekseni; $b^*$: sarı--mavi ekseni) ayırarak algılanan renk farklarının nicelleştirilmesi için uygun hale getirir.
+
+\subsubsection{Nasıl Hesaplanır}
+RGB değerleri şu dönüşüm hattından geçirilir: sRGB $\to$ doğrusal RGB (ters gama) $\to$ XYZ (sRGB-XYZ matrisi kullanılarak) $\to$ kromatik adaptasyon (seçilen aydınlatıcıya Bradford dönüşümü) $\to$ CIELAB (aydınlatıcı beyaz noktası kullanılarak). Her bileşen için tüm örnekleme noktalarındaki ortalama değerler hesaplanır. $\Delta L^*$, $\Delta a^*$, $\Delta b^*$ farkları hesaplanır ve genel büyüklük $\sqrt{\Delta L^{*2} + \Delta a^{*2} + \Delta b^{*2}}$ türetilir.
+\newpage
+
+Bir kalite değerlendirme tablosu, her bileşen farkını kullanıcı tanımlı eşik değerleriyle karşılaştırır ve bileşen başına GEÇTİ veya KALDI atar. Yorumlar sağlanır: ihmal edilebilir ($< 0.25 \times$ eşik), fark edilebilir ($<$ eşik), belirgin ($< 2\times$ eşik) veya kritik ($\geq 2\times$ eşik).
+
+Bir $a^*$ -- $b^*$ krominans saçılım grafiği ve ortalama $L^*$, $a^*$, $b^*$ gruplandırılmış çubuk grafiği oluşturulur.
+
+\subsubsection{Sonuç Nasıl Okunur}
+\begin{itemize}[leftmargin=1.5em]
+  \item $\Delta L^* > 0$: numune daha açık; $\Delta L^* < 0$: numune daha koyu.
+  \item $\Delta a^* > 0$: numune daha kırmızı; $\Delta a^* < 0$: numune daha yeşil.
+  \item $\Delta b^* > 0$: numune daha sarı; $\Delta b^* < 0$: numune daha mavi.
+\end{itemize}
+
+\subsubsection{Nasıl Değerlendirilir}
+Her bileşen kendi eşik değeriyle karşılaştırılır. Tüm bileşenler geçerse rapor ``sıkı tolerans dahilinde'' ifadesini belirtir. Herhangi biri kalırsa, kalan parametreler ve aşım değerleri listelenir.
+
+\subsection{XYZ Değerleri}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\textwidth]{4.png}
+  \caption{Renk Birimi --- XYZ Değerleri tablosu. Referans ve numune için nokta bazlı CIE XYZ tristimulus değerleri.}
+  \label{fig:xyz_values}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+XYZ tablosu, her örnekleme noktasındaki CIE 1931 XYZ tristimulus değerlerini sunar. XYZ, CIELAB'ın türetildiği cihazdan bağımsız renk uzayıdır.
+
+\subsubsection{Nasıl Hesaplanır}
+sRGB değerleri doğrusallaştırılır (ters sRGB kompandingi), ardından sRGB-XYZ dönüşüm matrisiyle çarpılır ve 100 ile ölçeklendirilir:
+\[
+\begin{pmatrix} X \\ Y \\ Z \end{pmatrix}
+= 100 \times
+\begin{pmatrix}
+0.4124564 & 0.3575761 & 0.1804375 \\
+0.2126729 & 0.7151522 & 0.0721750 \\
+0.0193339 & 0.1191920 & 0.9503041
+\end{pmatrix}
+\begin{pmatrix} R_{\text{lin}} \\ G_{\text{lin}} \\ B_{\text{lin}} \end{pmatrix}
+\]
+
+\subsubsection{Sonuç Nasıl Okunur}
+$Y$, parlaklığa karşılık gelir. $X$ ve $Z$, krominansı kodlar. Değerler, hem referans hem de numune için örnekleme noktası bazında sunulur.
+
+\subsubsection{Nasıl Değerlendirilir}
+XYZ değerleri ara değerlerdir ve öncelikle renk dönüşüm hattını doğrulayan uzmanlar için yararlıdır. Pratik kalite kararları için Lab* ve \dEoo{} değerleri daha doğrudan yorumlanabilirdir.
+
+\subsection{CMYK Değerleri}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{5.png}
+  \caption{Renk Birimi --- CMYK Değerleri tablosu. Referans ve numune için nokta bazlı Cyan, Magenta, Sarı, Anahtar (Siyah) yüzdeleri.}
+  \label{fig:cmyk_values}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+CMYK tablosu, baskı ve boyama süreçlerinde kullanılan eksiltici renk modelinde renk değerlerini sağlar. Değerler yüzde olarak ifade edilir (0--100\%).
+
+\subsubsection{Nasıl Hesaplanır}
+Normalleştirilmiş RGB değerlerinden ($r, g, b \in [0,1]$):
+\[
+K = 1 - \max(r, g, b), \quad
+C = \frac{1 - r - K}{1 - K}, \quad
+M = \frac{1 - g - K}{1 - K}, \quad
+Y = \frac{1 - b - K}{1 - K}
+\]
+
+\subsubsection{Sonuç Nasıl Okunur}
+Daha yüksek değerler, o bileşenden daha fazla mürekkep/boya kullanıldığını gösterir. $K=100\%$ saf siyah anlamına gelir.
+
+\subsubsection{Nasıl Değerlendirilir}
+CMYK, boya formülasyonuyla çalışan kullanıcılar için bilgilendiricidir. Referans ile numune CMYK değerleri arasındaki farklar, hangi boya bileşenlerinin ayarlanması gerektiğini gösterir.
+
+\subsection{Fark Metrikleri}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{6.png}
+  \caption{Renk Birimi --- Fark Metrikleri. Nokta bazlı $\Delta E_{76}$, $\Delta E_{94}$ ve $\Delta E_{2000}$ değerleri ile nokta bazlı GEÇTİ/KOŞULLU/KALDI durumu.}
+  \label{fig:delta_metrics}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Bu bölüm, her örnekleme noktasındaki temel renk farkı metriklerini sunar. Üç \dE{} formülü hesaplanır: $\Delta E_{76}$ (CIELAB'da Öklid uzaklığı), $\Delta E_{94}$ (geliştirilmiş ağırlıklandırma) ve $\Delta E_{2000}$ (mevcut CIE standardı, algısal olarak en tekdüze).
+
+\subsubsection{Nasıl Hesaplanır}
+
+\textbf{$\Delta E_{76}$} --- CIELAB'da basit Öklid uzaklığı:
+\[
+\Delta E_{76} = \sqrt{(L_1^* - L_2^*)^2 + (a_1^* - a_2^*)^2 + (b_1^* - b_2^*)^2}
+\]
+
+\textbf{$\Delta E_{94}$} --- Açıklık, kroma ve ton için ağırlık fonksiyonları ekler:
+\[
+\Delta E_{94} = \sqrt{\left(\frac{\Delta L^*}{k_L S_L}\right)^2 + \left(\frac{\Delta C^*}{k_C S_C}\right)^2 + \left(\frac{\Delta H^*}{k_H S_H}\right)^2}
+\]
+burada $S_L = 1$, $S_C = 1 + 0.045\, C_1^*$, $S_H = 1 + 0.015\, C_1^*$.
+
+\textbf{$\Delta E_{2000}$} --- Dönme ve etkileşim terimleri içeren açıklık, kroma ve ton ağırlıklandırmasını kapsayan tam CIEDE2000 formülü. Uygulama; $G$ kroma ayarlama faktörü, $T$ tona bağlı ağırlıklandırma, $R_T$ dönme terimi ve parametrik ağırlık faktörleri $k_L$, $k_C$, $k_H$ dahil tam spesifikasyonu takip eder.
+
+Ardından her metrik için tüm örnekleme noktalarındaki ortalama, standart sapma, minimum ve maksimumu gösteren bir özet istatistik tablosu yer alır. $\Delta E_{2000}$ satırı genel durumu taşır.
+
+\subsubsection{Sonuç Nasıl Okunur}
+Her satır bir örnekleme noktasına karşılık gelir. Durum sütunu, $\Delta E_{2000}$'e uygulanan kullanıcı tanımlı eşik değerlerine göre GEÇTİ (yeşil), KOŞULLU (turuncu) veya KALDI (kırmızı) olarak gösterilir.
+
+\subsubsection{Nasıl Değerlendirilir}
+\begin{itemize}[leftmargin=1.5em]
+  \item $\Delta E_{2000} < 1.0$: algılanamaz fark (cihaz gürültü düzeyi).
+  \item $1.0 \leq \Delta E_{2000} < 2.0$: hafif fark, yalnızca kontrollü aydınlatma altında görülebilir.
+  \item $2.0 \leq \Delta E_{2000} < 3.5$: eğitimli gözlemciler tarafından fark edilebilir.
+  \item $3.5 \leq \Delta E_{2000} < 5.0$: açıkça görülebilir.
+  \item $\Delta E_{2000} \geq 5.0$: belirgin uyumsuzluk.
+\end{itemize}
+Karar metriği $\Delta E_{2000}$'dir. $\Delta E_{2000} <$ geçme eşiği olan noktalar GEÇTİ; $\leq$ koşullu eşik olanlar KOŞULLU; bunun üzerindekiler KALDI olarak değerlendirilir.
+
+\subsection{Aydınlatıcı Analizi}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{7.png}
+  \caption{Renk Birimi --- Aydınlatıcı Analizi. Her yapılandırılmış aydınlatıcı altında hesaplanan ortalama $\Delta E_{2000}$ ve CSI değerleri ile aydınlatıcı bazlı durum.}
+  \label{fig:illuminant}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Aydınlatıcı Analizi, farklı standart ışık kaynakları altında referans ile numune arasındaki renk farkının nasıl değiştiğini değerlendirir. Bu, metamerizmi --- iki numunenin bir aydınlatıcı altında eşleşip diğerinde farklı görünmesi olgusunu --- tespit eder.
+
+\subsubsection{Nasıl Hesaplanır}
+Birincil aydınlatıcı için, ana analizdeki kanonik $\Delta E_{2000}$ ve CSI değerleri kullanılır. Her ek test aydınlatıcısı için, başlangıçta D65 altında hesaplanan XYZ değerleri, Bradford dönüşümü kullanılarak hedef aydınlatıcıya kromatik olarak adapte edilir:
+\[
+\mathbf{XYZ}_{\text{hedef}} = \mathbf{M}_A^{-1} \cdot \mathrm{diag}\!\left(\frac{\rho_d}{\rho_s}, \frac{\gamma_d}{\gamma_s}, \frac{\beta_d}{\beta_s}\right) \cdot \mathbf{M}_A \cdot \mathbf{XYZ}_{D65}
+\]
+burada $\mathbf{M}_A$ Bradford matrisidir. Adapte edilen XYZ değerleri, hedef aydınlatıcının beyaz noktası altında CIELAB'a dönüştürülür ve $\Delta E_{2000}$ yeniden hesaplanır. Her aydınlatıcı için CSI, $\mathrm{CSI} = \max(0, \min(100, 100 - \overline{\Delta E} \times 10))$ olarak türetilir. Aydınlatıcı bazlı durum, sabit eşik değerleri kullanılarak belirlenir: $\mathrm{CSI} \geq 90 \to$ GEÇTİ, $\mathrm{CSI} \geq 70 \to$ KOŞULLU, aksi halde KALDI.
+
+\subsubsection{Sonuç Nasıl Okunur}
+Her satır, bir aydınlatıcıyı ortalama $\Delta E_{2000}$, CSI puanı ve durumu ile gösterir.
+
+\subsubsection{Nasıl Değerlendirilir}
+Durum aydınlatıcılar arasında farklılık gösteriyorsa (örn. D65 altında GEÇTİ ancak TL84 altında KALDI), metamerizm mevcuttur. Bu, perakende, depo veya dış mekan ortamlarında farklı aydınlatma altında görüntülenen tekstiller için kritik öneme sahiptir.
+
+\subsection{Delta Isı Haritası}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{8.png}
+  \caption{Renk Birimi --- $\Delta E$ Isı Haritası. Inferno renk haritası kullanılarak piksel düzeyinde renk farkı haritası.}
+  \label{fig:heatmap}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+\dE{} Isı Haritası, referans ile numune arasındaki renk farkının tam görüntü, piksel düzeyinde görselleştirmesini sağlar.
+
+\subsubsection{Nasıl Hesaplanır}
+Her iki görüntü de CIELAB'a dönüştürülür. Lab uzayındaki piksel başına Öklid uzaklığı hesaplanır:
+\[
+\Delta E(x,y) = \sqrt{(L_r - L_s)^2 + (a_r - a_s)^2 + (b_r - b_s)^2}
+\]
+Sonuç, ``inferno'' renk haritası kullanılarak bir ısı haritası olarak işlenir ve ölçeği gösteren bir renk çubuğu eklenir. Maksimum gösterim değeri, aykırı değer bozulmasını önlemek için 99. yüzdelik dilime (minimum 5.0) sınırlandırılır.
+
+\subsubsection{Sonuç Nasıl Okunur}
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Koyu/siyah bölgeler}: düşük veya sıfır renk farkı (iyi eşleşme).
+  \item \textbf{Parlak/sarı bölgeler}: yüksek renk farkı (zayıf eşleşme).
+\end{itemize}
+
+\subsubsection{Nasıl Değerlendirilir}
+Tekdüze koyu görünüm, tutarlı renk eşleşmesini gösterir. Parlak noktalar veya bantlar, düzensiz boyama, lekeler veya kumaş kusurlarını gösterebilecek yerelleştirilmiş renk sapmalarını ortaya koyar.
+
+\subsection{Spektral Proksi}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{9.png}
+  \caption{Renk Birimi --- Spektral Dağılım Proksisi. Referans (yeşil) ve numune (kırmızı kesikli) için yaklaştırılmış spektral yansıtma eğrileri.}
+  \label{fig:spectral}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Spektral Proksi grafiği, referans ve numunenin ortalama RGB değerlerinden sentezlenen, yaklaştırılmış spektral yansıtma dağılımının bir görselleştirmesini sağlar.
+
+\subsubsection{Nasıl Hesaplanır}
+450\,nm (Mavi, $\sigma=22$), 545\,nm (Yeşil, $\sigma=25$) ve 610\,nm (Kırmızı, $\sigma=28$) merkezli üç Gauss temel fonksiyonu, her görüntünün ortalama RGB değerleriyle (0--1 arasında normalleştirilmiş) ağırlıklandırılır. Elde edilen eğriler, en yüksek noktada 1.0'a normalleştirilir. Dalga boyu aralığı 380--700\,nm'dir.
+
+\subsubsection{Sonuç Nasıl Okunur}
+Yeşil eğri referansı, kırmızı kesikli eğri ise numuneyi temsil eder. Örtüşme, spektral benzerliğe işaret eder.
+
+\subsubsection{Nasıl Değerlendirilir}
+Bu, ölçülmüş bir spektral yansıtma değil, bir yaklaşımdır (proksi). Nitel bir görsel karşılaştırma sağlar. Kesin spektral veriler için bir spektrofotometre gereklidir.
+
+\subsection{RGB Histogramları}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{RGBHISTO.png}
+  \caption{Renk Birimi --- RGB Histogramları. Referans ve numune görüntüleri için yan yana Kırmızı, Yeşil ve Mavi kanal histogramları.}
+  \label{fig:rgb_histograms}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Yan yana RGB histogramları, referans ve numune görüntülerindeki her renk kanalının piksel yoğunluk dağılımını gösterir.
+
+\subsubsection{Nasıl Hesaplanır}
+Her kanal (B, G, R) için, OpenCV kullanılarak görüntü piksellerinden 256 bölmeli bir histogram hesaplanır. Histogramlar, her görüntü için bindirilmiş yarı saydam çubuk grafikler olarak çizilir.
+
+\subsubsection{Sonuç Nasıl Okunur}
+Her histogram, piksel sayısını (y ekseni) yoğunluk değerine (x ekseni, 0--255) karşı gösterir. Referans ile numune arasında benzer histogram şekilleri, tutarlı renk dağılımına işaret eder.
+
+\subsubsection{Nasıl Değerlendirilir}
+Histogram tepelerindeki kaymalar, parlaklık veya renk değişikliklerini gösterir. Genişleme, artan değişkenliği ifade eder. Histogramlar bilgilendiricidir ve sayısal \dE{} metriklerini tamamlar.
+
+\subsection{Renk Benzerlik İndeksi (CSI)}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.65\textwidth]{11.png}
+  \caption{Renk Birimi --- CSI Puanı, kapak sayfasında gösterilen genel renk benzerlik yüzdesi.}
+  \label{fig:csi}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Renk Benzerlik İndeksi (CSI), referans ve numune görüntüleri arasındaki genel renk benzerliğini tam görüntü düzeyinde temsil eden 0--100 arası tek bir puan sağlar.
+
+\subsubsection{Nasıl Hesaplanır}
+Her iki görüntü de \%25 çözünürlüğe küçültülür. Her biri OpenCV'nin Lab temsiline dönüştürülür (L: 0--255, a/b: 128 merkezli 0--255). Bu ölçeklenmiş Lab uzayında tüm pikseller üzerinden piksel başına Öklid uzaklığı hesaplanır ve ortalaması alınır:
+\[
+\mathrm{CSI} = \max\!\Big(0,\; \min\!\big(100,\; 100 \times (1 - \overline{\Delta E}_{\text{piksel}} / 100)\big)\Big)
+\]
+
+\subsubsection{Sonuç Nasıl Okunur}
+CSI yüzde olarak gösterilir. Daha yüksek değerler daha iyi renk eşleşmesine işaret eder.
+
+\subsubsection{Nasıl Değerlendirilir}
+\begin{itemize}[leftmargin=1.5em]
+  \item CSI $\geq$ İyi eşiği (varsayılan 90): GEÇTİ.
+  \item CSI $\geq$ Uyarı eşiği (varsayılan 70): KOŞULLU.
+  \item CSI $<$ Uyarı eşiği: KALDI.
+\end{itemize}
+CSI, \emph{tüm görüntüyü} piksel piksel değerlendirirken $\Delta E_{2000}$ yalnızca $N$ örnekleme noktasında değerlendirme yapar.
+
+\subsection{CSI2000}
+
+\subsubsection{Tanım ve Amaç}
+CSI2000, tam görüntü CSI'sini örnekleme noktası tabanlı $\Delta E_{2000}$ puanıyla tek bir değerde birleştiren karma bir puanlama metriğidir.
+
+\subsubsection{Nasıl Hesaplanır}
+Bir $\Delta E$ Puanı, $\mathrm{Puan}_{\Delta E} = \max(0, \min(100, 100 - \overline{\Delta E}_{2000} \times 10))$ olarak türetilir. Ardından:
+\[
+\mathrm{CSI2000} = \frac{\mathrm{CSI} + \mathrm{Puan}_{\Delta E}}{2}
+\]
+
+\subsubsection{Sonuç Nasıl Okunur}
+CSI2000, 100 üzerinden bir değer olarak gösterilir. Daha yüksek değerler daha iyidir.
+
+\subsubsection{Nasıl Değerlendirilir}
+CSI2000, genel renk benzerliğini (CSI) nokta bazlı renk doğruluğuyla ($\Delta E_{2000}$ Puanı) dengeler. CSI ile aynı iyi/uyarı eşik değerlerine göre değerlendirilir.
+
+\subsection{DeltaEP2000\% ($\Delta E$ Yüzde Puanı)}
+
+\subsubsection{Tanım ve Amaç}
+\textbf{DeltaEP2000\%}, SpectraMatch'in varsayılan renk puanlama yöntemidir. Ortalama $\Delta E_{2000}$ değerini, puanlama arayüzünde kullanılmak üzere 0--100 arasında bir yüzde puanına dönüştürür. ``P'' harfi \emph{Percentage} (Yüzde) anlamına gelir; ``\%'' son eki ise sonucun ham bir kolorimetrik mesafe değil, normalleştirilmiş bir puan olduğunu gösterir.
+
+\subsubsection{Standart $\Delta E_{2000}$'den Farkı}
+Standart $\Delta E_{2000}$, sabit bir üst sınırı olmayan mutlak bir algısal mesafedir — 0 değeri özdeş renkleri, 5'in üzerindeki değerler ise genellikle önemli uyumsuzlukları ifade eder. Bu değer doğrudan yüzde olarak yorumlanamaz.
+
+DeltaEP2000\%, bu sınırsız değeri doğrusal bir ters çevirme ile 0--100 ölçeğine eşler; böylece CSI ve desen puanları gibi diğer yüzde tabanlı metriklerle birlikte puan karşılaştırması ve gösterimi için uygun hale gelir.
+
+\subsubsection{Nasıl Hesaplanır}
+\[
+\mathrm{DeltaEP2000\%} = \max\!\Big(0,\; \min\!\big(100,\; 100 - \overline{\Delta E}_{2000} \times 10\big)\Big)
+\]
+Burada $\overline{\Delta E}_{2000}$, tüm örnekleme noktalarındaki ortalama $\Delta E_{2000}$ değeridir. Ortalama $\Delta E_{2000}$ = 0 ise puan 100 (mükemmel eşleşme); 10 veya üzerinde ise puan 0 olur.
+
+\begin{quote}
+\small\textit{Not: DeltaEP2000\%, türetilmiş bir puanlama kolaylık metriğidir. Ham $\Delta E_{2000}$ değerleri her zaman ayrıca Fark Metrikleri tablosunda ve özet istatistiklerinde raporlanır.}
+\end{quote}
+
+\subsection{Öneriler}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{12.png}
+  \caption{Renk Birimi --- Temel Bulgular ve Öneriler. Metrik değerlendirmelerini ve eyleme dönüştürülebilir önerileri sonuç bloğuyla birlikte gösteren kart tabanlı düzen.}
+  \label{fig:color_recommendations}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Öneriler bölümü, analiz sonuçlarına dayalı olarak eşik değerine duyarlı, bağlamsal bulgular ve eyleme dönüştürülebilir rehberlik sağlar. Öneriler Motoru tarafından oluşturulur.
+
+\subsubsection{Nasıl Oluşturulur}
+Üç metrik değerlendirilir:
+\begin{enumerate}[leftmargin=1.5em]
+  \item \textbf{Ortalama $\Delta E_{2000}$}: geçme ve koşullu eşik değerlerine göre değerlendirilir. Düzeyler: algılanamaz, hafif, fark edilebilir, belirgin, ciddi.
+  \item \textbf{Tutarlılık ($\Delta E$ Standart Sapması)}: geçme eşiğine göre değerlendirilir. Düzeyler: mükemmel ($< 0.25\times$ geçme), iyi ($< 0.5\times$ geçme), orta ($<$ geçme), yüksek ($\geq$ geçme).
+  \item \textbf{CSI Puanı}: iyi ve uyarı eşik değerlerine göre değerlendirilir.
+\end{enumerate}
+Her metrik; metrik adı, değeri, değerlendirme metni ve bir öneri içeren bir bulgu kartı üretir. Bir sonuç bloğu, genel kararı bir durum rengiyle özetler.
+
+\subsubsection{Sonuç Nasıl Okunur}
+Her kart ciddiyet düzeyine göre renk kodludur: yeşil (mükemmel/iyi), turuncu (sınırda), kırmızı (zayıf). Sonuç, açıklayıcı metinle birlikte nihai kararı verir.
+
+\subsubsection{Nasıl Değerlendirilir}
+Öneriler, kullanıcı tanımlı eşik değerlerine göre kalibre edilmiştir. ``Boya konsantrasyonu, sıcaklık ve zamanlama parametrelerini gözden geçirin'' veya ``Partiyi reddedin ve düzeltici faaliyet prosedürünü başlatın'' gibi tekstile özgü rehberlik sağlarlar.
+
+% ────────────────────────────────────────────────────────────────────────────
+\section{Desen Birimi}
+\label{sec:pattern_unit}
+
+Desen Birimi, birden fazla tamamlayıcı analiz yöntemi kullanarak referans ile numune görüntüleri arasındaki yapısal benzerliği ve desen sadakatini değerlendirir. Her biri eşit olarak \%25 ağırlıkla katkıda bulunan dört birincil yöntemden bir bileşik puan üretir.
+
+\subsection{Kapak Sayfası ve Giriş Görüntüleri}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{13.png}
+  \caption{Desen Birimi --- Giriş Görüntüleri. Referans ve numune görüntüleri yan yana gösterilmektedir.}
+  \label{fig:pattern_input}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Desen Birimi kapak sayfası, bileşik desen puanı ve yönteme özgü puanları içeren bir özet tablo ile yönetici özetini gösterir. Giriş görüntüleri görsel referans olarak yan yana gösterilir.
+
+\subsubsection{Nasıl Oluşturulur}
+Kapak, Renk Birimi ile aynı meta veri yapısını (logo, başlık, operatör, rapor kimliği, sürüm) içerir. Yönetici özet tablosu, her yöntemi (Structural SSIM, Gradient Similarity, Phase Correlation, Structural Match) puanı, ağırlığı (\%25) ve bireysel durumu ile listeler. Bileşik puan, ağırlıklı toplama ile hesaplanır.
+
+\subsubsection{Sonuç Nasıl Okunur}
+Bileşik puan (0--100\%), genel desen eşleşme kalitesini sağlar. Bireysel yöntem puanları, desen benzerliğinin hangi yönünün en güçlü veya en zayıf olduğunu belirler.
+
+\subsubsection{Nasıl Değerlendirilir}
+\begin{itemize}[leftmargin=1.5em]
+  \item Bileşik $\geq$ genel eşik: GEÇTİ.
+  \item Bileşik $\geq$ (genel eşik $- 15$): KOŞULLU.
+  \item Bunun altında: KALDI.
+\end{itemize}
+Not: Kullanıcı eşik değerlerini ayarlayabilir.
+\subsection{Structural SSIM}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{15.png}
+  \caption{Desen Birimi --- SSIM fark haritası. Mavinin yüksek benzerliği gösterdiği JET renk haritası.}
+  \label{fig:ssim}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Structural Similarity Index Measure (SSIM), parlaklık, kontrast ve yapıyı dikkate alarak iki görüntü arasındaki algılanan yapısal benzerliği değerlendirir.
+
+\subsubsection{Nasıl Hesaplanır}
+Her iki görüntü ön işlemden geçirilir: siyah üzerine birleştirilir (alfa kanalı varsa), gri tonlamaya dönüştürülür ve bilateral filtre uygulanır (çekirdek 9, $\sigma_\text{renk}=75$, $\sigma_\text{uzay}=75$). SSIM, scikit-image kullanılarak kayan pencereyle hesaplanır; piksel başına bir benzerlik haritası ve skaler bir puan üretir. Puan 0--100\% aralığına ölçeklenir. Fark haritası $255 - \mathrm{SSIM\_harita} \times 255$ olarak hesaplanır ve JET renk haritasıyla işlenir.
+
+\subsubsection{Sonuç Nasıl Okunur}
+JET renkli fark haritasında: \textbf{mavi} bölgeler yüksek benzerliği; \textbf{kırmızı/sarı} bölgeler düşük benzerliği (yapısal farkları) gösterir.
+
+\subsubsection{Nasıl Değerlendirilir}
+Daha yüksek SSIM puanları daha iyi yapısal korunmaya işaret eder. Puan, ayarlarda tanımlanan yönteme özgü geçme ve koşullu eşik değerleriyle karşılaştırılır.
+
+\subsection{Gradient Similarity}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{16.png}
+  \caption{Desen Birimi --- Gradient Similarity fark haritası. Koyu alanların benzerliği, parlak alanların kenar/doku farklarını gösterdiği HOT renk haritası.}
+  \label{fig:gradient}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Gradient Similarity, gradyan büyüklük alanlarını analiz ederek referans ile numunenin kenar ve doku yapısını karşılaştırır.
+
+\subsubsection{Nasıl Hesaplanır}
+Her görüntü için gradyan büyüklüğünü hesaplamak amacıyla Sobel operatörleri (yatay ve dikey, çekirdek boyutu 3) uygulanır: $G = \sqrt{G_x^2 + G_y^2}$. Gradyan büyüklükleri $[0, 1]$ aralığına normalleştirilir. Ardından normalleştirilmiş gradyan büyüklük görüntülerine SSIM uygulanarak bir benzerlik puanı ve fark haritası üretilir. Fark haritası HOT renk haritasıyla işlenir.
+
+\subsubsection{Sonuç Nasıl Okunur}
+\textbf{Koyu} bölgeler eşleşen kenar/doku yapısını; \textbf{parlak/beyaz} bölgeler gradyan farklarını gösterir.
+
+\subsubsection{Nasıl Değerlendirilir}
+Yüksek puanlar tutarlı kenar ve doku desenlerini gösterir. Düşük puanlar desen bozulması, hizalama bozukluğu veya doku kalitesinin düşmesine işaret edebilir.
+
+\subsection{Phase Correlation}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{17.png}
+  \caption{Desen Birimi --- Phase Correlation fark haritası. Öteleme hizalama farklarını gösteren INFERNO renk haritası.}
+  \label{fig:phase}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Phase Correlation, Fourier faz ilişkisini kullanarak iki görüntü arasındaki öteleme hizalamasını ölçer.
+
+\subsubsection{Nasıl Hesaplanır}
+Her iki gri tonlamalı görüntü float32'ye dönüştürülür. OpenCV'nin \texttt{phaseCorrelate} fonksiyonu kayma vektörünü ve bir yanıt değerini (güven) hesaplar. Puan $\mathrm{yanıt} \times 100$ olarak belirlenir. Mutlak piksel farkı hesaplanır ve INFERNO renk haritasıyla işlenir.
+
+\subsubsection{Sonuç Nasıl Okunur}
+\textbf{Koyu} bölgeler hizalanmış alanları; \textbf{parlak/sarı} bölgeler hizalanmamış alanları gösterir.
+
+\subsubsection{Nasıl Değerlendirilir}
+Yüksek puanlar iyi öteleme hizalamasına işaret eder. Düşük puanlar numunenin referansa göre kaymış, gerilmiş veya bozulmuş olduğunu düşündürür.
+
+\subsection{Yapısal Fark Analizi}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{20.png}
+  \caption{Desen Birimi --- Yapısal Fark Analizi. Gradyan büyüklük farkı, birleşik (tüm yöntemler) ve gürültü filtrelenmiş görünümleri gösteren çoklu yöntem fark görselleştirmesi.}
+  \label{fig:structural_diff}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Yapısal Fark Analizi, referans ile numune arasındaki piksel düzeyinde yapısal değişiklikleri belirlemek için birden fazla fark tespit yöntemini birleştirir.
+
+\subsubsection{Nasıl Hesaplanır}
+Her iki görüntü gri tonlamaya dönüştürülür ve CLAHE (Kontrast Sınırlamalı Uyarlanabilir Histogram Eşitleme) ile geliştirilir. Beş yöntem hesaplanır ve birleştirilir:
+\begin{enumerate}[leftmargin=1.5em]
+  \item \textbf{Basit Fark} (\%25 ağırlık): mutlak piksel farkı, 30 eşiğinde, morfolojik olarak temizlenmiş.
+  \item \textbf{Kenar tabanlı} (\%20 ağırlık): her iki görüntüde Canny kenar tespiti, kenar haritalarının mutlak farkı, genişletilmiş.
+  \item \textbf{Gradyan} (\%25 ağırlık): Sobel gradyan büyüklük farkı, 40 eşiğinde, temizlenmiş.
+  \item \textbf{Frekans} (\%15 ağırlık): FFT büyüklük farkı, uzaysal alana ters dönüştürülmüş, eşiklenmiş.
+  \item \textbf{SSIM} (\%15 ağırlık): ters çevrilmiş SSIM benzerlik haritası, 200 eşiğinde.
+\end{enumerate}
+Birleştirme, bu beş haritayı listelenen ağırlıklarla kombine eder. Sonuç eşiklenir, morfolojik olarak temizlenir ve 50 pikselden küçük bağlantılı bileşenler kaldırılarak gürültü filtrelemesi yapılır.
+
+Benzerlik puanı: $\mathrm{Puan} = \max(0, 100 - \mathrm{değişim\_yüzdesi})$.
+
+\subsubsection{Sonuç Nasıl Okunur}
+Alt grafik üç aşamayı gösterir: gradyan farkı, birleşik (tüm yöntemler) ve gürültü filtrelenmiş. Parlak/beyaz bölgeler tespit edilen farkları; koyu/siyah bölgeler değişiklik olmadığını gösterir.
+\newpage
+Ayrıca bir \textbf{Saf Fark} görüntüsü oluşturulur: gri tonlamalı referans üzerinde bindirilen kırmızı pikseller yalnızca tespit edilen fark bölgelerini gösterir (Şekil~\ref{fig:pure_diff}).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{21.png}
+  \caption{Desen Birimi --- Saf Fark. Gri tonlamalı referans üzerinde bindirilen kırmızı pikseller yalnızca tespit edilen fark bölgelerini gösterir.}
+  \label{fig:pure_diff}
+\end{figure}
+
+\subsubsection{Nasıl Değerlendirilir}
+\begin{itemize}[leftmargin=1.5em]
+
+  \item Benzerlik $\geq$ \textbf{Eşik\textsubscript{1}}: AYNI.
+  \item Benzerlik $\geq$ \textbf{Eşik\textsubscript{2}}: ÇOK BENZEŞİYOR.
+  \item Benzerlik $\geq$ \textbf{Eşik\textsubscript{3}}: BENZEŞİYOR.
+  \item Benzerlik $<$ \textbf{Eşik\textsubscript{3}}: FARKLI.
+\end{itemize}
+
+\medskip
+\noindent\textit{Eşik değerleri kullanıcı tarafından tanımlanır ve değerlendirme gereksinimlerine göre ayarlanabilir.}
+
+\end{itemize}
+
+\subsection{Gradient Boundary Detection}
+\label{sec:GBD}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{18.png}
+  \caption{Desen Birimi --- Gradient Boundary Detection. Sol: tespit edilen fark bölgelerini çevreleyen kırmızı (veya mavi) konturlar. Sağ: fark alanlarını vurgulayan doldurulmuş bindirme.}
+  \label{fig:gradient_boundary}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Gradient Boundary Detection, numunenin gradyan tabanlı farklarının bir önem eşiğini aştığı belirli bölgelerini tespit eder ve çerçeveler.
+
+\subsubsection{Nasıl Hesaplanır}
+Gradyan fark haritası 70. yüzdelik dilimde eşiklenir. Morfolojik kapanma (çekirdek $7\times7$, 2 iterasyon), açılma (1 iterasyon) ve genişletme (çekirdek $5\times5$, 2 iterasyon) uygulanır. Konturlar çıkarılır; alanı $> 100$ piksel olanlar tutulur. İki görselleştirme üretilir: (1) numune görüntüsü üzerinde kırmızı kontur çizgileri ve (2) numune görüntüsü üzerinde kırmızı doldurulmuş bindirme (\%40 karıştırma).
+
+İki metrik hesaplanır:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{İkili Benzerlik}: renklendirilmemiş piksellerin yüzdesi.
+  \item \textbf{Ağırlıklı Benzerlik}: aynı formül ancak normalleştirilmiş gradyan yoğunluğuyla ağırlıklandırılmış.
+\end{itemize}
+
+\subsubsection{Sonuç Nasıl Okunur}
+Kırmızı (veya mavi) konturlar/doldurulmuş bölgeler, sistemin önemli gradyan farkları tespit ettiği yerleri gösterir. Daha fazla kırmızı alan daha fazla sapmaya işaret eder.
+
+\subsubsection{Nasıl Değerlendirilir}
+Daha az ve daha küçük kırmızı (veya mavi) bölgeler daha iyi desen eşleşmesine işaret eder.
+
+\subsection{Phase Boundary Detection}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{19.png}
+  \caption{Desen Birimi --- Phase Boundary Detection. Gradient Boundary ile aynı düzen ancak faz korelasyonu farklarına dayalı.}
+  \label{fig:phase_boundary}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Phase Boundary Detection, faz tabanlı farkların önem eşiğini aştığı bölgeleri, Gradient Boundary ile aynı sınır çıkarma hattını kullanarak ancak faz fark haritasına uygulayarak tespit eder.
+
+\subsubsection{Nasıl Hesaplanır}
+Gradient Boundary Detection (Bölüm~\ref{sec:GBD}) ile aynıdır ancak girdi olarak faz korelasyonu fark haritası kullanılır.
+
+\subsubsection{Sonuç Nasıl Okunur}
+Gradient Boundary ile aynı yorum: kırmızı (veya mavi) bölgeler tespit edilen faz tabanlı farkları gösterir.
+
+\subsubsection{Nasıl Değerlendirilir}
+Faz sınırları, gradyan sınırlarına (kenar/doku değişiklikleri) kıyasla farklı türde bozulmaları (öteleme kaymaları) tespit edebilir.
+
+\subsection{Fourier Alanı Analizi}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{Fourier.png}
+  \caption{Desen Birimi --- Fourier Alanı Analizi. FFT büyüklük spektrumu ısı haritası, baskın tepeler tablosu ve spektral metrikler.}
+  \label{fig:fourier}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Fourier Alanı Analizi, görüntüyü frekans bileşenlerine ayrıştırarak baskın periyodik desenleri, dokuları ve yönlü yapıları (örn. dokuma kumaşlarda çözgü/atkı hizalaması) karakterize eder.
+\newpage
+\subsubsection{Nasıl Hesaplanır}
+Gri tonlamalı görüntüye 2 boyutlu Hızlı Fourier Dönüşümü (FFT) uygulanır. DC bileşeni (sıfır frekans) spektrumun merkezine kaydırılır. Büyüklük spektrumu görselleştirme için logaritmik dönüşüme tabi tutulur: $\mathrm{spektrum} = \log(1 + |\mathrm{FFT}|)$.
+
+\textbf{Tepe Tespiti:} DC bileşeni maskelenir. Uyarlanabilir komşuluk bastırmasıyla (yarıçap $\max(3, \lfloor 0.15 \times r_{\text{tepe}} \rfloor)$) iteratif maksimum bulma yöntemiyle ilk 5 tepe belirlenir. Her tepe için yarıçap (uzaysal frekans), açı (derece cinsinden yönelim) ve büyüklük kaydedilir.
+
+\textbf{Metrikler:} Üç özet metrik hesaplanır:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Temel Periyot:} $\max(h,w) / r_{\text{baskın}}$ --- görüntü boyutunun baskın tepenin yarıçapına (uzaysal frekans) bölümü.
+  \item \textbf{Baskın Yönelim:} en güçlü tepenin açısı (derece).
+  \item \textbf{Anizotropi Oranı:} tespit edilen tepeler arasındaki maksimum ve minimum tepe yarıçaplarının oranı. 1.0 değeri izotropik (tekdüze) frekans dağılımını gösterir.
+\end{itemize}
+
+
+
+\subsubsection{Sonuç Nasıl Okunur}
+FFT spektrum görüntüsü, baskın uzaysal frekanslarda parlak noktalar gösterir. Tepeler tablosu, ilk 5 tepeyi uzaysal frekansları (yarıçap), yönelimleri (açı) ve güçleriyle (büyüklük) listeler.
+
+\subsubsection{Nasıl Değerlendirilir}
+Yüksek anizotropi oranı yönlü dokuya (örn. güçlü çözgü/atkı hizalaması) işaret eder. Kısa temel periyot ince dokuyu; uzun periyot kaba deseni gösterir. Referans ile numune metriklerinin karşılaştırılması, numunenin orijinal doku özelliklerini koruyup korumadığını ortaya koyar.
+
+\subsection{GLCM Doku Analizi}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{GLCM.png}
+  \caption{Desen Birimi --- GLCM Doku Analizi. Özellik karşılaştırma çubuk grafiği ve referans ile numune için eş oluşum matrisi ısı haritaları.}
+  \label{fig:glcm}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Gri Düzey Eş Oluşum Matrisi (GLCM) analizi, belirli bir uzaysal ilişkide piksel yoğunluk çiftlerinin istatistiksel dağılımını ölçerek doku özelliklerini nicelleştirir.
+
+\subsubsection{Nasıl Hesaplanır}
+Gri tonlamalı görüntü 64 düzeye kuantize edilir. GLCM, scikit-image'ın \texttt{graycomatrix} fonksiyonu kullanılarak mesafe 1 ve açılar $[0, \pi/4, \pi/2, 3\pi/4]$ ile hesaplanır, ardından açılar üzerinden ortalaması alınır. \texttt{graycoprops} kullanılarak altı özellik çıkarılır:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Kontrast}: komşu pikseller arasındaki yoğunluk farkı.
+  \item \textbf{Farklılık}: komşu pikseller arasındaki ortalama mutlak fark.
+  \item \textbf{Homojenlik}: eleman dağılımının GLCM köşegenine yakınlığı.
+  \item \textbf{Enerji}: kare elemanların toplamı (tekdüzelik ölçüsü).
+  \item \textbf{Korelasyon}: komşu piksellerdeki gri düzeylerin doğrusal bağımlılığı.
+  \item \textbf{ASM} (Açısal İkinci Moment): enerjinin karesi, düzenlilik ölçüsü.
+\end{itemize}
+
+Bir çubuk grafiği referans ve numune özelliklerini karşılaştırır. GLCM ısı haritaları eş oluşum matrislerini yan yana görselleştirir.
+
+\subsubsection{Sonuç Nasıl Okunur}
+Özellik karşılaştırma tablosu, her özellik için referans ve numune değerlerini gösterir. Çubuk grafiği görsel bir karşılaştırma sağlar. Isı haritaları ham eş oluşum desenlerini gösterir.
+
+\subsubsection{Nasıl Değerlendirilir}
+Referans ile numune arasında benzer değerler tutarlı dokuya işaret eder. Kontrast veya farklılıktaki büyük farklar doku kalitesinin düştüğünü düşündürür. Yüksek enerji/ASM tekdüze dokuyu; düşük değerler karmaşık veya düzensiz dokuyu gösterir.
+
+\subsection{Karar}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{22.png}
+  \caption{Desen Birimi --- Yapısal Fark Kararı. Değişen piksel sayısı, benzerlik puanı ve karar (AYNI / ÇOK BENZEŞİYOR / BENZEŞİYOR / FARKLI).}
+  \label{fig:verdict}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Karar tablosu, Yapısal Fark Analizi sonucunu tek bir sınıflandırma ile özetler.
+
+\subsubsection{Nasıl Oluşturulur}
+Değişen pikseller, gürültü filtrelenmiş maskeden sayılır. Benzerlik puanı $100 - \mathrm{değişim\_yüzdesi}$ şeklindedir. Karar: AYNI ($\geq 99.9\%$), ÇOK BENZEŞİYOR ($\geq 99.0\%$), BENZEŞİYOR ($\geq 95.0\%$) veya FARKLI ($< 95.0\%$).
+
+\subsubsection{Sonuç Nasıl Okunur}
+Karar bir simge ile gösterilir: AYNI için \checkmark{}, BENZEŞİYOR/ÇOK BENZEŞİYOR için $\approx$, FARKLI için $\times$.
+
+\subsubsection{Nasıl Değerlendirilir}
+AYNI veya ÇOK BENZEŞİYOR, üretim tutarlılığına işaret eder. FARKLI, üretim sürecinin incelenmesini gerektirir.
+
+\subsection{Öneriler ve Sonuç}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{23.png}
+  \caption{Desen Birimi --- Temel Bulgular ve Öneriler. Bileşik puan, yapısal eşleşme ve en zayıf metrik için kart tabanlı bulgular.}
+  \label{fig:pattern_recommendations}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Desen önerileri, desen analizi sonuçları için eşik değerine duyarlı bulgular ve eyleme dönüştürülebilir rehberlik sağlar.
+
+\subsubsection{Nasıl Oluşturulur}
+Üç metrik değerlendirilir:
+\begin{enumerate}[leftmargin=1.5em]
+  \item \textbf{Bileşik Puan}: genel desen eşiğine göre değerlendirilir. Düzeyler: mükemmel, iyi, sınırda, zayıf.
+  \item \textbf{Yapısal Eşleşme}: sabit eşik değerlerine göre değerlendirilir ($\geq 99.5\%$: aynı, $\geq 97\%$: küçük sapma, $\geq 90\%$: orta düzey bozulma, $< 90\%$: ciddi bozulma).
+  \item \textbf{En Zayıf Metrik}: en düşük puana sahip bireysel yöntem, geçme eşiğinin altındaysa işaretlenir.
+\end{enumerate}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{24.png}
+  \caption{Desen Birimi --- Genel durum ve karar metni içeren sonuç bloğu.}
+  \label{fig:pattern_conclusion}
+\end{figure}
+
+\subsubsection{Sonuç Nasıl Okunur}
+Renk Birimi önerileriyle aynı kart tabanlı düzen. Sonuç bloğu, renk kodlu bir durum rozetiyle nihai kararı verir: yeşil (GEÇTİ), turuncu (KOŞULLU), kırmızı (KALDI).
+
+\subsubsection{Nasıl Değerlendirilir}
+Öneriler, ``Hizalama sensörlerini kalibre edin ve kumaş besleme gerginliğini doğrulayın'' veya ``Üretimi durdurun. Tam makine kalibrasyonu ve denetimi gerçekleştirin'' gibi tekstile özgü rehberlik içerir.
+
+% ────────────────────────────────────────────────────────────────────────────
+\section{Tek Görüntü Birimi}
+\label{sec:single_unit}
+
+Tek Görüntü Birimi, referans olmaksızın tek bir numune görüntünün bağımsız analizi için uyarlanmış Renk Biriminin bir uzantısıdır. Renk dağılımını, doku tekdüzeliğini ve spektral özellikleri değerlendirir.
+
+\subsection{Giriş}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.65\textwidth]{25.png}
+  \caption{Tek Görüntü Birimi --- Giriş. Analiz noktası bindirmeleriyle numune görüntüsü.}
+  \label{fig:single_input}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Numune görüntüsünü, Renk Birimiyle aynı tarzda numaralı örnekleme noktası bindirmeleriyle gösterir.
+
+\subsubsection{Nasıl Oluşturulur}
+Renk Birimi ile aynı nokta yerleştirme ve görselleştirme. Manuel noktalar için yeşil daireler; rastgele noktalar için turuncu.
+
+\subsubsection{Sonuç Nasıl Okunur}
+Örnekleme noktalarının kumaşın temsili alanlarını kapsadığını doğrulayın.
+
+\subsubsection{Nasıl Değerlendirilir}
+Noktalar, renk veya dokudaki uzaysal değişkenliği yakalamak için kumaş genelinde dağıtılmalıdır.
+
+\subsection{Ölçüm Verileri}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{26.png}
+  \caption{Tek Görüntü Birimi --- Ölçüm Verileri. RGB, Lab*, XYZ ve CMYK tabloları; Lab* istatistikleri; aydınlatıcı bazlı Lab* değerleri; ve RGB histogramı.}
+  \label{fig:single_measurements}
+\end{figure}
+
+\subsubsection{Tanım ve Amaç}
+Ölçümler bölümü, birden fazla renk uzayında (RGB, Lab*, XYZ, CMYK) nokta bazlı renk değerlerini, Lab* istatistiksel özetini (ortalama, standart sapma, minimum, maksimum — bileşen başına) ve aydınlatıcı bazlı Lab* tablolarını sağlar.
+\newpage
+\subsubsection{Nasıl Hesaplanır}
+Her örnekleme noktasında, Renk Birimiyle aynı dairesel yama çıkarma ve renk dönüşüm hattı uygulanır (sRGB $\to$ XYZ $\to$ kromatik adaptasyon $\to$ CIELAB; sRGB $\to$ CMYK). Çoklu aydınlatıcı analizi için her aydınlatıcı, nokta bazlı ve ortalama değerleri içeren ayrı bir Lab* tablosu üretir. RGB histogramı tam numune görüntüsünden hesaplanır.
+
+\subsubsection{Sonuç Nasıl Okunur}
+Tablolar nokta bazlı sayısal değerler sağlar. Lab* istatistik tablosu, örnekleme noktaları arasındaki yayılımı gösterir. Çoklu aydınlatıcı tabloları, rengin farklı aydınlatma altında nasıl göründüğünün karşılaştırılmasına olanak tanır.
+
+\subsubsection{Nasıl Değerlendirilir}
+Örnekleme noktaları arasında $L^*$'deki yüksek standart sapma, zayıf renk tekdüzeliğine işaret eder. $a^*$ veya $b^*$'deki geniş yayılım krominans değişkenliğini gösterir. Histogram şekli, renk dağılımının dar (tekdüze) veya geniş (değişken) olduğunu ortaya koyar.
+
+\subsection{Spektral Analiz, Fourier Analizi ve Öneriler}
+
+Bu bölümler burada yeniden tanımlanmamıştır; \textbf{Renk Birimi} dahilinde mevcut olan ve daha önce Bölüm~\ref{sec:color_unit}'de tanıtılıp açıklanan analiz bileşenlerine karşılık gelir. Bu bağlamda, yöntemsel açıklamalarını tekrarlamaksızın tek görüntü analizi sonuçlarını sağlamak üzere yeniden kullanılmaktadır.
+
+% ════════════════════════════════════════════════════════════════════════════
+% BÖLÜM 3 — SIKÇA SORULAN SORULAR
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Sıkça Sorulan Sorular}
+\label{ch:faq}
+
+\subsection*{S1: RGB ile CIELAB arasındaki fark nedir?}
+RGB, cihaza bağımlı bir renk modelidir: aynı RGB değerleri farklı ekranlarda farklı görünebilir. CIELAB (CIE $L^*a^*b^*$), CIE XYZ'den türetilmiş, algısal olarak tekdüze, cihazdan bağımsız bir renk uzayıdır. CIELAB'da eşit sayısal farklar, yaklaşık olarak eşit algılanan renk farklarına karşılık gelir. Kalite kontrol için, CIELAB ve $\Delta E_{2000}$ (CIELAB'dan türetilmiş), insan renk algısıyla uyumlu oldukları için ham RGB farklarına tercih edilir.
+
+\subsection*{S2: Sistem neden üç Delta E formülü hesaplar?}
+$\Delta E_{76}$, $\Delta E_{94}$ ve $\Delta E_{2000}$, insan renk algısını modelleme konusundaki ardışık gelişmeleri temsil eder:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{$\Delta E_{76}$}: CIELAB'da Öklid uzaklığı. Basit ancak tüm renk yönlerini eşit ele alır ki bu, insan algısıyla örtüşmez.
+  \item \textbf{$\Delta E_{94}$}: Gözün açıklık değişikliklerine kroma veya ton değişikliklerinden daha duyarlı olduğunu ve duyarlılığın kroma düzeyine göre değiştiğini hesaba katan ağırlıklandırma ekler.
+  \item \textbf{$\Delta E_{2000}$}: Mevcut CIE standardı. Ton dönme terimleri, geliştirilmiş kroma ağırlıklandırması ve kroma ile ton farkları arasında bir etkileşim terimi ekler. Algısal olarak en doğru olanıdır ve SpectraMatch'in karar metriğidir.
+\end{itemize}
+Her üçü de eksiksizlik için raporlanır. $\Delta E_{76}$ ve $\Delta E_{94}$, özet tablosunda ``bilgilendirici'' olarak etiketlenir; yalnızca $\Delta E_{2000}$ geçme/kalma durumunu belirler.
+
+\subsection*{S3: CSI nedir ve Delta E'den nasıl farklıdır?}
+Renk Benzerlik İndeksi (CSI), her iki görüntüyü \%25 çözünürlüğe küçülterek, CIELAB'a dönüştürerek ve ortalama piksel başına $\Delta E_{76}$'yı hesaplayarak elde edilen tam görüntü, piksel düzeyinde bir metriktir. Ardından 0--100 ölçeğine eşlenir. Buna karşılık, $\Delta E_{2000}$ yalnızca $N$ ayrık örnekleme noktasında hesaplanır. CSI, tüm görüntüdeki genel renk dağılımını yakalar; $\Delta E_{2000}$ ise nokta bazlı renk doğruluğu sağlar. Birbirlerini tamamlarlar: CSI, örnekleme noktalarının kaçırabileceği genel kaymaları tespit edebilirken, $\Delta E_{2000}$ daha kesin yerel ölçümler sağlar.
+
+\subsection*{S4: CSI2000 nedir?}
+CSI2000, CSI ile $\Delta E_{2000}$ türevli bir puanın ortalamasını alan karma bir metriktir:
+\[
+\mathrm{CSI2000} = \frac{\mathrm{CSI} + \mathrm{Puan}_{\Delta E}}{2}, \quad \mathrm{Puan}_{\Delta E} = \max(0, \min(100, 100 - \overline{\Delta E}_{2000} \times 10))
+\]
+
+
+\subsection*{S5: Metamerizm nedir ve aydınlatıcı analizi neden önemlidir?}
+Metamerizm, iki renk numunesinin bir ışık kaynağı altında aynı görünüp diğerinde farklı görünmesi durumudur. Bu, tekstillerde yaygın bir sorundur: bir kumaş gün ışığı altında (D65) referansla eşleşebilir ancak mağaza aydınlatması altında (F2, TL84) farklı görünebilir. Aydınlatıcı analizi bölümü, Bradford kromatik adaptasyon dönüşümünü kullanarak her seçilen aydınlatıcı altında $\Delta E_{2000}$'i yeniden hesaplayarak bunu test eder. Sonuçlar aydınlatıcılar arasında önemli ölçüde farklılık gösteriyorsa, boya formülasyonunun ayarlanması gerekebilir.
+
+\subsection*{S6: Spektral proksi grafiği gerçekte ne gösterir?}
+Spektral proksi, RGB değerlerinden üç Gauss temel fonksiyonu (450, 545 ve 610\,nm merkezli) kullanılarak sentezlenmiş, spektral yansıtmanın bir \emph{yaklaşımıdır}. Ölçülmüş bir spektral yansıtma eğrisi \emph{değildir}. Renk enerjisinin dalga boyları arasında nasıl dağıldığına dair nitel bir görsel gösterge sağlar. Kesin spektral veriler için bir spektrofotometre gereklidir.
+
+\subsection*{S7: Bileşik desen puanı nasıl çalışır?}
+Bileşik desen puanı, her biri \%25 katkıda bulunan dört analiz yönteminin ağırlıklı ortalamasıdır:
+\begin{itemize}[leftmargin=1.5em]
+  \item Structural SSIM (\%25)
+  \item Gradient Similarity (\%25)
+  \item Phase Correlation (\%25)
+  \item Structural Match (\%25)
+\end{itemize}
+Her yöntem 0--100\% arasında bir puan üretir. Bileşik puan genel desen eşiğine göre değerlendirilir: $\geq$ eşik $\to$ GEÇTİ, $\geq$ (eşik $- 15$) $\to$ KOŞULLU, altında $\to$ KALDI. \\
+Kullanıcı, gelişmiş ayarlar üzerinden raporun tüm ölçütler yerine yalnızca seçilen tek bir ölçüte dayanmasını sağlayabilir. Ayrıca, eşik değerlerini kendi uygun gördüğü şekilde düzenleyebilir.
+\subsection*{S8: Yapısal fark analizi nedir?}
+Beş farklı piksel düzeyinde fark tespit tekniğini (basit fark, kenar tabanlı, gradyan, frekans ve SSIM) tek bir gürültü filtrelenmiş ikili maskede birleştiren çoklu yöntem birleştirme yaklaşımıdır. Bu maske, referans ile numune arasında yapısal olarak hangi piksellerin değiştiğini belirler. Benzerlik puanı, değişmemiş piksellerin yüzdesidir. Analiz, dört birincil desen yönteminden bağımsızdır ve ek bir yapısal değerlendirme sağlar.
+
+\subsection*{S9: GLCM nedir ve ne zaman etkinleştirilmelidir?}
+Gri Düzey Eş Oluşum Matrisi (GLCM), belirli uzaysal ilişkilerde piksel değer çiftlerinin ne sıklıkta oluştuğunu analiz ederek dokuyu nicelleştirir. Altı özellik (kontrast, farklılık, homojenlik, enerji, korelasyon, ASM) üretir. GLCM varsayılan olarak etkindir ancak belirli bir kullanım durumu için doku analizi gerekmiyorsa Rapor Bölümleri ayarlarından devre dışı bırakılabilir.
+
+\subsection*{S10: Sistem bölge seçimini nasıl yönetir?}
+Kullanıcı, dört araçtan birini (daire, kare, dikdörtgen, serbest çizim çokgen) kullanarak bir ilgi bölgesi seçer. Seçilen bölge arka uca geometri verisi olarak gönderilir (daireler için merkez/yarıçap, dikdörtgenler için sınırlayıcı kutu). Arka uç, her iki görüntüyü bölge sınırlayıcı kutusuna kırpar ve bir maske uygular (örn. daireler için dairesel alfa maskesi). Tüm örnekleme noktaları bölge içinde yer almalıdır; arka uç, geometrik kapsama kontrolleri kullanarak her noktayı doğrular ve geçersiz noktaları reddeder.
+
+\subsection*{S11: Bölge seçmezsem ne olur?}
+Bölge seçilmezse analiz için görüntünün tamamı kullanılır. Tüm örnekleme noktaları tam görüntü sınırları içinde oluşturulur.
+
+\subsection*{S12: Ayarlar Raporu nedir?}
+Ayarlar Raporu (yapılandırma makbuzu), analiz raporuyla birlikte oluşturulan ayrı bir PDF'dir. Eşik değerleri, aydınlatıcı seçimleri, etkinleştirilen bölümler ve puanlama yöntemi dahil analiz için kullanılan her yapılandırma parametresini belgelendirir. Tekrarlanabilirliği ve denetim izlenebilirliğini sağlar.
+
+\subsection*{S13: Rapor dilini değiştirebilir miyim?}
+Evet. Rapor dili (İngilizce veya Türkçe), Gelişmiş Ayarlar'ın Rapor Bölümleri sekmesinde seçilir. Arayüz dili ve rapor dili birbirinden bağımsızdır: İngilizce arayüz kullanıp Türkçe rapor oluşturabilir veya bunun tersini yapabilirsiniz.
+
+\subsection*{S14: Sistem gereksinimleri nelerdir?}
+SpectraMatch, Python 3.9 veya üzeri ile şu paketleri gerektirir: Flask, OpenCV (headless), NumPy, PyPDF, Pillow, matplotlib, scikit-image, SciPy ve ReportLab. Masaüstü uygulaması ek olarak pywebview gerektirir. Görüntü başına maksimum yükleme boyutu 100\,MB'dir.
+
+\subsection*{S15: Geçici dosyalar nasıl yönetilir?}
+Geçici dosyalar (kırpılmış görüntüler, görselleştirme grafikleri, PDF ara dosyaları) sistem geçici dizininde saklanır. Arka planda çalışan bir temizleme iş parçacığı her saat çalışır ve 24 saatten eski geçici dosyaları kaldırır.
+\newpage
+
+\bigskip
+\noindent\rule{\textwidth}{0.6pt}
+\begin{center}
+{\large\bfseries\textcolor{specblue}{Karşılaştırmalı Tartışma --- Benzer Yöntemler Neden Bir Arada Bulunuyor}}
+\end{center}
+\noindent\rule{\textwidth}{0.6pt}
+\medskip
+
+\noindent Aşağıdaki sorular tekrarlayan bir gözlemi ele alır: SpectraMatch'teki çeşitli analiz yöntemleri görüntünün benzer yönlerini ölçüyor gibi görünmekte, ancak her biri raporda korunmaktadır. Aşağıdaki yanıtlar, görünürdeki fazlalığın neden kasıtlı olduğunu ve her yöntemin hangi benzersiz bilgiyi sağladığını açıklar.
+
+\subsection*{S16: Gradient Similarity ve Phase Correlation, genellikle benzer sonuçlar üretmelerine rağmen neden birlikte kullanılıyor?}
+
+İlk bakışta her iki yöntem de referans ile numune arasındaki ``yapısal yakınlığı'' değerlendirir ve puanları genellikle benzer bir aralığa düşer. Ancak görüntünün temelden farklı yönlerini yakalarlar:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Gradient Similarity}, \emph{uzaysal alanda} çalışır. Her görüntü için Sobel gradyan büyüklüklerini hesaplar, ardından gradyan alanlarına SSIM uygular. Kenar keskinliği, doku yoğunluğu ve yerel kontrast değişikliklerine duyarlıdır. Desen konumsal olarak doğru olsa bile bulanık veya hafif odak dışı bir numune, gradyan düşüşü gösterecektir.
+  \item \textbf{Phase Correlation}, \emph{frekans alanında} çalışır. Öteleme (kayma) hizalama bozukluğunu tespit etmek için Fourier faz ilişkisini kullanır. Tekdüze parlaklık veya kontrast değişikliklerine büyük ölçüde duyarsızdır ancak geometrik yer değiştirmeye son derece duyarlıdır.
+\end{itemize}
+
+\noindent\textbf{Ne zaman ayrışırlar:}
+\begin{itemize}[leftmargin=1.5em]
+  \item \emph{Doğru konumda} olan ancak \emph{daha yumuşak kenarlara} sahip bir numune (örn. farklı dokuma gerginliği nedeniyle), Phase Correlation'da yüksek ancak Gradient Similarity'de düşük puan alacaktır.
+  \item Çekim sırasında \emph{hafif kaymış} ancak doku olarak aynı olan bir numune, Gradient Similarity'de yüksek ancak Phase Correlation'da düşük puan alacaktır.
+\end{itemize}
+
+\noindent Her iki yöntemin birlikte kullanılması, bileşik desen puanının hem konumsal doğruluğu hem de kenar/doku sadakatini \emph{birlikte} yansıtmasını sağlar. Yalnızca birine güvenmek, diğerinin tespit ettiği hata türü için bir kör nokta bırakır.
+
+\subsection*{S17: CSI ve $\Delta E_{2000}$ her ikisi de renk farkını ölçtüğü halde neden birlikte kullanılıyor?}
+
+CSI ve $\Delta E_{2000}$ aynı soruyu yanıtlıyor gibi görünür (``renkler ne kadar farklı?'') ancak \emph{kapsam}, \emph{uzaysal çözünürlük} ve \emph{duyarlılık} açısından farklılık gösterirler:
+
+\begin{center}
+\small
+\begin{tabularx}{0.95\textwidth}{l X X}
+\toprule
+\textbf{Özellik} & \textbf{$\Delta E_{2000}$} & \textbf{CSI} \\
+\midrule
+Örnekleme & Kullanıcı tarafından veya rastgele yerleştirilen $N$ ayrık nokta & Her piksel (\%25 çözünürlükte) \\
+Formül & Ton dönmesi ve etkileşim terimleri içeren tam CIEDE2000 & Ölçeklenmiş Lab'da Öklid $\Delta E_{76}$ \\
+Güçlü Yön & Her noktada yüksek algısal doğruluk & Tam görüntüdeki genel dağılım kaymalarını yakalar \\
+Zayıf Yön & Örnekleme noktaları arasındaki kusurları kaçırabilir & Piksel başına algısal olarak daha az doğru, daha basit formül kullanır \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\noindent\textbf{Ne zaman ayrışırlar:}
+\begin{itemize}[leftmargin=1.5em]
+  \item Örnekleme noktaları \emph{arasına} düşen yerelleştirilmiş bir leke veya çizgi, $\Delta E_{2000}$'i etkilemez ancak CSI'yi düşürür.
+  \item Kumaş genelinde tekdüze, algısal olarak belirgin bir ton kayması, gelişmiş CIEDE2000 formülünü kullanan $\Delta E_{2000}$ tarafından daha hassas tespit edilir; basit $\Delta E_{76}$ kullanan CSI tarafından daha az kesin algılanır.
+\end{itemize}
+
+\noindent Karma metrik \textbf{CSI2000}, tek başına hiçbirinin yeterli olmaması nedeniyle mevcuttur. Birlikte hem genişlik (tam görüntü kapsamı) hem de derinlik (kritik noktalarda algısal hassasiyet) sağlarlar.
+
+\subsection*{S18: Gradient Boundary Detection ve Phase Boundary Detection aynı işleme hattını kullanıyorlarsa neden ikisi de mevcut?}
+
+Her iki sınır tespit yöntemi aynı morfolojik son işlemeyi (eşikleme, kapanma, açılma, genişletme, kontur çıkarma) paylaşır. Fark tamamen \emph{girdi haritalarında} yatar:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Gradient Boundary}, Sobel gradyan fark haritasını kullanır. \emph{Kenar yoğunluğu veya doku keskinliğinin} farklılaştığı bölgeleri vurgular.
+  \item \textbf{Phase Boundary}, faz korelasyonu mutlak fark haritasını kullanır. \emph{Piksel düzeyinde öteleme hizalamasının} farklılaştığı bölgeleri vurgular.
+\end{itemize}
+
+\noindent Aynı kontur çıkarma hattı iki farklı kaynak haritaya uygulandığından, ortaya çıkan sınır bölgeleri önemli ölçüde farklılık gösterebilir:
+\begin{itemize}[leftmargin=1.5em]
+  \item Gradyan sınırları, dokuma yapısının veya baskı tanımının değiştiği \emph{desen kenarlarında} belirme eğilimindedir.
+  \item Faz sınırları, numunenin referansa göre uzaysal olarak yer değiştirdiği \emph{geniş alanlarda} belirme eğilimindedir.
+\end{itemize}
+
+\noindent Pratikte, her iki sınır haritası örtüştüğünde, bu gerçek bir kusurun güçlü kanıtını sağlar. Yalnızca biri tetiklendiğinde, kök nedeni daraltır (doku bozulması veya konumsal kayma).
+
+\subsection*{S19: SSIM hem Desen Birimi puanında hem de Yapısal Fark Analizinde kullanılıyor --- bu çifte sayım mı?}
+
+Hayır. ``SSIM'' kısaltması her iki bağlamda da görünse de, iki kullanım farklı amaçlara hizmet eder ve farklı girdiler üzerinde çalışır:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Structural SSIM (Desen Yöntemi~1)}, bilateral filtreleme sonrası tam gri tonlamalı görüntülere SSIM uygular. 0--100\% bir puan üretir ve bileşik desen puanına \%25 katkıda bulunur. Rolü, \emph{tek bir algısal benzerlik sayısı} sağlamaktır.
+  \item \textbf{Yapısal Fark Analizi içindeki SSIM}, ters çevrilmiş SSIM haritasını (200 eşiğinde) \emph{beş} ikili fark maskesinden biri olarak kullanır. Birleştirilmiş maskeye yalnızca \%15 katkıda bulunur. Rolü, yapısal karar (AYNI / ÇOK BENZEŞİYOR / BENZEŞİYOR / FARKLI) için \emph{değişen piksellerin yerini belirlemeye} yardımcı olmaktır.
+\end{itemize}
+
+\noindent İlk kullanım bir \emph{puan} üretir; ikincisi bir \emph{uzaysal maske} üretir. Farklı soruları yanıtlarlar: ``Genel olarak ne kadar benzer?'' ile ``Farklar tam olarak nerede?'' Yapısal Fark Analizi, her dedektörün farklı yanlış pozitif ve yanlış negatif karakteristikleri olduğu için SSIM'i kasıtlı olarak beş tamamlayıcı dedektörden biri olarak dahil eder. Birleştirme, herhangi bir bireysel yöntemin zayıflıklarını azaltır.
+
+% ════════════════════════════════════════════════════════════════════════════
+% BÖLÜM 4 — YAZILIM UYGULAMASI
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Yazılım Uygulaması}
+\label{ch:implementation}
+
+\section{Programlama Araçları ve Teknolojileri}
+
+SpectraMatch aşağıdaki teknolojiler kullanılarak geliştirilmiştir:
+
+\begin{table}[H]
+\centering
+\caption{SpectraMatch v3.0.0'te kullanılan teknoloji yığını.}
+\label{tab:tech_stack}
+\begin{tabularx}{\textwidth}{l l X}
+\toprule
+\textbf{Kategori} & \textbf{Teknoloji} & \textbf{Rol} \\
+\midrule
+Web Çerçevesi & Flask & Arka uç HTTP sunucusu, API yönlendirmesi, şablon işleme \\
+Görüntü İşleme & OpenCV (headless) & Görüntü G/Ç, renk uzayı dönüşümü, filtreleme, morfoloji, FFT, faz korelasyonu \\
+Sayısal Hesaplama & NumPy & Dizi işlemleri, doğrusal cebir, istatistiksel hesaplamalar \\
+Bilimsel Hesaplama & SciPy & Sinyal işleme araçları \\
+Görüntü Analizi & scikit-image & SSIM hesaplama, GLCM doku analizi \\
+Grafik Oluşturma & matplotlib & Grafik üretimi (histogramlar, saçılım grafikleri, çubuk grafikler, ısı haritaları, spektral eğriler) \\
+PDF Oluşturma & ReportLab & Tablolar, görüntüler, stilize metin ve özel akış öğeleri içeren çok sayfalı PDF rapor yapısı \\
+PDF Birleştirme & PyPDF & Kapak sayfası, renk raporu ve desen raporu PDF'lerinin tek dosyada birleştirilmesi \\
+Görüntü İşleme & Pillow (PIL) & Görüntü biçim dönüşümü, PDF gömme için NumPy-PIL köprüleme \\
+Masaüstü Kabuğu & pywebview & Flask arka ucu için yerel pencere sarmalayıcı, JavaScript--Python köprüsü \\
+Ön Yüz & Vanilla JavaScript & Arayüz denetleyicisi, bölge seçimi, nokta seçimi, uluslararasılaştırma \\
+Stilleme & CSS & Arayüz stilleme, duyarlı düzen, koyu/açık mod \\
+\bottomrule
+\end{tabularx}
+\end{table}
+\newpage
+\section{Kod Tabanı Dil Dağılımı}
+
+Aşağıda, dosya boyutlarından tahmin edilen kod tabanının programlama diline göre yaklaşık dağılımı verilmektedir:
+
+\begin{table}[H]
+\centering
+\caption{Yaklaşık kod tabanı dil dağılımı.}
+\label{tab:lang_dist}
+\begin{tabular}{l r r}
+\toprule
+\textbf{Dil} & \textbf{Yaklaşık Boyut} & \textbf{Yüzde} \\
+\midrule
+Python (arka uç modülleri) & $\sim$240\,KB & $\sim$30\% \\
+JavaScript (ön yüz) & $\sim$365\,KB & $\sim$45\% \\
+HTML (şablonlar) & $\sim$196\,KB & $\sim$20\% \\
+CSS / Yapılandırma / Diğer & $\sim$40\,KB & $\sim$5\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Dosya ve Klasör Yapısı}
+
+\begin{verbatim}
+SPECTRAMATCH_PROJECT/
+├── app.py                          # Flask uygulama giriş noktası
+├── wsgi.py                         # WSGI dağıtım giriş noktası
+├── requirements.txt                # Python bağımlılıkları
+├── README.md                       # Proje belgelendirmesi
+├── modules/
+│   ├── ColorUnitBackend.py         # Renk analizi ve PDF oluşturma
+│   ├── PatternUnitBackend.py       # Desen analizi ve PDF oluşturma
+│   ├── SingleImageUnitBackend.py   # Tek görüntü analizi ve PDF
+│   ├── RecommendationsEngine.py    # Eşik değerine duyarlı öneriler
+│   ├── ReportUtils.py              # Paylaşılan PDF araçları ve stiller
+│   ├── ReportTranslations.py       # EN/TR çeviri sözlüğü
+│   └── SettingsReceipt.py          # Ayarlar makbuzu PDF oluşturucusu
+├── desktop/
+│   └── app_desktop.py              # pywebview masaüstü başlatıcısı
+├── templates/
+│   ├── index.html                  # Web uygulaması şablonu
+│   └── desktop.html                # Masaüstü uygulaması şablonu
+├── static/
+│   ├── js/
+│   │   ├── app.js                  # Ana arayüz denetleyicisi
+│   │   ├── region-selector.js      # Bölge seçim araçları
+│   │   ├── region-validator.js     # Nokta-bölge doğrulama
+│   │   ├── point-selector-enhanced.js  # Gelişmiş nokta seçimi
+│   │   ├── i18n.js                 # Uluslararasılaştırma (EN/TR)
+│   │   └── development-modal.js    # Geliştirme bilgi penceresi
+│   ├── css/                        # Stil dosyaları
+│   ├── images/                     # Logo ve statik görseller
+│   ├── desktop/                    # Masaüstüne özgü JS ve CSS
+│   └── READYTOTEST/                # Yerleşik test görüntü çiftleri
+\end{verbatim}
+\newpage
+\section{Temel Fonksiyonlar ve Sınıflar}
+
+Aşağıdaki tablolar, her modüldeki birincil fonksiyonları ve sınıfları konumları ve rolleriyle listeler.
+
+\subsection{app.py --- Flask Uygulaması}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.8cm} >{\raggedright\arraybackslash}p{9.2cm}}
+\toprule
+\textbf{Fonksiyon / Rota} & \textbf{Rol} \\
+\midrule
+\texttt{crop\_image()} & Yüklenen görüntüleri seçilen bölgeye kırpar; daire seçimleri için dairesel alfa maskeleri uygular. \\
+\texttt{@app.route("/")} & Web uygulaması şablonunu sunar. \\
+\texttt{@app.route("/desktop")} & Masaüstü uygulaması şablonunu sunar. \\
+\texttt{/api/analyze} & Ana analiz uç noktası. Görüntüleri, ayarları, bölge verisini kabul eder. Renk Birimi, Desen Birimi veya Tek Görüntü Birimini yönetir. PDF'ler oluşturur, görselleştirme görüntülerini kaydeder, JSON yanıtı yapılandırır. \\
+\texttt{/api/download\_report/} & Oluşturulan PDF raporlarını (birleşik, renk, desen) sunar. \\
+\texttt{/api/download\_receipt/} & Ayarlar makbuzu PDF'ini sunar. \\
+\texttt{/api/report\_image/} & Ön yüz görüntüleme için görselleştirme görüntülerini sunar. \\
+\texttt{cleanup\_old\_files()} & 24 saatten eski geçici dosyaları kaldıran arka plan iş parçacığı. \\
+\texttt{\_sanitize\_for\_json()} & JSON serileştirmesi için NumPy türlerini Python-yerel türlere dönüştürür. \\
+\bottomrule
+\end{longtable}
+
+\subsection{ColorUnitBackend.py --- Renk Analizi}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.8cm} >{\raggedright\arraybackslash}p{9.2cm}}
+\toprule
+\textbf{Fonksiyon} & \textbf{Rol} \\
+\midrule
+\texttt{srgb\_to\_xyz()} & Normalleştirilmiş sRGB'yi standart matris kullanarak CIE XYZ'ye (D65) dönüştürür. \\
+\texttt{adapt\_to\_illuminant()} & Bradford dönüşümü kullanarak XYZ'yi D65'ten hedef aydınlatıcıya kromatik olarak adapte eder. \\
+\texttt{xyz\_to\_lab()} & Belirtilen beyaz noktası kullanarak XYZ'yi CIELAB'a dönüştürür. \\
+\texttt{deltaE76()} & $\Delta E_{76}$ (CIELAB'da Öklid uzaklığı) hesaplar. \\
+\texttt{deltaE94()} & Açıklık/kroma/ton ağırlıklandırması ile $\Delta E_{94}$ hesaplar. \\
+\texttt{deltaE2000()} & CIEDE2000 renk farkını (tam spesifikasyon) hesaplar. \\
+\texttt{region\_stats()} & Bir noktadaki dairesel yamadan ortalama RGB, XYZ, Lab, CMYK çıkarır. \\
+\texttt{is\_point\_valid()} & Bir noktanın tanımlanan bölge içinde yer alıp almadığını doğrular. \\
+\texttt{make\_points\_strict()} & Reddetme örneklemesi kullanarak bölge içinde $N$ rastgele nokta oluşturur. \\
+\texttt{analyze\_color()} & Ana analiz fonksiyonu: noktalarda renk çıkarır, tüm metrikleri ve CSI'yi hesaplar. \\
+\texttt{generate\_pdf\_headless()} & Tüm bölümlerle Renk Birimi PDF raporunu oluşturur. \\
+\texttt{analyze\_and\_generate()} & Giriş noktası: analizi çalıştırır ardından PDF oluşturur. \\
+\texttt{plot\_spectral\_proxy()} & Spektral proksi grafiği oluşturur. \\
+\texttt{plot\_rgb\_... histograms\_dual()} & Yan yana RGB histogramları oluşturur. \\
+\texttt{plot\_heatmap()} & $\Delta E$ ısı haritası görselleştirmesi oluşturur. \\
+\texttt{plot\_lab\_scatter()} & $a^*$ -- $b^*$ krominans saçılım grafiği oluşturur. \\
+\texttt{plot\_lab\_bars()} & Ortalama $L^*$, $a^*$, $b^*$ gruplandırılmış çubuk grafiği oluşturur. \\
+\bottomrule
+\end{longtable}
+
+\subsection{PatternUnitBackend.py --- Desen Analizi}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{5.8cm} >{\raggedright\arraybackslash}p{8.2cm}}
+\toprule
+\textbf{Fonksiyon} & \textbf{Rol} \\
+\midrule
+\texttt{method1\_structural\_ssim()} & Bilateral filtreleme ve JET renkli fark haritası ile SSIM hesaplar. \\
+\texttt{method3\_gradient\_similarity()} & SSIM puanlaması ile Sobel gradyan büyüklük karşılaştırması hesaplar. \\
+\texttt{method6\_phase\_correlation()} & OpenCV kullanarak faz korelasyonu hizalama puanı hesaplar. \\
+\texttt{structural\_difference\_ analysis()} & Çoklu yöntem birleştirme: basit fark, kenar, gradyan, frekans, SSIM ile gürültü filtreleme. \\
+\texttt{fourier\_domain\_analysis()} & 2B FFT, tepe tespiti, temel periyot, yönelim, anizotropi. \\
+\texttt{glcm\_texture\_analysis()} & GLCM hesaplama ve özellik çıkarma (kontrast, homojenlik vb.). \\
+\texttt{create\_gradient\_}\newline\texttt{red\_boundaries()} & Gradyan tabanlı sınır tespiti görselleştirmeleri oluşturur. \\
+\texttt{create\_phase\_}\newline\texttt{red\_boundaries()} & Faz tabanlı sınır tespiti görselleştirmeleri oluşturur. \\
+\texttt{determine\_status()} & Eşik değerlerine göre genel geçti/koşullu/kaldı mantığı. \\
+\texttt{generate\_pdf\_headless()} & Tüm bölümlerle Desen Birimi PDF raporunu oluşturur. \\
+\texttt{analyze\_and\_generate()} & Giriş noktası: tüm analizleri çalıştırır, bileşik puanı hesaplar, PDF oluşturur. \\
+\texttt{plot\_fft\_spectrum()} & FFT büyüklük spektrumu ısı haritası oluşturur. \\
+\texttt{plot\_glcm\_comparison()} & GLCM özellik karşılaştırma çubuk grafiği oluşturur. \\
+\texttt{plot\_glcm\_heatmaps()} & Yan yana GLCM ısı haritaları oluşturur. \\
+\bottomrule
+\end{longtable}
+
+\subsection{SingleImageUnitBackend.py --- Tek Görüntü Analizi}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{5.2cm} >{\raggedright\arraybackslash}p{8.8cm}}
+\toprule
+\textbf{Fonksiyon} & \textbf{Rol} \\
+\midrule
+\texttt{analyze\_and\_generate()} & Giriş noktası: örnekleme, renk çıkarma, spektral proksi, PDF oluşturma. \\
+\texttt{\_generate\_pdf()} & Kapak, görseller, ölçümler, Fourier, öneriler içeren dahili PDF oluşturma. \\
+\texttt{plot\_single\_
+spectral\_proxy()} & Tek görüntü spektral proksi grafiği oluşturur. \\
+\texttt{is\_point\_valid()} & Nokta doğrulama (daire/dikdörtgen kapsama). \\
+\texttt{make\_points\_strict()} & Bölge sınırları içinde rastgele nokta oluşturma. \\
+\bottomrule
+\end{longtable}
+
+\subsection{RecommendationsEngine.py --- Bulgular ve Öneriler}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{5.6cm} >{\raggedright\arraybackslash}p{8.4cm}}
+\toprule
+\textbf{Fonksiyon} & \textbf{Rol} \\
+\midrule
+\texttt{generate\_color\_ recommendations()} & Ortalama $\Delta E$, Tutarlılık ve CSI için eşik değerine göre değerlendirmeler içeren bulgular üretir. \\
+\texttt{generate\_pattern\_ recommendations()} & Bileşik Puan, Yapısal Eşleşme ve En Zayıf Metrik için bulgular üretir. \\
+\texttt{generate\_single\_image\_ recommendations()} & Parlaklık, Kroma Yayılımı, Renk Tekdüzeliği ve Baskın Kanal için bulgular üretir. \\
+\texttt{render\_findings\_to\_ flowables()} & Bulguları stilize ReportLab akış öğelerine dönüştürür (sonuç bloğu ile kart tabanlı düzen). \\
+\texttt{\_relative\_position()} & Sayısal bir değeri eşik değerlerine göre nitel bir düzeye (mükemmel/iyi/sınırda/zayıf) eşler. \\
+\bottomrule
+\end{longtable}
+
+\subsection{ReportUtils.py --- Paylaşılan PDF Araçları}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.8cm} >{\raggedright\arraybackslash}p{9.2cm}}
+\toprule
+\textbf{Fonksiyon / Sabit} & \textbf{Rol} \\
+\midrule
+\texttt{setup\_fonts()} & Türkçe karakter desteğiyle TrueType fontları kaydeder (Arial $\to$ Segoe UI $\to$ Tahoma $\to$ Helvetica yedek zinciri). \\
+\texttt{numpy\_to\_rl()} & NumPy görüntü dizisini BGRA alfa birleştirme işlemiyle ReportLab Image nesnesine dönüştürür. \\
+\texttt{make\_table()} & Değişen satır arka planlarıyla tutarlı stilize tablolar oluşturur. \\
+\texttt{badge()} & Renkli yuvarlak köşeli dikdörtgen rozet akış öğesi oluşturur. \\
+\texttt{make\_header\_footer()} & Sayfa başlıkları (şirket adı, alt başlık) ve altlıkları (sayfa numarası, zaman damgası, logo) çizen geri çağırma fonksiyonu döndürür. \\
+\texttt{generate\_unified\_cover()} & Çift puan kartlarıyla birleştirilmiş raporlar için bütünleşik kapak sayfası PDF'i oluşturur. \\
+\texttt{pick\_logo()} & Birincil ve yedek yollardan şirket logo dosyasını bulur. \\
+\texttt{STATUS\_COLORS} & Durum dizelerini (PASS, CONDITIONAL, FAIL) ReportLab renklerine eşleyen sözlük. \\
+\bottomrule
+\end{longtable}
+
+\subsection{ReportTranslations.py --- İki Dilli Sözlük}
+
+Tüm rapor öğeleri için İngilizce ve Türkçe girişleri içeren kapsamlı bir \texttt{TRANSLATIONS} sözlüğü barındırır: bölüm başlıkları, tablo başlıkları, metrik etiketleri, durum dizeleri, değerlendirme metinleri ve yorumlayıcı açıklamalar. Seçilen dil için bir arama fonksiyonu döndüren \texttt{get\_translator(lang)} ve durum dizesi çevirisi için \texttt{translate\_status(status, lang)} fonksiyonlarını sağlar.
+
+\subsection{SettingsReceipt.py --- Yapılandırma Makbuzu}
+
+Tüm analiz yapılandırma parametrelerini belgeleyen tek sayfalı bir PDF oluşturur: genel ayarlar, renk eşik değerleri, desen eşik değerleri, aydınlatıcı seçimleri, etkinleştirilen rapor bölümleri ve puanlama yöntemi. Makbuz, ilgili analiz raporuyla aynı rapor kimliğini ve zaman damgasını paylaşır.
+
+\subsection{desktop/app\_desktop.py --- Masaüstü Başlatıcı}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.8cm} >{\raggedright\arraybackslash}p{9.2cm}}
+\toprule
+\textbf{Bileşen} & \textbf{Rol} \\
+\midrule
+\texttt{find\_free\_port()} & Flask arka ucu için kullanılabilir bir TCP portunu tarar. \\
+\texttt{start\_flask()} & Flask sunucusunu arka plan iş parçacığında başlatır. \\
+\texttt{Api} sınıfı & Yerel dosya kaydetme diyalogları için \texttt{save\_report()} sağlayan JavaScript--Python köprüsü. \\
+Açılış ekranı & Flask arka ucu başlatılırken bir yükleme penceresi gösterir. \\
+\texttt{webview.create\_window()} & Flask URL'sine yönlendiren yerel masaüstü penceresini oluşturur. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Ön Yüz JavaScript}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.8cm} >{\raggedright\arraybackslash}p{9.2cm}}
+\toprule
+\textbf{Dosya} & \textbf{Rol} \\
+\midrule
+\texttt{app.js} & Ana arayüz denetleyicisi: görüntü yükleme işleme, ayar yönetimi, analiz başlatma, sonuç gösterimi, rapor indirme, geri bildirim gönderme. \\
+\texttt{region-selector.js} & Etkileşimli tuval tabanlı bölge seçim araçları: daire, kare, dikdörtgen, serbest çizim çokgen; sürükleme, boyutlandırma ve eş zamanlı çift görüntü bindirme. \\
+\texttt{region-validator.js} & Örnekleme noktası yerleştirme için istemci tarafı nokta-bölge doğrulaması. \\
+\texttt{pointselectorenhanced.js} & Gelişmiş nokta seçim arayüzü: tıkla-yerleştir manuel noktalar, görsel geri bildirim, nokta sayısı yönetimi. \\
+\texttt{i18n.js} & Tam İngilizce/Türkçe uluslararasılaştırma sözlüğü ve dil değiştirme mantığı. \\
+\texttt{development-modal.js} & Geliştirme bilgi penceresi. \\
+\bottomrule
+\end{longtable}
+
+% ════════════════════════════════════════════════════════════════════════════
+% EKLER
+% ════════════════════════════════════════════════════════════════════════════
+\appendix
+
+% ────────────────────────────────────────────────────────────────────────────
+% EK A — KISALTMALAR SÖZLÜĞÜ
+% ────────────────────────────────────────────────────────────────────────────
+\chapter{Kısaltmalar Sözlüğü}
+\label{app:glossary}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{10.8cm}}
+\toprule
+\textbf{Kısaltma} & \textbf{Tanım} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Kısaltma} & \textbf{Tanım} \\
+\midrule
+\endhead
+ASM        & Angular Second Moment (Açısal İkinci Moment) \\
+BGR        & Blue–Green–Red (Mavi–Yeşil–Kırmızı) \\
+CIE        & International Commission on Illumination (Uluslararası Aydınlatma Komisyonu) \\
+CIELAB     & CIE L*a*b* renk uzayı \\
+CIEDE2000  & CIE Delta E 2000 \\
+CLAHE      & Contrast Limited Adaptive Histogram Equalization (Kontrast Sınırlamalı Uyarlanabilir Histogram Eşitleme) \\
+CMYK       & Cyan–Magenta–Yellow–Black (Camgöbeği–Eflatun–Sarı–Siyah) \\
+CSI        & Color Similarity Index (Renk Benzerlik İndeksi) \\
+CSI2000    & Color Similarity Index 2000 (Renk Benzerlik İndeksi 2000) \\
+CSS        & Cascading Style Sheets \\
+DC         & Direct Current (Doğru Akım) \\
+$\Delta E$ & Renk Farkı \\
+$\Delta E_{76}$  & CIE76 Renk Farkı \\
+$\Delta E_{94}$  & CIE94 Renk Farkı \\
+$\Delta E_{2000}$ & CIEDE2000 Renk Farkı \\
+EN/TR      & İngilizce / Türkçe \\
+FFT        & Fast Fourier Transform (Hızlı Fourier Dönüşümü) \\
+GLCM       & Gray-Level Co-occurrence Matrix (Gri Düzey Eş Oluşum Matrisi) \\
+HTML       & HyperText Markup Language \\
+ISO        & International Organization for Standardization (Uluslararası Standardizasyon Örgütü) \\
+JS         & JavaScript \\
+Lab        & CIELAB \\
+PDF        & Portable Document Format (Taşınabilir Belge Biçimi) \\
+RGB        & Red–Green–Blue (Kırmızı–Yeşil–Mavi) \\
+sRGB       & Standard RGB \\
+SSIM       & Structural Similarity Index (Yapısal Benzerlik İndeksi) \\
+UTC        & Coordinated Universal Time (Eş Güdümlü Evrensel Zaman) \\
+WSGI       & Web Server Gateway Interface \\
+XYZ        & CIE XYZ Renk Uzayı \\
+
+\bottomrule
+\end{longtable}
+
+% ────────────────────────────────────────────────────────────────────────────
+% EK B — ŞEKİL LİSTESİ (KOMPAKT DÜZEN)
+% ────────────────────────────────────────────────────────────────────────────
+\newgeometry{
+  top=1.8cm,
+  bottom=1.8cm,
+  left=2cm,
+  right=2cm,
+  headsep=6pt,
+  footskip=10pt
+}
+
+\chapter{Şekil Listesi}
+\label{app:figures}
+
+\vspace{-0.5cm}
+
+\renewcommand{\arraystretch}{0.95}
+
+\begin{longtable}{>{\centering\arraybackslash}p{1.5cm} >{\raggedright\arraybackslash}p{11.5cm}}
+\toprule
+\textbf{Şekil} & \textbf{Başlık} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Şekil} & \textbf{Başlık} \\
+\midrule
+\endhead
+
+\hyperref[fig:workflow]{\textcolor{specblue}{1}} & Sistem İş Akışı \\
+\hyperref[fig:webapp]{\textcolor{specblue}{2}} & Web Uygulaması Arayüzü \\
+\hyperref[fig:desktop]{\textcolor{specblue}{3}} & Masaüstü Uygulaması Arayüzü \\
+\hyperref[fig:settings_report]{\textcolor{specblue}{4}} & Ayarlar Raporu Kapak Sayfası \\
+
+\midrule
+\multicolumn{2}{l}{\textit{\textcolor{specgray}{Renk Birimi}}} \\
+\midrule
+\hyperref[fig:color_input]{\textcolor{specblue}{5}} & Örnekleme Noktalarıyla Giriş Görüntüleri \\
+\hyperref[fig:rgb_values]{\textcolor{specblue}{6}} & RGB Değerleri Tablosu \\
+\hyperref[fig:lab_mean]{\textcolor{specblue}{7}} & Ortalama CIELAB Değerleri ve Bileşen Bazlı Farklar \\
+\hyperref[fig:lab_values]{\textcolor{specblue}{8}} & Lab* Görselleştirmesi \\
+\hyperref[fig:xyz_values]{\textcolor{specblue}{9}} & XYZ Değerleri Tablosu \\
+\hyperref[fig:cmyk_values]{\textcolor{specblue}{10}} & CMYK Değerleri Tablosu \\
+\hyperref[fig:delta_metrics]{\textcolor{specblue}{11}} & Fark Metrikleri ($\Delta E$) \\
+\hyperref[fig:illuminant]{\textcolor{specblue}{12}} & Aydınlatıcı Analizi \\
+\hyperref[fig:heatmap]{\textcolor{specblue}{13}} & $\Delta E$ Isı Haritası \\
+\hyperref[fig:spectral]{\textcolor{specblue}{14}} & Spektral Dağılım Proksisi \\
+\hyperref[fig:rgb_histograms]{\textcolor{specblue}{15}} & RGB Histogramları \\
+\hyperref[fig:csi]{\textcolor{specblue}{16}} & Renk Benzerlik İndeksi (CSI) \\
+\hyperref[fig:color_recommendations]{\textcolor{specblue}{17}} & Renk Bulguları ve Öneriler \\
+
+\midrule
+\multicolumn{2}{l}{\textit{\textcolor{specgray}{Desen Birimi}}} \\
+\midrule
+\hyperref[fig:pattern_input]{\textcolor{specblue}{18}} & Desen Giriş Görüntüleri \\
+\hyperref[fig:ssim]{\textcolor{specblue}{19}} & SSIM Fark Haritası \\
+\hyperref[fig:gradient]{\textcolor{specblue}{20}} & Gradient Similarity Haritası \\
+\hyperref[fig:phase]{\textcolor{specblue}{21}} & Phase Correlation Haritası \\
+\hyperref[fig:structural_diff]{\textcolor{specblue}{22}} & Yapısal Fark Analizi \\
+\hyperref[fig:pure_diff]{\textcolor{specblue}{23}} & Saf Fark Bindirmesi \\
+\hyperref[fig:gradient_boundary]{\textcolor{specblue}{24}} & Gradient Boundary Detection \\
+\hyperref[fig:phase_boundary]{\textcolor{specblue}{25}} & Phase Boundary Detection \\
+\hyperref[fig:fourier]{\textcolor{specblue}{26}} & Fourier Alanı Analizi \\
+\hyperref[fig:glcm]{\textcolor{specblue}{27}} & GLCM Doku Analizi \\
+\hyperref[fig:verdict]{\textcolor{specblue}{28}} & Yapısal Fark Kararı \\
+\hyperref[fig:pattern_recommendations]{\textcolor{specblue}{29}} & Desen Bulguları ve Öneriler \\
+\hyperref[fig:pattern_conclusion]{\textcolor{specblue}{30}} & Desen Sonucu \\
+
+\midrule
+\multicolumn{2}{l}{\textit{\textcolor{specgray}{Tek Görüntü Birimi}}} \\
+\midrule
+\hyperref[fig:single_input]{\textcolor{specblue}{31}} & Tek Görüntü Girişi \\
+\hyperref[fig:single_measurements]{\textcolor{specblue}{32}} & Ölçüm Verileri \\
+
+\bottomrule
+\end{longtable}
+
+\restoregeometry
+
+% ════════════════════════════════════════════════════════════════════════════
+% KAPANIŞ KAPAK SAYFASI
+% ════════════════════════════════════════════════════════════════════════════
+\clearpage
+\thispagestyle{empty}
+
+\begin{tikzpicture}[remember picture, overlay]
+  % Dış dekoratif çerçeve
+  \draw[specblue, line width=2pt] ([shift={(1cm,-1cm)}]current page.north west) rectangle ([shift={(-1cm,1cm)}]current page.south east);
+  % İç vurgu çizgisi
+  \draw[speclightgray, line width=0.5pt] ([shift={(1.15cm,-1.15cm)}]current page.north west) rectangle ([shift={(-1.15cm,1.15cm)}]current page.south east);
+  % Köşe vurguları
+  \fill[specblue] ([shift={(1cm,-1cm)}]current page.north west) rectangle ([shift={(1.6cm,-1.6cm)}]current page.north west);
+  \fill[specblue] ([shift={(-1cm,-1cm)}]current page.north east) rectangle ([shift={(-1.6cm,-1.6cm)}]current page.north east);
+  \fill[specblue] ([shift={(1cm,1cm)}]current page.south west) rectangle ([shift={(1.6cm,1.6cm)}]current page.south west);
+  \fill[specblue] ([shift={(-1cm,1cm)}]current page.south east) rectangle ([shift={(-1.6cm,1.6cm)}]current page.south east);
+\end{tikzpicture}
+
+\begin{center}
+\vspace*{2.5cm}
+
+\includegraphics[width=4.5cm]{logo.png}\\[0.4cm]
+{\Huge\bfseries\textcolor{specdark}{SPECTRAMATCH}}\\[0.3cm]
+{\Large\textcolor{specblue}{Teknik Veri Sayfası}}
+
+\vspace{0.6cm}
+
+{\large\itshape\textcolor{specgray}{Sürüm 3.0.0}}
+
+\vspace{0.1cm}
+
+\rule{0.5\textwidth}{0.4pt}
+
+\vspace{1cm}
+
+{\large\textcolor{specdark}{\textbf{Hazırlayan}}}\\[0.3cm]
+{\Large\textbf{Abdelbary Algamel}}\\[0.2cm]
+{\normalsize\textcolor{specblue}{\href{mailto:aalgamel23@posta.pau.edu.tr}{aalgamel23@posta.pau.edu.tr}}}
+
+\vspace{1cm}
+
+{\large\textcolor{specdark}{\textbf{Danışman}}}\\[0.3cm]
+{\Large\textbf{Dr.\ Adem Ükte}}\\[0.2cm]
+{\normalsize\textcolor{specgray}{Elektrik ve Elektronik Mühendisliği Bölümü}}\\[0.1cm]
+{\normalsize\textcolor{specgray}{Pamukkale Üniversitesi, Denizli, Türkiye}}
+
+\vspace{1.5cm}
+
+\rule{0.5\textwidth}{0.4pt}
+
+\vspace{0.8cm}
+
+{\small\textcolor{specgray}{Bu belge, SpectraMatch v3.0.0 dağıtımının bir parçasıdır.}}\\[0.15cm]
+{\small\textcolor{specgray}{Tüm içerik proje kaynak kodundan türetilmiştir ve}}\\[0.15cm]
+{\small\textcolor{specgray}{yayın tarihindeki sistemin mevcut yeteneklerini yansıtmaktadır.}}
+
+\vfill
+
+{\footnotesize\textcolor{speclightgray}{\copyright\ 2026 --- Pamukkale Üniversitesi}}
+
+\end{center}
+
+\end{document}

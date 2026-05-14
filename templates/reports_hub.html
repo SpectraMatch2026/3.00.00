@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Download sample SpectraMatch PDF reports: full, color, pattern, and settings receipt.">
+    <title>Sample reports | SpectraMatch</title>
+    <link rel="stylesheet" href="/static/css/reports.css?v=20260430c">
+    <link rel="icon" type="image/png" href="/static/images/logo_square_no_name_1024x1024.png">
+</head>
+
+<body class="reports-hub-page">
+    <a class="reports-skip" href="#main">Skip to content</a>
+    <header class="reports-hub-top">
+        <a class="reports-hub-brand" href="/" title="SpectraMatch home">
+            <img class="reports-hub-logo" src="/static/images/logo_square_with_name_1024x1024.png" width="40" height="40"
+                alt="SpectraMatch logo">
+            <span class="reports-hub-site-name">SpectraMatch</span>
+        </a>
+        <div class="reports-hub-controls">
+            <button type="button" class="reports-thesis-trigger" id="openThesisModal">
+                <span id="thesisBtnEn">Download Thesis</span>
+                <span id="thesisBtnTr" lang="tr" hidden>Tezi İndir</span>
+            </button>
+            <div class="reports-lang" role="group" aria-label="Language">
+                <button type="button" id="langEn" aria-pressed="true">English</button>
+                <button type="button" id="langTr" aria-pressed="false">Türkçe</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="reports-hub-main" id="main">
+        <div class="reports-hub-hero">
+            <img class="reports-hub-hero-logo" src="/static/images/logo_vertical_512x256.png" width="512" height="256"
+                alt="SpectraMatch — Textile color &amp; pattern analysis">
+            <h1 id="hubTitleEn">Sample analysis reports</h1>
+            <h1 id="hubTitleTr" lang="tr" hidden>Örnek analiz raporları</h1>
+            <p class="reports-hub-sub" id="hubSubEn">Official PDF outputs (illustrative) with direct download and in-browser viewing.</p>
+            <p class="reports-hub-sub" id="hubSubTr" lang="tr" hidden>Bu sayfa, örnek çıktı PDF belgelerine doğrudan indirme ve tarayıcı içi görüntüleme bağlantıları sunar.</p>
+        </div>
+
+        <div class="reports-cards">
+            <article class="reports-card">
+                <h2 id="c1tEn">Full report</h2>
+                <h2 id="c1tTr" lang="tr" hidden>Tam rapor</h2>
+                <p id="c1dEn">Merged document with color, pattern, and summary sections.</p>
+                <p id="c1dTr" lang="tr" hidden>Renk, desen ve özet bölümlerini birleştiren birleşik rapor.</p>
+                <div class="reports-card-actions">
+                    <a class="reports-dl" href="/Full_Report.pdf" download="Full_Report.pdf">
+                        <svg class="dl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            aria-hidden="true">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        <span id="c1dlEn">Download PDF</span>
+                        <span id="c1dlTr" lang="tr" hidden>PDF indir</span>
+                    </a>
+                    <a class="reports-open" href="/fullreport/"><span id="c1opEn">Open in browser</span><span id="c1opTr" lang="tr" hidden>Tarayıcıda aç</span></a>
+                </div>
+            </article>
+
+            <article class="reports-card">
+                <h2 id="c2tEn">Color report</h2>
+                <h2 id="c2tTr" lang="tr" hidden>Renk raporu</h2>
+                <p id="c2dEn">Colorimetric metrics, sampling tables, and ΔE diagnostics.</p>
+                <p id="c2dTr" lang="tr" hidden>Kolorimetrik metrikler, örnekleme tabloları ve ΔE tanıları.</p>
+                <div class="reports-card-actions">
+                    <a class="reports-dl" href="/Color_Report.pdf" download="Color_Report.pdf">
+                        <svg class="dl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            aria-hidden="true">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        <span id="c2dlEn">Download PDF</span>
+                        <span id="c2dlTr" lang="tr" hidden>PDF indir</span>
+                    </a>
+                    <a class="reports-open" href="/colorreport/"><span id="c2opEn">Open in browser</span><span id="c2opTr" lang="tr" hidden>Tarayıcıda aç</span></a>
+                </div>
+            </article>
+
+            <article class="reports-card">
+                <h2 id="c3tEn">Pattern report</h2>
+                <h2 id="c3tTr" lang="tr" hidden>Desen raporu</h2>
+                <p id="c3dEn">Structural similarity, gradients, phase maps, and texture features.</p>
+                <p id="c3dTr" lang="tr" hidden>Yapısal benzerlik, gradyanlar, faz haritaları ve doku özellikleri.</p>
+                <div class="reports-card-actions">
+                    <a class="reports-dl" href="/Pattern_Report.pdf" download="Pattern_Report.pdf">
+                        <svg class="dl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            aria-hidden="true">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        <span id="c3dlEn">Download PDF</span>
+                        <span id="c3dlTr" lang="tr" hidden>PDF indir</span>
+                    </a>
+                    <a class="reports-open" href="/patternreport/"><span id="c3opEn">Open in browser</span><span id="c3opTr" lang="tr" hidden>Tarayıcıda aç</span></a>
+                </div>
+            </article>
+
+            <article class="reports-card">
+                <h2 id="c4tEn">Settings receipt</h2>
+                <h2 id="c4tTr" lang="tr" hidden>Ayarlar özeti</h2>
+                <p id="c4dEn">Session configuration snapshot (reset / audit trail of parameters).</p>
+                <p id="c4dTr" lang="tr" hidden>Oturum yapılandırması özeti (parametrelerin denetim kaydı).</p>
+                <div class="reports-card-actions">
+                    <a class="reports-dl" href="/Settings_Receipt.pdf" download="Settings_Receipt.pdf">
+                        <svg class="dl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            aria-hidden="true">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        <span id="c4dlEn">Download PDF</span>
+                        <span id="c4dlTr" lang="tr" hidden>PDF indir</span>
+                    </a>
+                    <a class="reports-open" href="/settingsreport/"><span id="c4opEn">Open in browser</span><span id="c4opTr" lang="tr" hidden>Tarayıcıda aç</span></a>
+                </div>
+            </article>
+        </div>
+
+        <p class="reports-hub-footnote" id="hubNoteEn">These files are representative PDF outputs for documentation and thesis reference. The live application is hosted at <a href="https://spectramatch.com.ly/">spectramatch.com.ly</a>.</p>
+        <p class="reports-hub-footnote" id="hubNoteTr" lang="tr" hidden>Bu dosyalar, dokümantasyon ve tez referansı için örnek PDF çıktılarıdır. Canlı uygulama <a href="https://spectramatch.com.ly/">spectramatch.com.ly</a> adresinde barındırılmaktadır.</p>
+    </main>
+
+    <footer class="reports-hub-footer">
+        <a href="https://spectramatch.com.ly/">spectramatch.com.ly</a>
+    </footer>
+    <div class="reports-modal-overlay" id="thesisModal" role="dialog" aria-modal="true" aria-labelledby="thesisModalTitleEn" hidden>
+        <div class="reports-modal" role="document">
+            <button type="button" class="reports-modal-close" id="closeThesisModalX" aria-label="Close">×</button>
+            <img class="reports-modal-logo" src="/static/images/TEZ.png" alt="Tez logo" width="96" height="96">
+            <h2 class="reports-modal-title" id="thesisModalTitleEn">Thesis availability update</h2>
+            <h2 class="reports-modal-title" id="thesisModalTitleTr" lang="tr" hidden>Tez erişim durumu</h2>
+            <p class="reports-modal-message" id="thesisMsgEn">This thesis is not yet available on the National Thesis Center.<br>Once it is uploaded, it will be accessible for download here.</p>
+            <p class="reports-modal-message" id="thesisMsgTr" lang="tr" hidden>Bu tez henüz Ulusal Tez Merkezi'nde mevcut değildir.<br>Yüklendiğinde buradan indirilebilir olacaktır.</p>
+            <div class="reports-modal-actions">
+                <a class="reports-modal-visit" href="https://tez.yok.gov.tr/UlusalTezMerkezi" target="_blank" rel="noopener noreferrer">
+                    <span id="thesisVisitEn">Visit ULUSAL TEZ MERKEZİ</span>
+                    <span id="thesisVisitTr" lang="tr" hidden>ULUSAL TEZ MERKEZİ'Nİ ZİYARET ET</span>
+                </a>
+                <button type="button" class="reports-modal-dismiss" id="closeThesisModalBtn">
+                    <span id="thesisCloseEn">Close</span>
+                    <span id="thesisCloseTr" lang="tr" hidden>Kapat</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function () {
+            var KEY = 'spectramatch_reports_lang';
+            var enBtn = document.getElementById('langEn');
+            var trBtn = document.getElementById('langTr');
+            var openThesisModalBtn = document.getElementById('openThesisModal');
+            var thesisModal = document.getElementById('thesisModal');
+            var closeThesisModalX = document.getElementById('closeThesisModalX');
+            var closeThesisModalBtn = document.getElementById('closeThesisModalBtn');
+            var pairs = [
+                ['hubTitleEn', 'hubTitleTr'],
+                ['hubSubEn', 'hubSubTr'],
+                ['thesisBtnEn', 'thesisBtnTr'],
+                ['c1tEn', 'c1tTr'], ['c1dEn', 'c1dTr'], ['c1dlEn', 'c1dlTr'], ['c1opEn', 'c1opTr'],
+                ['c2tEn', 'c2tTr'], ['c2dEn', 'c2dTr'], ['c2dlEn', 'c2dlTr'], ['c2opEn', 'c2opTr'],
+                ['c3tEn', 'c3tTr'], ['c3dEn', 'c3dTr'], ['c3dlEn', 'c3dlTr'], ['c3opEn', 'c3opTr'],
+                ['c4tEn', 'c4tTr'], ['c4dEn', 'c4dTr'], ['c4dlEn', 'c4dlTr'], ['c4opEn', 'c4opTr'],
+                ['thesisModalTitleEn', 'thesisModalTitleTr'],
+                ['thesisMsgEn', 'thesisMsgTr'],
+                ['thesisVisitEn', 'thesisVisitTr'],
+                ['thesisCloseEn', 'thesisCloseTr'],
+                ['hubNoteEn', 'hubNoteTr']
+            ];
+            function openModal() {
+                thesisModal.hidden = false;
+                document.body.classList.add('reports-modal-open');
+            }
+            function closeModal() {
+                thesisModal.hidden = true;
+                document.body.classList.remove('reports-modal-open');
+            }
+            function setLang(tr) {
+                document.documentElement.lang = tr ? 'tr' : 'en';
+                enBtn.setAttribute('aria-pressed', tr ? 'false' : 'true');
+                trBtn.setAttribute('aria-pressed', tr ? 'true' : 'false');
+                pairs.forEach(function (p) {
+                    var a = document.getElementById(p[0]);
+                    var b = document.getElementById(p[1]);
+                    if (!a || !b) return;
+                    a.hidden = !!tr;
+                    b.hidden = !tr;
+                });
+                try { localStorage.setItem(KEY, tr ? 'tr' : 'en'); } catch (e) { }
+            }
+            enBtn.addEventListener('click', function () { setLang(false); });
+            trBtn.addEventListener('click', function () { setLang(true); });
+            openThesisModalBtn.addEventListener('click', openModal);
+            closeThesisModalX.addEventListener('click', closeModal);
+            closeThesisModalBtn.addEventListener('click', closeModal);
+            thesisModal.addEventListener('click', function (event) {
+                if (event.target === thesisModal) closeModal();
+            });
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape' && !thesisModal.hidden) closeModal();
+            });
+            var stored = null;
+            try { stored = localStorage.getItem(KEY); } catch (e) { }
+            if (stored === 'tr') setLang(true);
+        })();
+    </script>
+</body>
+
+</html>

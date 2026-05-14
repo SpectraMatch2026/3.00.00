@@ -1,0 +1,2325 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="app.title">Textile QC System - Professional Color & Pattern Analysis</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/image-actions.css">
+    <link rel="stylesheet" href="/static/css/shape-dropdown.css">
+    <link rel="stylesheet" href="/static/css/alignment-studio.css">
+    <link rel="icon" type="image/png" href="/static/images/logo_square_no_name_1024x1024.png">
+</head>
+
+<body>
+
+
+
+
+    <!-- Feedback Sidebar -->
+    <div class="feedback-sidebar" id="feedbackSidebar">
+        <div class="feedback-sidebar-header">
+            <div class="feedback-sidebar-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span data-i18n="send.feedback">Send Feedback</span>
+            </div>
+            <button class="feedback-sidebar-close" id="feedbackSidebarClose" type="button">&times;</button>
+        </div>
+        <div class="feedback-sidebar-body">
+            <form id="feedbackForm" class="feedback-form">
+                <div class="feedback-note">
+                    <p data-i18n="feedback.note">All fields are optional. You can submit feedback anonymously.</p>
+                </div>
+
+                <div class="feedback-anonymous-toggle">
+                    <label class="modern-checkbox">
+                        <input type="checkbox" id="anonymousToggle">
+                        <span class="checkmark">
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </span>
+                    </label>
+                    <span data-i18n="send.anonymously">Send anonymously</span>
+                </div>
+
+                <div class="feedback-fields-group" id="personalFields">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="first.name">First Name</label>
+                            <input type="text" id="firstName" name="firstName" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="last.name">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" class="form-input">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="email.address">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="phone.number">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-input">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label data-i18n="feedback.type">Feedback Type</label>
+                    <select id="feedbackType" name="feedbackType" class="form-select">
+                        <option value="note" data-i18n="feedback.type.note">Note</option>
+                        <option value="complaint" data-i18n="feedback.type.complaint">Complaint</option>
+                        <option value="report" data-i18n="feedback.type.report">Report</option>
+                        <option value="suggestion" data-i18n="feedback.type.suggestion">Suggestion</option>
+                        <option value="question" data-i18n="feedback.type.question">Question</option>
+                        <option value="other" data-i18n="feedback.type.other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label data-i18n="message">Message <span class="char-count" id="charCount">(0/2000)</span></label>
+                    <textarea id="message" name="message" class="form-textarea" rows="6" maxlength="2000"
+                        required></textarea>
+                    <div class="error-message" id="messageError" style="display:none;"></div>
+                </div>
+
+                <div class="feedback-attachment-note">
+                    <p><span data-i18n="attachment.note">If you would like to send attachments, it is preferable to send
+                            them via email to</span> <a href="mailto:aalgamel23@posta.pau.edu.tr"
+                            class="feedback-email-link">aalgamel23@posta.pau.edu.tr</a>.</p>
+                </div>
+
+                <div class="feedback-form-content" id="feedbackFormContent">
+                    <button type="submit" class="btn-feedback-submit" id="feedbackSubmitBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <path d="M22 2l-7 20-4-9-9-4 20-7z"></path>
+                        </svg>
+                        <span data-i18n="send">Send</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Success Message -->
+            <div class="feedback-success-message" id="feedbackSuccessMessage" style="display:none;">
+                <div class="success-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+                <h3 data-i18n="message.sent.successfully">Message sent successfully</h3>
+                <p data-i18n="feedback.thank.you">Thank you for your cooperation. Your message will be taken into
+                    consideration and reviewed as soon as possible.</p>
+                <button type="button" class="btn-feedback-new" id="btnFeedbackNew">
+                    <span data-i18n="send.new.feedback">Send New Feedback</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Overlay -->
+    <div class="feedback-overlay" id="feedbackOverlay"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <img src="/static/images/logo_square_with_name_1024x1024.png" alt="Textile QC Logo" class="logo">
+            <div class="header-title">
+                <h1 data-i18n="app.title">Textile QC System</h1>
+                <span class="subtitle" data-i18n="app.subtitle">Professional Color & Pattern Analysis</span>
+            </div>
+        </div>
+        <div class="header-right">
+
+
+            <!-- Windows Desktop Download Button -->
+            <a class="btn-desktop-download" href="/static/downloads/SpectraMatch_Setup_3.0.0.exe" id="btnDesktopDownload" title="Download SpectraMatch for Windows" onclick="showDownloadFallback(event)">
+                <svg class="windows-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
+                </svg>
+                <span class="btn-text-group">
+                    <span class="btn-main-text" data-i18n="download.desktop">Download for Windows</span>
+                    <span class="btn-sub-text">Desktop v3.0.0</span>
+                </span>
+                <svg class="download-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+            </a>
+
+            <!-- Feedback Header Button -->
+            <button class="btn-feedback-header" id="btnFeedbackHeader" type="button">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    <path d="M13 8H7"></path>
+                    <path d="M17 12H7"></path>
+                </svg>
+                <span data-i18n="send.feedback">Send Feedback</span>
+            </button>
+
+            <!-- Ready-to-Test Button -->
+            <div class="rtt-container">
+                <button class="btn-rtt" id="btnReadyToTest" type="button" title="Ready-to-Test Images">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+                    </svg>
+                    <span data-i18n="rtt.btn">Test</span>
+                    <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="rtt-dropdown" id="rttDropdown">
+                    <div class="rtt-header" data-i18n="rtt.title">Ready-to-Test Images</div>
+                    <div class="rtt-caption" data-i18n="rtt.caption">Load built-in sample images for quick testing</div>
+                    <div class="rtt-section" data-i18n="rtt.dual">Dual Mode (Reference + Sample)</div>
+                    <div class="rtt-item" data-ref="1.png" data-sample="2.png">
+                        <div class="rtt-thumbs">
+                            <img class="rtt-thumb" src="/static/READYTOTEST/1.png" alt="Test1">
+                            <img class="rtt-thumb" src="/static/READYTOTEST/2.png" alt="Test2">
+                        </div>
+                        <span><span data-i18n="rtt.pair">Pair</span> 1 - Test1 + Test2</span>
+                    </div>
+                    <div class="rtt-item" data-ref="3.png" data-sample="4.png">
+                        <div class="rtt-thumbs">
+                            <img class="rtt-thumb" src="/static/READYTOTEST/3.png" alt="Test3">
+                            <img class="rtt-thumb" src="/static/READYTOTEST/4.png" alt="Test4">
+                        </div>
+                        <span><span data-i18n="rtt.pair">Pair</span> 2 - Test3 + Test4</span>
+                    </div>
+                    <div class="rtt-item" data-ref="5.png" data-sample="6.png">
+                        <div class="rtt-thumbs">
+                            <img class="rtt-thumb" src="/static/READYTOTEST/5.png" alt="Test5">
+                            <img class="rtt-thumb" src="/static/READYTOTEST/6.png" alt="Test6">
+                        </div>
+                        <span><span data-i18n="rtt.pair">Pair</span> 3 - Test5 + Test6</span>
+                    </div>
+                    <div class="rtt-section" data-i18n="rtt.single">Single Image Mode</div>
+                    <div class="rtt-item" data-single="1.png"><img class="rtt-thumb" src="/static/READYTOTEST/1.png" alt="Test1"><span>Test1.png</span></div>
+                    <div class="rtt-item" data-single="2.png"><img class="rtt-thumb" src="/static/READYTOTEST/2.png" alt="Test2"><span>Test2.png</span></div>
+                    <div class="rtt-item" data-single="3.png"><img class="rtt-thumb" src="/static/READYTOTEST/3.png" alt="Test3"><span>Test3.png</span></div>
+                    <div class="rtt-item" data-single="4.png"><img class="rtt-thumb" src="/static/READYTOTEST/4.png" alt="Test4"><span>Test4.png</span></div>
+                    <div class="rtt-item" data-single="5.png"><img class="rtt-thumb" src="/static/READYTOTEST/5.png" alt="Test5"><span>Test5.png</span></div>
+                    <div class="rtt-item" data-single="6.png"><img class="rtt-thumb" src="/static/READYTOTEST/6.png" alt="Test6"><span>Test6.png</span></div>
+                </div>
+            </div>
+
+            <!-- Datasheet Download Button -->
+            <div class="datasheet-download-container">
+                <button class="btn-datasheet-download" id="btnDatasheetDownload" type="button">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    <span data-i18n="datasheet">Datasheet</span>
+                    <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="datasheet-dropdown" id="datasheetDropdown">
+                    <div class="dropdown-header" data-i18n="download.datasheet">Download Datasheet</div>
+                    <div class="dropdown-item" data-type="en">
+                        <div class="dropdown-item-left">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            <div class="dropdown-item-info">
+                                <span class="dropdown-item-title" data-i18n="english.datasheet">English Datasheet</span>
+                                <span class="dropdown-item-desc">PDF Document</span>
+                            </div>
+                        </div>
+                        <button class="btn-help" data-help="datasheet" data-type="en" type="button" title="Learn more">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" style="overflow: visible;">
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="dropdown-item" data-type="tr">
+                        <div class="dropdown-item-left">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            <div class="dropdown-item-info">
+                                <span class="dropdown-item-title" data-i18n="turkish.datasheet">Turkish Datasheet</span>
+                                <span class="dropdown-item-desc">PDF Doküman</span>
+                            </div>
+                        </div>
+                        <button class="btn-help" data-help="datasheet" data-type="tr" type="button" title="Learn more">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" style="overflow: visible;">
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Language Dropdown -->
+            <div class="lang-dropdown-container">
+                <button class="btn-lang-dropdown" id="btnLangDropdown" type="button">
+                    <img src="/static/images/tr.svg" alt="Language" class="lang-flag" id="currentLangFlag">
+                    <span id="currentLangText">TR</span>
+                    <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-dropdown-item" data-lang="en">
+                        <img src="/static/images/uk.svg" alt="English" class="lang-flag">
+                        <span data-i18n="english">English</span>
+                        <svg class="lang-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="lang-dropdown-item" data-lang="tr">
+                        <img src="/static/images/tr.svg" alt="Turkish" class="lang-flag">
+                        <span data-i18n="turkish">Türkçe</span>
+                        <svg class="lang-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <span class="version-badge">v3.0.0</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header Text -->
+        <div class="page-header">
+            <h2 data-i18n="page.title">Image Quality Control Analysis</h2>
+            <p data-i18n="page.subtitle">Upload reference and sample images to begin quality control analysis</p>
+        </div>
+
+        <!-- Split Image Viewer -->
+        <div class="image-viewer-container">
+            <div class="image-viewer">
+                <!-- Reference Image Panel -->
+                <div class="viewer-panel">
+                    <div class="panel-header">
+                        <span class="panel-title"><span class="dot ref"></span><span
+                                data-i18n="reference.image">Reference Image</span></span>
+                        <span class="panel-info-name" id="refInfoName"></span>
+                        <span class="panel-info-right">
+                            <span class="panel-info-dimensions" id="refInfo"></span>
+                            <button class="btn-image-action btn-replace-image" id="btnReplaceRef" type="button" title="Replace image" style="display:none;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="1 4 1 10 7 10"></polyline>
+                                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                                </svg>
+                            </button>
+                            <button class="btn-image-action btn-delete-image" id="btnDeleteRef" type="button" title="Delete image" style="display:none;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                </svg>
+                            </button>
+                            <span class="panel-info-empty" id="refInfoEmpty" data-i18n="no.image">No image</span>
+                        </span>
+                    </div>
+                    <div class="panel-content" id="refPanelContent">
+                        <input type="file" id="refInput" accept="image/*" style="display:none;">
+                        <div class="upload-placeholder" id="refPlaceholder">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            <span data-i18n="reference.image">Reference Image</span>
+                            <div class="import-options">
+                                <button type="button" class="import-btn import-btn-file" onclick="document.getElementById('refInput').click()">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                    <span data-i18n="cam.import.computer">Import from Computer</span>
+                                </button>
+                                <button type="button" class="import-btn import-btn-camera" onclick="openCameraStudio('reference')">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                                    <span data-i18n="cam.import.camera">Import from Camera</span>
+                                </button>
+                            </div>
+                        </div>
+                        <img id="refPreview" class="image-preview" style="display:none;">
+                        <div class="shape-overlay region-overlay" id="refOverlay"></div>
+                    </div>
+                </div>
+
+                <!-- Sample Image Panel -->
+                <div class="viewer-panel">
+                    <div class="panel-header">
+                        <span class="panel-title"><span class="dot sample"></span><span data-i18n="sample.image">Sample
+                                Image</span></span>
+                        <span class="panel-info-name" id="testInfoName"></span>
+                        <span class="panel-info-right">
+                            <span class="panel-info-dimensions" id="testInfo"></span>
+                            <button class="btn-image-action btn-replace-image" id="btnReplaceTest" type="button" title="Replace image" style="display:none;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="1 4 1 10 7 10"></polyline>
+                                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                                </svg>
+                            </button>
+                            <button class="btn-image-action btn-delete-image" id="btnDeleteTest" type="button" title="Delete image" style="display:none;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                </svg>
+                            </button>
+                            <span class="panel-info-empty" id="testInfoEmpty" data-i18n="no.image">No image</span>
+                        </span>
+                    </div>
+                    <div class="panel-content" id="testPanelContent">
+                        <input type="file" id="testInput" accept="image/*" style="display:none;">
+                        <div class="upload-placeholder" id="testPlaceholder">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            <span data-i18n="sample.image">Sample Image</span>
+                            <div class="import-options">
+                                <button type="button" class="import-btn import-btn-file" onclick="document.getElementById('testInput').click()">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                    <span data-i18n="cam.import.computer">Import from Computer</span>
+                                </button>
+                                <button type="button" class="import-btn import-btn-camera" onclick="openCameraStudio('sample')">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                                    <span data-i18n="cam.import.camera">Import from Camera</span>
+                                </button>
+                            </div>
+                        </div>
+                        <img id="testPreview" class="image-preview" style="display:none;">
+                        <div class="shape-overlay region-overlay" id="testOverlay"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls Section -->
+        <div class="controls-section">
+            <!-- Shape Controls -->
+            <div class="shape-controls">
+                <div class="shape-options">
+                    <label class="shape-option" id="singleImageModeOption">
+                        <input type="checkbox" id="singleImageModeToggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <circle cx="12" cy="12" r="5"></circle>
+                        </svg>
+                        <span data-i18n="single.image.mode">Single Image Mode</span>
+                    </label>
+
+                    <label class="shape-option" id="fullImageOption">
+                        <input type="checkbox" id="processFullImage" checked>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="2"></rect>
+                            <path d="M2 12h20M12 2v20"></path>
+                        </svg>
+                        <span data-i18n="process.entire.image">Process Entire Image</span>
+                    </label>
+                </div>
+
+                <div class="size-slider-container" id="sizeSliderContainer">
+                    <!-- Shape Type Dropdown -->
+                    <div class="shape-dropdown-wrapper">
+                        <label data-i18n="region.shape">Selection Shape:</label>
+                        <div class="shape-dropdown">
+                            <button type="button" class="shape-dropdown-btn" id="shapeDropdownBtn">
+                                <svg class="shape-icon" id="shapeDropdownIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                </svg>
+                                <span class="shape-label" id="shapeDropdownLabel" data-i18n="circle">Circle</span>
+                                <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                            <div class="shape-dropdown-menu" id="shapeDropdownMenu">
+                                <div class="shape-dropdown-item active" data-shape="circle">
+                                    <input type="radio" name="shapeType" value="circle" id="shapeRadioCircle" checked>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                    </svg>
+                                    <span data-i18n="circle">Circle</span>
+                                    <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="shape-dropdown-item" data-shape="square">
+                                    <input type="radio" name="shapeType" value="square" id="shapeRadioSquare">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                    </svg>
+                                    <span data-i18n="square">Square</span>
+                                    <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="shape-dropdown-item" data-shape="rectangle">
+                                    <input type="radio" name="shapeType" value="rectangle" id="shapeRadioRectangle">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                                    </svg>
+                                    <span data-i18n="rectangle">Rectangle</span>
+                                    <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="shape-dropdown-item" data-shape="pen">
+                                    <input type="radio" name="shapeType" value="pen" id="shapeRadioPen">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                                        <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                                        <path d="M2 2l7.586 7.586"></path>
+                                        <circle cx="11" cy="11" r="2"></circle>
+                                    </svg>
+                                    <span data-i18n="pen">Pen (Freehand)</span>
+                                    <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Size Slider (Width) -->
+                    <div class="inline-size-group" id="inlineWidthGroup">
+                        <label id="shapeSizeLabel" data-i18n="size.px">Size (px):</label>
+                        <input type="range" id="shapeSize" min="20" max="500" value="100">
+                        <span class="size-value" id="sizeValue">100 <span data-i18n="px">px</span></span>
+                    </div>
+                    <!-- Height Slider (Rectangle only) -->
+                    <div class="inline-size-group" id="inlineHeightGroup" style="display:none;">
+                        <label data-i18n="height.px">Height (px):</label>
+                        <input type="range" id="shapeHeight" min="20" max="500" value="100">
+                        <span class="size-value" id="heightValue">100 <span data-i18n="px">px</span></span>
+                    </div>
+                    <span class="hint-icon" id="regionHintIcon" tabindex="0">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="2" style="overflow: visible;">
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        <div class="hint-tooltip" data-i18n-html="region.hint.html">Click on image to selection -
+                            Drag to
+                            move - Scroll to resize</div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Main Buttons -->
+            <div class="main-buttons">
+                <button class="btn btn-outline" id="btnAdvancedSettings" type="button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83">
+                        </path>
+                    </svg>
+                    <span data-i18n="advanced.settings">Advanced Settings</span>
+                </button>
+
+                <button class="btn btn-primary" id="btnStartProcessing" type="button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <span data-i18n="start.processing">Start Processing</span>
+                </button>
+
+                <button class="btn btn-danger" id="btnDeleteImages" type="button" disabled>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    <span data-i18n="delete.images">Delete Images</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Section (Hidden by default) -->
+        <div class="results-section" id="resultsSection" style="display:none;">
+            <div class="results-header">
+                <h2 data-i18n="analysis.results">Analysis Results</h2>
+                <div class="decision-badge" id="decisionBadge">PENDING</div>
+            </div>
+
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="card-header">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="6"></circle>
+                            <circle cx="12" cy="12" r="2"></circle>
+                        </svg>
+                        <span data-i18n="color.score">Color Score</span>
+                    </div>
+                    <div class="card-value" id="colorScore">--</div>
+                    <div class="card-bar">
+                        <div class="bar-fill" id="colorBar"></div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="card-header">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span data-i18n="pattern.score">Pattern Score</span>
+                    </div>
+                    <div class="card-value" id="patternScore">--</div>
+                    <div class="card-bar">
+                        <div class="bar-fill" id="patternBar"></div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="card-header">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+                            </path>
+                        </svg>
+                        <span data-i18n="overall.score">Overall Score</span>
+                    </div>
+                    <div class="card-value" id="overallScore">--</div>
+                    <div class="card-bar">
+                        <div class="bar-fill" id="overallBar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-actions">
+                <div class="btn-group split-btn-group" id="downloadButtonGroup">
+                    <button class="btn btn-success main-btn" id="btnDownload" type="button" disabled>
+                        <div class="btn-content-col">
+                            <div class="btn-row">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                <span data-i18n="download.report">Download Report (PDF)</span>
+                            </div>
+                            <span class="btn-size-label" id="mainReportSize"></span>
+                        </div>
+                    </button>
+                    <button class="btn btn-success dropdown-toggle" id="btnDownloadDropdown" type="button" disabled>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu download-dropdown" id="downloadDropdownMenu">
+                        <a href="#" class="dropdown-item" id="btnDownloadColor">
+                            <div class="dropdown-item-content">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" style="margin-right:8px; color:#27AE60;">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                </svg>
+                                <span>Download Color Unit report</span>
+                            </div>
+                            <span class="dropdown-size-label" id="colorReportSize"></span>
+                        </a>
+                        <a href="#" class="dropdown-item" id="btnDownloadPattern">
+                            <div class="dropdown-item-content">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" style="margin-right:8px; color:#3498DB;">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                </svg>
+                                <span>Download Pattern Unit report</span>
+                            </div>
+                            <span class="dropdown-size-label" id="patternReportSize"></span>
+                        </a>
+                    </div>
+                </div>
+                <div id="reportFileSize" class="file-size-display"></div>
+                <button class="btn btn-secondary btn-sm" id="btnDownloadSettings" type="button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    <span data-i18n="download.settings">Download Settings</span>
+                </button>
+            </div>
+
+            <!-- Detailed Results Panel (populated by JS) -->
+            <div id="webResultsDetail" class="web-results-detail"></div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay (Hidden by default) -->
+    <div class="loading-overlay" id="loadingOverlay" style="display:none;">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h3 id="loadingTitle" data-i18n="processing">Processing...</h3>
+            <p id="loadingText" data-i18n="please.wait">Please wait</p>
+        </div>
+    </div>
+
+    <div class="thesis-desktop-overlay" id="thesisDesktopOverlay" style="display:none;">
+        <div class="thesis-desktop-dialog" role="dialog" aria-modal="true" aria-labelledby="thesisDesktopTitle">
+            <button class="thesis-desktop-close" id="closeThesisDesktopOverlay" type="button" aria-label="Close">&times;</button>
+            <div class="thesis-desktop-brand">
+                <div class="thesis-desktop-logo-wrap">
+                    <img src="/static/images/logo_square_with_name_1024x1024.png" alt="SpectraMatch" class="thesis-desktop-logo">
+                </div>
+                <span class="thesis-desktop-badge" data-i18n="thesis.web.modal.badge">Thesis Edition</span>
+            </div>
+            <h3 class="thesis-desktop-title" id="thesisDesktopTitle" data-i18n="thesis.web.modal.title">SpectraMatchTez3.0.0</h3>
+            <p class="thesis-desktop-text" data-i18n-html="thesis.web.modal.body">This web build is the <strong>SpectraMatchTez3.0.0</strong> thesis edition. For the complete workflow, please download the desktop version.</p>
+            <a class="thesis-desktop-download" href="/static/downloads/SpectraMatch_Setup_3.0.0.exe" download>
+                <span data-i18n="thesis.web.modal.download">Download Desktop</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Point Selector Modal (Hidden by default) -->
+    <div class="point-selector-modal" id="pointSelectorModal" style="display:none;">
+        <div class="point-selector-content">
+            <div class="point-selector-header">
+                <div class="point-selector-header-left">
+                    <!-- New Back Button -->
+                    <button class="point-selector-back-btn" id="btnBackFromPointSelector" type="button"
+                        onclick="saveAndClosePointSelector()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M19 12H5"></path>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        <span>Back</span>
+                    </button>
+                    <img src="/static/images/logo_square_with_name_1024x1024.png" alt="Logo"
+                        class="point-selector-logo">
+                    <div>
+                        <h2 data-i18n="select.sample.points">Select Sample Points</h2>
+                        <span class="point-selector-subtitle" data-i18n="click.to.select.points">Click on the images to
+                            select measurement points for color analysis</span>
+                    </div>
+                </div>
+                <button class="point-selector-close" id="closePointSelector" type="button">&times;</button>
+            </div>
+
+            <div class="point-selector-counter">
+                <span data-i18n="selected">Selected</span>:
+                <span id="pointCountCurrent">0</span> / <span id="pointCountTotal">5</span>
+                <div class="point-selector-progress">
+                    <div class="point-selector-progress-fill" id="pointProgressFill"></div>
+                </div>
+            </div>
+
+            <div class="point-selector-images">
+                <div class="point-selector-image-panel">
+                    <h3 data-i18n="reference.image">Reference Image</h3>
+                    <div class="point-selector-image-container" id="pointSelectorRefContainer">
+                        <img id="pointSelectorRefImage" alt="Reference">
+                        <canvas id="pointSelectorRefCanvas"></canvas>
+                        <div class="point-selector-roi-overlay" id="pointSelectorRefROI"></div>
+                    </div>
+                </div>
+                <div class="point-selector-image-panel">
+                    <h3 data-i18n="sample.image">Sample Image</h3>
+                    <div class="point-selector-image-container" id="pointSelectorSampleContainer">
+                        <img id="pointSelectorSampleImage" alt="Sample">
+                        <canvas id="pointSelectorSampleCanvas"></canvas>
+                        <div class="point-selector-roi-overlay" id="pointSelectorSampleROI"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="point-selector-hint" id="pointSelectorHint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 16v-4m0-4h.01"></path>
+                </svg>
+                <span data-i18n="click.anywhere.hint">Click anywhere on either image to place a sample point. Points are
+                    mirrored on both images.</span>
+            </div>
+
+            <div class="point-selector-actions">
+                <button type="button" class="btn-secondary" id="btnUndoPoint" onclick="undoLastPoint()" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M3 7v6h6"></path>
+                        <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6.36 2.64L3 13"></path>
+                    </svg>
+                    <span data-i18n="undo.last">Undo Last</span>
+                </button>
+                <button type="button" class="btn-secondary" id="btnClearAllPoints" onclick="clearAllPoints()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2">
+                        </path>
+                    </svg>
+                    <span data-i18n="clear.all">Clear All</span>
+                </button>
+
+                <!-- New Complete Randomly Button in Modal -->
+                <button type="button" class="btn-complete-randomly" id="btnModalCompleteRandomly"
+                    onclick="completeRandomly()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                        </path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                    <span>Complete Randomly</span>
+                </button>
+
+                <button type="button" class="btn-primary" id="btnConfirmPoints" onclick="confirmPoints()" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M20 6L9 17l-5-5"></path>
+                    </svg>
+                    <span data-i18n="confirm.selection">Confirm Selection</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal" style="display:none;">
+        <div class="modal modal-wide">
+            <div class="modal-header">
+                <div class="modal-header-left" style="display: flex; align-items: center; gap: 16px;">
+                    <div class="modal-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24"
+                            height="24">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path
+                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 data-i18n="analysis.configuration">Analysis Configuration</h2>
+                        <span class="modal-subtitle" data-i18n="fine.tune.parameters">Fine-tune quality control parameters</span>
+                    </div>
+                </div>
+                <button class="modal-close" id="closeModal" type="button">&times;</button>
+            </div>
+
+            <div class="modal-tabs">
+                <button class="tab active" data-tab="general" type="button"
+                    onclick="switchSettingsTab('general')" data-i18n="general">General</button>
+                <button class="tab" data-tab="color" type="button" onclick="switchSettingsTab('color')" data-i18n="color.unit">Color
+                    Unit</button>
+                <button class="tab" data-tab="pattern" type="button" onclick="switchSettingsTab('pattern')" data-i18n="pattern.unit">Pattern
+                    Unit</button>
+                <button class="tab" data-tab="single" type="button" onclick="switchSettingsTab('single')"
+                    style="display:none;" id="tabBtnSingle" data-i18n="single.image.unit">Single Image Unit</button>
+                <button class="tab" data-tab="illuminant" type="button"
+                    onclick="switchSettingsTab('illuminant')" data-i18n="illuminant.settings">Illuminant
+                    Settings</button>
+                <button class="tab" data-tab="reports" type="button" onclick="switchSettingsTab('reports')" data-i18n="report.sections">Report
+                    Sections</button>
+            </div>
+
+            <div class="modal-body">
+                <!-- General Tab -->
+                <div class="tab-content active" id="tab-general">
+                    <div class="settings-group">
+                        <div class="settings-group-header">
+                            <h3 data-i18n="operator.information">Operator Information</h3>
+                        </div>
+                        <p class="settings-group-desc" data-i18n="details.shown.report">Details shown on the generated report.</p>
+
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label data-i18n="operator.name.label">Operator Name</label>
+                                <small data-i18n="operator.name.desc">Name of the person conducting analysis</small>
+                            </div>
+                            <input type="text" id="operator_name" class="form-control" value="Operator"
+                                style="width: 200px; text-align: left;">
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label data-i18n="timezone.offset">Timezone Offset (UTC)</label>
+                                <small data-i18n="timezone.offset.desc">Hours to adjust report timestamp</small>
+                            </div>
+                            <select id="timezone_offset" class="form-control" style="width: 120px;">
+                                <option value="-12">UTC-12</option>
+                                <option value="-11">UTC-11</option>
+                                <option value="-10">UTC-10</option>
+                                <option value="-9">UTC-9</option>
+                                <option value="-8">UTC-8</option>
+                                <option value="-7">UTC-7</option>
+                                <option value="-6">UTC-6</option>
+                                <option value="-5">UTC-5</option>
+                                <option value="-4">UTC-4</option>
+                                <option value="-3">UTC-3</option>
+                                <option value="-2">UTC-2</option>
+                                <option value="-1">UTC-1</option>
+                                <option value="0">UTC+0</option>
+                                <option value="1">UTC+1</option>
+                                <option value="2">UTC+2</option>
+                                <option value="3">UTC+3</option>
+                                <option value="4">UTC+4</option>
+                                <option value="5">UTC+5</option>
+                                <option value="5.5">UTC+5:30</option>
+                                <option value="6">UTC+6</option>
+                                <option value="7">UTC+7</option>
+                                <option value="8">UTC+8</option>
+                                <option value="9">UTC+9</option>
+                                <option value="10">UTC+10</option>
+                                <option value="11">UTC+11</option>
+                                <option value="12">UTC+12</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label data-i18n="report.language">Report Language</label>
+                                <small data-i18n="report.language.desc">Language used in generated PDF reports</small>
+                            </div>
+                            <div class="report-lang-dropdown-container">
+                                <button class="btn-report-lang-dropdown" id="btnReportLangDropdown" type="button">
+                                    <img src="/static/images/tr.svg" alt="Language" class="report-lang-flag" id="currentReportLangFlag">
+                                    <span id="currentReportLangText">Türkçe</span>
+                                    <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </button>
+                                <div class="report-lang-dropdown" id="reportLangDropdown">
+                                    <div class="report-lang-dropdown-item" data-lang="en">
+                                        <img src="/static/images/uk.svg" alt="English" class="report-lang-flag">
+                                        <span>English</span>
+                                        <svg class="lang-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </div>
+                                    <div class="report-lang-dropdown-item active" data-lang="tr">
+                                        <img src="/static/images/tr.svg" alt="Turkish" class="report-lang-flag">
+                                        <span>Türkçe</span>
+                                        <svg class="lang-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Image Alignment Mode (v3.0.0) -->
+                    <div class="settings-group alignment-mode-section">
+                        <div class="settings-group-header">
+                            <h3 data-i18n="align.section.title">Image Alignment Mode</h3>
+                        </div>
+                        <p class="settings-group-desc" data-i18n="align.section.desc">Select preprocessing technique for image alignment before comparison analysis.</p>
+
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label data-i18n="align.mode.label">Alignment Technique</label>
+                                <small data-i18n="align.mode.desc">Choose how images are aligned before pixel comparison</small>
+                            </div>
+                            <div class="alignment-mode-row">
+                                <select id="alignment_mode" class="form-control alignment-mode-select">
+                                    <option value="direct" selected data-i18n="align.name.direct">Direct Pixel</option>
+                                    <option value="ai_smart_match" data-i18n="align.name.ai_smart_match">AI SmartMatch</option>
+                                    <option value="bestch" data-i18n="align.name.bestch">BESTCH</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label data-i18n="align.studio.label">SPACTRA Studio</label>
+                                <small data-i18n="align.studio.desc">Test and compare techniques visually before applying</small>
+                            </div>
+                            <button type="button" class="btn-alignment-studio" id="btnAlignmentStudio" onclick="openAlignmentStudio()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                                <span data-i18n="align.open.studio">Open Studio</span>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <!-- Selection Region Settings -->
+                    <div class="settings-group">
+                        <div class="settings-group-header">
+                            <h3 data-i18n="selection.region">Selection Region</h3>
+                        </div>
+                        <p class="settings-group-desc" data-i18n="selection.region.desc">Define the shape and dimensions of the analysis region.</p>
+
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label data-i18n="region.shape.label">Region Shape</label>
+                                <small data-i18n="region.shape.desc">Select the shape for region selection</small>
+                            </div>
+                            <div class="modal-shape-selector">
+                                <label class="modal-shape-option active" id="modalCircleOption">
+                                    <input type="radio" name="modalShapeType" value="circle" checked>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                    </svg>
+                                    <span data-i18n="circle">Circle</span>
+                                </label>
+
+                                <label class="modal-shape-option" id="modalSquareOption">
+                                    <input type="radio" name="modalShapeType" value="square">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                    </svg>
+                                    <span data-i18n="square">Square</span>
+                                </label>
+
+                                <label class="modal-shape-option" id="modalRectangleOption">
+                                    <input type="radio" name="modalShapeType" value="rectangle">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                                    </svg>
+                                    <span data-i18n="rectangle">Rectangle</span>
+                                </label>
+
+                                <label class="modal-shape-option" id="modalPenOption">
+                                    <input type="radio" name="modalShapeType" value="pen">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                                        <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                                        <path d="M2 2l7.586 7.586"></path>
+                                        <circle cx="11" cy="11" r="2"></circle>
+                                    </svg>
+                                    <span data-i18n="pen">Pen (Freehand)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label data-i18n="dimensions">Dimensions</label>
+                                <small data-i18n="dimensions.desc">Specify region size in pixels</small>
+                            </div>
+                            <div class="modal-dimension-inputs">
+                                <!-- Circle: Diameter -->
+                                <div class="modal-dimension-group" id="modalCircleDimension">
+                                    <label class="dimension-label" data-i18n="diameter">Diameter (px)</label>
+                                    <input type="number" id="modalCircleDiameter" class="dimension-input" min="10"
+                                        max="500" value="100" step="1">
+                                </div>
+
+                                <!-- Square: Side Length -->
+                                <div class="modal-dimension-group" id="modalSquareDimension" style="display: none;">
+                                    <label class="dimension-label">Side Length (px)</label>
+                                    <input type="number" id="modalSquareSide" class="dimension-input" min="10" max="500"
+                                        value="100" step="1">
+                                </div>
+
+                                <!-- Rectangle: Width and Height -->
+                                <div class="modal-dimension-group" id="modalRectangleDimension" style="display: none;">
+                                    <div style="display: flex; gap: 12px; align-items: flex-end;">
+                                        <div style="flex: 1;">
+                                            <label class="dimension-label">Width (px)</label>
+                                            <input type="number" id="modalRectangleWidth" class="dimension-input"
+                                                min="10" max="500" value="150" step="1" style="max-width: none; width: 100%;">
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <label class="dimension-label">Height (px)</label>
+                                            <input type="number" id="modalRectangleHeight" class="dimension-input"
+                                                min="10" max="500" value="100" step="1" style="max-width: none; width: 100%;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Pen: No dimensions (freehand) -->
+                                <div class="modal-dimension-group" id="modalPenDimension" style="display: none;">
+                                    <div class="pen-dimension-notice">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;opacity:0.7;">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                        </svg>
+                                        <span data-i18n="pen.draw.hint">Click and drag on the image to draw a freehand region</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Single Image Unit Tab -->
+                <div class="tab-content" id="tab-single" style="display: none;">
+                    <div class="settings-group">
+                        <div class="settings-group-header">
+                            <h3 data-i18n="single.image.config">Single Image Configuration</h3>
+                        </div>
+                        <p class="settings-group-desc" data-i18n="single.image.config.desc">Configure analysis implementation for Single Image Mode.</p>
+
+                        <!-- Sampling Reuse -->
+                        <div class="settings-group sampling-unit-container" id="singleSamplingContainer">
+                            <div class="settings-group-header">
+                                <h3 data-i18n="sampling.configuration">Sampling Configuration</h3>
+                            </div>
+                            <div class="sampling-controls-wrapper">
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <label data-i18n="sampling.count">Sampling Count</label>
+                                        <small data-i18n="points.to.measure">Points to measure</small>
+                                    </div>
+                                    <input type="number" id="single_region_count" class="form-control" value="5" min="1"
+                                        max="100">
+                                </div>
+
+                                <div class="sampling-actions-row">
+                                    <button type="button" class="btn-select-points" id="btnSelectPointsSingle"
+                                        onclick="openPointSelector('single')">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <path d="M12 16v-4m0-4h.01"></path>
+                                        </svg>
+                                        <span data-i18n="select.points">Select Points</span>
+                                    </button>
+
+                                    <button type="button" class="btn-complete-randomly" id="btnCompleteRandomlySingle"
+                                        onclick="completeRandomly('single')">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path
+                                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                            </path>
+                                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                        </svg>
+                                        <span data-i18n="complete.rest.randomly">Complete the rest randomly</span>
+                                    </button>
+                                </div>
+
+                                <!-- Progress Bar Container (Always Visible) -->
+                                <div class="sampling-progress-container">
+                                    <div class="progress-info">
+                                        <span><span data-i18n="selected.label">Selected</span>: <strong id="totalSelectedCountSingle">0</strong> / <span
+                                                id="targetCountDisplaySingle">5</span></span>
+                                        <span id="samplingStatusTextSingle" data-i18n="incomplete">Incomplete</span>
+                                    </div>
+                                    <div class="progress-bar-track">
+                                        <div id="progressGreenSingle" style="width: 0%;"></div>
+                                        <div id="progressYellowSingle" style="width: 0%;"></div>
+                                    </div>
+                                    <div class="progress-legend">
+                                        <div class="legend-item">
+                                            <div class="dot manual"></div> <span data-i18n="manual">Manual</span> <span
+                                                id="manualCountValSingle">0</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <div class="dot random"></div> <span data-i18n="random">Random</span> <span
+                                                id="randomCountValSingle">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Coordinate Entry (Single Image) -->
+                                <div class="coord-entry-block">
+                                    <div class="coord-entry-header">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                                        <span data-i18n="coord.entry.title">Add Point by Coordinates</span>
+                                    </div>
+                                    <div class="coord-entry-form">
+                                        <div class="coord-input-group">
+                                            <label data-i18n="coord.x">X</label>
+                                            <input type="number" id="coordXSingle" class="coord-input" min="0" placeholder="0">
+                                        </div>
+                                        <div class="coord-input-group">
+                                            <label data-i18n="coord.y">Y</label>
+                                            <input type="number" id="coordYSingle" class="coord-input" min="0" placeholder="0">
+                                        </div>
+                                        <button type="button" class="coord-add-btn" onclick="addCoordPoint('single')">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                            <span data-i18n="coord.add">Add</span>
+                                        </button>
+                                    </div>
+                                    <div class="coord-feedback" id="coordFeedbackSingle"></div>
+                                    <div class="coord-points-list-wrapper">
+                                        <div class="coord-points-header">
+                                            <span class="coord-points-title" data-i18n="coord.added.points">Entered Points</span>
+                                            <button type="button" class="coord-clear-btn" id="coordClearAllSingle" onclick="clearCoordPoints('single')" style="display:none;">
+                                                <span data-i18n="coord.clear.all">Clear All</span>
+                                            </button>
+                                        </div>
+                                        <div class="coord-points-list" id="coordPointsListSingle">
+                                            <div class="coord-empty-state" data-i18n="coord.no.points">No coordinate points added yet.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Isolate Report Sections for Single Image -->
+                        <div class="settings-group">
+                            <div class="settings-group-header">
+                                <h3 data-i18n="report.sections">Report Sections</h3>
+                            </div>
+                            <p class="settings-group-desc" data-i18n="single.report.sections.desc">Select sections to include in the Single Image report.</p>
+                            <div class="checklist-grid" id="singleReportSectionsGrid">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Color Unit Tab -->
+                <div class="tab-content" id="tab-color" style="display: none;">
+                    <div class="settings-group">
+                        <div class="settings-group-header">
+                            <h3 data-i18n="color.scoring.method">Color Scoring Method</h3>
+                        </div>
+                        <p class="settings-group-desc" data-i18n="color.scoring.method.desc">Select which metric determines the Color Score, Pass/Conditional/Fail decision, and report cover display.</p>
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label data-i18n="scoring.basis">Scoring Basis</label>
+                                <small data-i18n="scoring.basis.desc">Determines the primary color score</small>
+                            </div>
+                            <select id="color_scoring_method" class="form-control" style="width: 180px;">
+                                <option value="delta_e" selected>ΔE₀₀</option>
+                                <option value="csi">CSI</option>
+                                <option value="csi2000">CSI2000</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <div class="settings-group-header">
+                            <h3 data-i18n-html="thresholds.delta.e">Thresholds (ΔE<sub>00</sub>)</h3>
+                        </div>
+                        <p class="settings-group-desc" data-i18n="define.pass.fail">Define pass/fail criteria for color difference.</p>
+
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label data-i18n="pass.threshold">Pass Threshold</label>
+                                <small data-i18n="values.below.accepted">Values below this are accepted</small>
+                            </div>
+                            <input type="number" id="color_pass_thresh" class="form-control" value="2.0" step="0.1" min="0.1" max="20.0">
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label data-i18n="conditional.threshold">Conditional Threshold</label>
+                                <small data-i18n="values.below.warning">Values below this are warning (if above pass)</small>
+                            </div>
+                            <input type="number" id="color_cond_thresh" class="form-control" value="5.0" step="0.1" min="0.1" max="20.0">
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label data-i18n="global.acceptance">Global Acceptance</label>
+                                <small data-i18n="overall.color.score">Overall image color score threshold</small>
+                            </div>
+                            <input type="number" id="color_global_thresh" class="form-control" value="5.0" step="0.1" min="0.1" max="20.0">
+                        </div>
+
+                        <div class="settings-group-header" style="margin-top: 20px;">
+                            <h3 data-i18n="csi.thresholds">CSI Thresholds</h3>
+                        </div>
+                        <p class="settings-group-desc" data-i18n="csi.thresholds.desc">CSI uses full-image pixel-by-pixel ΔE₀₀ across the reference and sample images.</p>
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label data-i18n="csi.good.threshold">CSI Good Threshold</label>
+                            </div>
+                            <input type="number" id="csi_good_thresh" class="form-control" value="2.0" step="0.1" min="0" max="100.0">
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label data-i18n="csi.warning.threshold">CSI Warning Threshold</label>
+                            </div>
+                            <input type="number" id="csi_warn_thresh" class="form-control" value="5.0" step="0.1" min="0" max="100.0">
+                        </div>
+
+                        <!-- Lab* Thresholds -->
+                        <div class="settings-group-header" style="margin-top: 20px;">
+                            <h3 data-i18n="lab.thresholds">Lab* Thresholds</h3>
+                        </div>
+                        <p class="settings-group-desc" data-i18n="lab.thresholds.desc">Define component-level thresholds for Lab* quality assessment.</p>
+                        <div class="setting-row">
+                            <div class="setting-label"><label data-i18n="lab.thresh.dl">?L* Threshold</label><small data-i18n="lab.thresh.dl.desc">Lightness tolerance</small></div>
+                            <input type="number" id="lab_thresh_dl" class="form-control" value="1.0" step="0.1" min="0.1" max="10.0" style="width: 80px;">
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-label"><label data-i18n="lab.thresh.da">?a* Threshold</label><small data-i18n="lab.thresh.da.desc">Red-green axis tolerance</small></div>
+                            <input type="number" id="lab_thresh_da" class="form-control" value="1.0" step="0.1" min="0.1" max="10.0" style="width: 80px;">
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-label"><label data-i18n="lab.thresh.db">?b* Threshold</label><small data-i18n="lab.thresh.db.desc">Yellow-blue axis tolerance</small></div>
+                            <input type="number" id="lab_thresh_db" class="form-control" value="1.0" step="0.1" min="0.1" max="10.0" style="width: 80px;">
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-label"><label data-i18n="lab.thresh.mag">Magnitude Threshold</label><small data-i18n="lab.thresh.mag.desc">Combined ?Lab vector magnitude</small></div>
+                            <input type="number" id="lab_thresh_mag" class="form-control" value="2.0" step="0.1" min="0.1" max="20.0" style="width: 80px;">
+                        </div>
+
+                        <!-- Sampling Section (Standalone Unit) -->
+                        <div class="settings-group sampling-unit-container" id="samplingUnitContainer">
+                            <div class="settings-group-header">
+                                <h3 data-i18n="sampling.configuration">Sampling Configuration</h3>
+                            </div>
+                            <p class="settings-group-desc" data-i18n="sampling.config.desc">Configure how analysis points are selected for Color
+                                Analysis.</p>
+
+                            <div class="sampling-controls-wrapper">
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <label data-i18n="sampling.count">Sampling Count</label>
+                                        <small data-i18n="target.points.max">Target number of points (max 100)</small>
+                                    </div>
+                                    <input type="number" id="region_count" class="form-control" value="5" min="1"
+                                        max="100">
+                                </div>
+
+                                <div class="sampling-actions-row">
+                                    <button type="button" class="btn-select-points" id="btnSelectPoints"
+                                        onclick="openPointSelector()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <path d="M12 16v-4m0-4h.01"></path>
+                                        </svg>
+                                        <span data-i18n="select.points">Select Points</span>
+                                    </button>
+
+                                    <button type="button" class="btn-complete-randomly" id="btnCompleteRandomly"
+                                        onclick="completeRandomly()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path
+                                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                            </path>
+                                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                        </svg>
+                                        <span data-i18n="complete.rest.randomly">Complete the rest randomly</span>
+                                    </button>
+                                </div>
+
+                                <!-- Progress Bar Container (Always Visible) -->
+                                <div class="sampling-progress-container">
+                                    <div class="progress-info">
+                                        <span>Selected: <strong id="totalSelectedCount">0</strong> / <span
+                                                id="targetCountDisplay">5</span></span>
+                                        <span id="samplingStatusText">Incomplete</span>
+                                    </div>
+                                    <div class="progress-bar-track">
+                                        <div id="progressGreen" style="width: 0%;"></div>
+                                        <div id="progressYellow" style="width: 0%;"></div>
+                                    </div>
+                                    <div class="progress-legend">
+                                        <div class="legend-item">
+                                            <div class="dot manual"></div> Manual <span id="manualCountVal">0</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <div class="dot random"></div> Random <span id="randomCountVal">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Coordinate Entry -->
+                                <div class="coord-entry-block">
+                                    <div class="coord-entry-header">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                                        <span data-i18n="coord.entry.title">Add Point by Coordinates</span>
+                                    </div>
+                                    <div class="coord-entry-form">
+                                        <div class="coord-input-group">
+                                            <label data-i18n="coord.x">X</label>
+                                            <input type="number" id="coordX" class="coord-input" min="0" placeholder="0">
+                                        </div>
+                                        <div class="coord-input-group">
+                                            <label data-i18n="coord.y">Y</label>
+                                            <input type="number" id="coordY" class="coord-input" min="0" placeholder="0">
+                                        </div>
+                                        <button type="button" class="coord-add-btn" onclick="addCoordPoint()">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                            <span data-i18n="coord.add">Add</span>
+                                        </button>
+                                    </div>
+                                    <div class="coord-feedback" id="coordFeedback"></div>
+                                    <div class="coord-points-list-wrapper">
+                                        <div class="coord-points-header">
+                                            <span class="coord-points-title" data-i18n="coord.added.points">Entered Points</span>
+                                            <button type="button" class="coord-clear-btn" id="coordClearAll" onclick="clearCoordPoints()" style="display:none;">
+                                                <span data-i18n="coord.clear.all">Clear All</span>
+                                            </button>
+                                        </div>
+                                        <div class="coord-points-list" id="coordPointsList">
+                                            <div class="coord-empty-state" data-i18n="coord.no.points">No coordinate points added yet.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <!-- Pattern Unit Tab -->
+                <div class="tab-content" id="tab-pattern" style="display: none;">
+                    <div class="settings-group">
+                        <div class="settings-group-header">
+                            <h3 data-i18n="pattern.scoring.method">Pattern Scoring Method</h3>
+                        </div>
+                        <p class="settings-group-desc" data-i18n="pattern.scoring.method.desc">Select which metric determines the Pattern Score on the report cover and UI.</p>
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label data-i18n="scoring.basis">Scoring Basis</label>
+                                <small data-i18n="pattern.scoring.basis.desc">Determines the primary pattern score</small>
+                            </div>
+                            <select id="pattern_scoring_method" class="form-control" style="width: 200px;">
+                                <option value="all" selected>All (Average)</option>
+                                <option value="ssim">Structural SSIM</option>
+                                <option value="gradient">Gradient Similarity</option>
+                                <option value="phase">Phase Correlation</option>
+                                <option value="structural">Structural Match</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <div class="settings-group-header">
+                            <h3 data-i18n="method.thresholds">Method Thresholds (Pass / Conditional)</h3>
+                        </div>
+                        <p class="settings-group-desc" data-i18n="define.similarity.scores">Define per-method thresholds for pattern analysis. SSIM uses raw 0-1 values.</p>
+
+                        <div class="setting-row">
+                            <div class="setting-label"><label data-i18n="structural.ssim">Structural SSIM</label><small data-i18n="pass.conditional">Pass /
+                                    Conditional</small>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="number" id="ssim_pass" class="form-control" value="0.85" step="0.01" min="0" max="1"
+                                    style="width: 70px;" placeholder="Pass">
+                                <input type="number" id="ssim_cond" class="form-control" value="0.70" step="0.01" min="0" max="1"
+                                    style="width: 70px;" placeholder="Cond">
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-label"><label data-i18n="gradient.similarity">Gradient Similarity</label><small data-i18n="pass.conditional">Pass /
+                                    Conditional</small></div>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="number" id="grad_pass" class="form-control" value="85.0" step="0.1" min="0.1" max="99.9"
+                                    style="width: 70px;">
+                                <input type="number" id="grad_cond" class="form-control" value="70.0" step="0.1" min="0.1" max="99.9"
+                                    style="width: 70px;">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-label"><label data-i18n="phase.correlation">Phase Correlation</label><small data-i18n="pass.conditional">Pass /
+                                Conditional</small>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="number" id="phase_pass" class="form-control" value="85.0" step="0.1" min="0.1" max="99.9" style="width: 70px;">
+                            <input type="number" id="phase_cond" class="form-control" value="70.0" step="0.1" min="0.1" max="99.9" style="width: 70px;">
+                        </div>
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-label"><label data-i18n="structural.match">Structural Match</label><small data-i18n="pass.conditional">Pass /
+                                Conditional</small>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="number" id="structural_pass" class="form-control" value="85.0" step="0.1" min="0.1" max="99.9" style="width: 70px;">
+                            <input type="number" id="structural_cond" class="form-control" value="70.0" step="0.1" min="0.1" max="99.9" style="width: 70px;">
+                        </div>
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-label"><label data-i18n="global.pattern.score">Global Pattern Score</label><small data-i18n="overall.pass.threshold">Overall pass
+                                threshold</small></div>
+                        <input type="number" id="pattern_global_thresh" class="form-control" value="75.0" step="0.1" min="0.1" max="99.9">
+                    </div>
+
+                    <!-- Sensitivity Controls: Difference & Boundary (Gradient & Phase) -->
+                    <div class="settings-group">
+                        <div class="settings-group-header">
+                            <h3 data-i18n="sensitivity.diff.title">Difference Sensitivity (1 - 10)</h3>
+                        </div>
+                        <p class="settings-group-desc" data-i18n="sensitivity.diff.desc">Controls how aggressively the difference map amplifies subtle variations. Higher values reveal finer differences; lower values suppress noise.</p>
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label><span data-i18n="sensitivity.grad.diff">Gradient Diff Sensitivity</span> <span class="sci-param">(G<sub>e</sub>)</span></label>
+                                <small data-i18n="sensitivity.hint.strict.permissive">1 = strict, 10 = permissive</small>
+                            </div>
+                            <div style="display:flex;gap:10px;align-items:center;min-width:200px;">
+                                <input type="range" id="grad_diff_sens" min="1" max="10" step="1" value="7"
+                                       oninput="document.getElementById('grad_diff_sens_val').textContent=this.value">
+                                <span id="grad_diff_sens_val" style="min-width:18px;text-align:right;font-weight:600;">7</span>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label><span data-i18n="sensitivity.phase.diff">Phase Diff Sensitivity</span> <span class="sci-param">(F<sub>e</sub>)</span></label>
+                                <small data-i18n="sensitivity.hint.strict.permissive">1 = strict, 10 = permissive</small>
+                            </div>
+                            <div style="display:flex;gap:10px;align-items:center;min-width:200px;">
+                                <input type="range" id="phase_diff_sens" min="1" max="10" step="1" value="7"
+                                       oninput="document.getElementById('phase_diff_sens_val').textContent=this.value">
+                                <span id="phase_diff_sens_val" style="min-width:18px;text-align:right;font-weight:600;">7</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <div class="settings-group-header">
+                            <h3 data-i18n="sensitivity.bound.title">Boundary Extraction Sensitivity (1 - 10)</h3>
+                        </div>
+                        <p class="settings-group-desc" data-i18n="sensitivity.bound.desc">Controls how aggressively boundary contours are extracted from the difference map. Higher values detect more subtle boundary regions; lower values show only obvious defects.</p>
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label><span data-i18n="sensitivity.grad.bound">Gradient Boundary Sensitivity</span> <span class="sci-param">(G'<sub>e</sub>)</span></label>
+                                <small data-i18n="sensitivity.hint.strict.permissive">1 = strict, 10 = permissive</small>
+                            </div>
+                            <div style="display:flex;gap:10px;align-items:center;min-width:200px;">
+                                <input type="range" id="grad_bound_sens" min="1" max="10" step="1" value="4"
+                                       oninput="document.getElementById('grad_bound_sens_val').textContent=this.value">
+                                <span id="grad_bound_sens_val" style="min-width:18px;text-align:right;font-weight:600;">4</span>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label><span data-i18n="sensitivity.phase.bound">Phase Boundary Sensitivity</span> <span class="sci-param">(F'<sub>e</sub>)</span></label>
+                                <small data-i18n="sensitivity.hint.strict.permissive">1 = strict, 10 = permissive</small>
+                            </div>
+                            <div style="display:flex;gap:10px;align-items:center;min-width:200px;">
+                                <input type="range" id="phase_bound_sens" min="1" max="10" step="1" value="8"
+                                       oninput="document.getElementById('phase_bound_sens_val').textContent=this.value">
+                                <span id="phase_bound_sens_val" style="min-width:18px;text-align:right;font-weight:600;">8</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <div class="settings-group-header">
+                            <h3 data-i18n="sensitivity.structural.title">Structural Sensitivity (1 - 10)</h3>
+                        </div>
+                        <p class="settings-group-desc" data-i18n="sensitivity.structural.desc">Controls how aggressively the multi-method structural difference pipeline detects changes. Higher values flag subtle variations; lower values only flag obvious defects.</p>
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label><span data-i18n="sensitivity.structural">Structural Sensitivity</span> <span class="sci-param">(Y<sub>e</sub>)</span></label>
+                                <small data-i18n="sensitivity.hint.strict.permissive">1 = strict, 10 = permissive</small>
+                            </div>
+                            <div style="display:flex;gap:10px;align-items:center;min-width:200px;">
+                                <input type="range" id="structural_sens" min="1" max="10" step="1" value="10"
+                                       oninput="document.getElementById('structural_sens_val').textContent=this.value">
+                                <span id="structural_sens_val" style="min-width:18px;text-align:right;font-weight:600;">10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Illuminant Tab (New) -->
+                <div class="tab-content" id="tab-illuminant" style="display: none;">
+                    <div class="settings-group">
+                        <div class="settings-group-header">
+                            <h3 data-i18n="global.report.illuminant">Global Report Illuminant</h3>
+                        </div>
+                        <p class="settings-group-desc" data-i18n="select.primary.illuminant">Select the primary illuminant used for the entire report.</p>
+
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label data-i18n="primary.illuminant">Primary Illuminant</label>
+                                <small data-i18n="used.standard.calc">Used for standard calculations</small>
+                            </div>
+                            <div style="width: 220px; flex-shrink: 0;">
+                                <select id="primary_illuminant" class="form-select" style="width: 100%;">
+                                    <option value="D65" selected>D65 (Daylight 6500K)</option>
+                                    <option value="D50">D50 (Daylight 5000K)</option>
+                                    <option value="TL84">TL84 (Store Light 4000K)</option>
+                                    <option value="A">A (Tungsten 2856K)</option>
+                                    <option value="F2">F2 (Cool White Fluorescent)</option>
+                                    <option value="CWF">CWF (Cool White Fluorescent)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <hr class="settings-divider" style="margin: 24px 0; border: 0; border-top: 1px solid #eee;">
+
+                        <div class="settings-group-header">
+                            <h3 data-i18n="illuminant.test.selection">Illuminant Test Selection</h3>
+                        </div>
+                        <p class="settings-group-desc" data-i18n="enable.illuminants.desc">Enable illuminants for comparative color testing (displayed in
+                            Color Unit only).</p>
+
+                        <div class="setting-row">
+                            <div class="setting-label"><label data-i18n="comparative.illuminants">Comparative Illuminants</label></div>
+                            <div class="checkbox-group-vertical"
+                                style="display: flex; flex-direction: column; gap: 8px;">
+                                <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+                                    <label class="modern-checkbox"
+                                        style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="checkbox" name="test_illuminant" value="D65" checked>
+                                        <span class="checkmark"
+                                            style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border: 2px solid #ddd; border-radius: 4px;">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                                stroke-linejoin="round" style="width: 12px; height: 12px;">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                        <span>D65</span>
+                                    </label>
+                                    <label class="modern-checkbox"
+                                        style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="checkbox" name="test_illuminant" value="D50" checked>
+                                        <span class="checkmark"
+                                            style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border: 2px solid #ddd; border-radius: 4px;">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                                stroke-linejoin="round" style="width: 12px; height: 12px;">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                        <span>D50</span>
+                                    </label>
+                                    <label class="modern-checkbox"
+                                        style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="checkbox" name="test_illuminant" value="TL84" checked>
+                                        <span class="checkmark"
+                                            style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border: 2px solid #ddd; border-radius: 4px;">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                                stroke-linejoin="round" style="width: 12px; height: 12px;">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                        <span>TL84</span>
+                                    </label>
+                                    <label class="modern-checkbox"
+                                        style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="checkbox" name="test_illuminant" value="A">
+                                        <span class="checkmark"
+                                            style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border: 2px solid #ddd; border-radius: 4px;">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                                stroke-linejoin="round" style="width: 12px; height: 12px;">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                        <span>A</span>
+                                    </label>
+                                    <label class="modern-checkbox"
+                                        style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="checkbox" name="test_illuminant" value="F2">
+                                        <span class="checkmark"
+                                            style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border: 2px solid #ddd; border-radius: 4px;">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                                stroke-linejoin="round" style="width: 12px; height: 12px;">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                        <span>F2</span>
+                                    </label>
+                                    <label class="modern-checkbox"
+                                        style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="checkbox" name="test_illuminant" value="CWF">
+                                        <span class="checkmark"
+                                            style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border: 2px solid #ddd; border-radius: 4px;">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                                stroke-linejoin="round" style="width: 12px; height: 12px;">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                        <span>CWF</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Report Sections Tab (New) -->
+                <div class="tab-content" id="tab-reports" style="display: none;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+
+                        <!-- Color Unit Column -->
+                        <div class="settings-group" style="height: fit-content;">
+                            <div class="settings-group-header">
+                                <h3 data-i18n="color.unit.report.sections">Color Unit Report Sections</h3>
+                            </div>
+                            <p class="settings-group-desc" data-i18n="select.components.color">Select components for the Color Unit section.</p>
+
+                            <div class="setting-row">
+                                <div class="setting-label"><label data-i18n="color.spaces">Color Spaces</label></div>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="sec_color_spaces" checked>
+                                    <span class="checkmark">
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-label"><label data-i18n="executive.overview">Executive Overview</label></div>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="sec_exec_summary" checked>
+                                    <span class="checkmark">
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-label"><label data-i18n="visual.comparison.section">Visual Comparison</label></div>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="sec_visual_comparison" checked>
+                                    <span class="checkmark">
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-label"><label data-i18n="rgb.values">RGB Values</label></div>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="sec_rgb" checked>
+                                    <span class="checkmark">
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-label"><label data-i18n="lab.values">Lab* Values</label></div>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="sec_lab" checked>
+                                    <span class="checkmark">
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-label"><label data-i18n="xyz.values">XYZ Values</label></div>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="sec_xyz" checked>
+                                    <span class="checkmark">
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-label"><label data-i18n="cmyk.values">CMYK Values</label></div>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="sec_cmyk" checked>
+                                    <span class="checkmark">
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-label"><label data-i18n="diff.metrics">Diff Metrics</label></div>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="sec_diff_metrics" checked>
+                                    <span class="checkmark">
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-label"><label data-i18n="statistics">Statistics</label></div>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="sec_stats" checked>
+                                    <span class="checkmark">
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-label"><label data-i18n="detailed.lab">Detailed Lab</label></div>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="sec_detailed_lab" checked>
+                                    <span class="checkmark">
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-label"><label data-i18n="visualizations">Visualizations</label></div>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="sec_visualizations" checked>
+                                    <span class="checkmark">
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-label"><label data-i18n="spectral.proxy">Spectral Proxy</label></div>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="sec_spectral" checked>
+                                    <span class="checkmark">
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-label"><label data-i18n="rgb.histograms">RGB Histograms</label></div>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="sec_histograms" checked>
+                                    <span class="checkmark">
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-label"><label data-i18n="visual.diff">Visual Diff</label></div>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="sec_visual_diff" checked>
+                                    <span class="checkmark">
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <div class="setting-row">
+                                <div class="setting-label"><label data-i18n="illuminant.analysis">Illuminant Analysis</label></div>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="sec_illuminant_analysis" checked>
+                                    <span class="checkmark">
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <div class="setting-label"><label data-i18n="recommendations">Recommendations</label></div>
+                                <label class="modern-checkbox">
+                                    <input type="checkbox" id="sec_recommendations" checked>
+                                    <span class="checkmark">
+                                        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Pattern Unit Column -->
+                        <div style="display: flex; flex-direction: column; gap: 24px;">
+                            <div class="settings-group">
+                                <div class="settings-group-header">
+                                    <h3 data-i18n="pattern.unit.methods">Pattern Unit: Enabled Methods</h3>
+                                </div>
+                                <p class="settings-group-desc" data-i18n="select.pattern.algorithms">Select which pattern algorithms to run and include.</p>
+                                <div class="setting-row">
+                                    <div class="setting-label"><label data-i18n="structural.ssim">Structural SSIM</label></div>
+                                    <label class="modern-checkbox">
+                                        <input type="checkbox" id="enable_ssim" checked>
+                                        <span class="checkmark">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label"><label>Gradient Similarity</label></div>
+                                    <label class="modern-checkbox">
+                                        <input type="checkbox" id="enable_gradient" checked>
+                                        <span class="checkmark">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label"><label>Phase Correlation</label></div>
+                                    <label class="modern-checkbox">
+                                        <input type="checkbox" id="enable_phase" checked>
+                                        <span class="checkmark">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label"><label data-i18n="structural.difference">Structural Difference</label></div>
+                                    <label class="modern-checkbox">
+                                        <input type="checkbox" id="enable_structural" checked>
+                                        <span class="checkmark">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label"><label data-i18n="fourier.domain.analysis">Fourier Domain Analysis</label></div>
+                                    <label class="modern-checkbox">
+                                        <input type="checkbox" id="enable_fourier" checked>
+                                        <span class="checkmark">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label"><label data-i18n="glcm.texture.analysis">GLCM Texture Analysis</label></div>
+                                    <label class="modern-checkbox">
+                                        <input type="checkbox" id="enable_glcm" checked>
+                                        <span class="checkmark">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="settings-group">
+                                <div class="settings-group-header">
+                                    <h3 data-i18n="pattern.unit.boundary">Pattern Unit: Boundary & Report</h3>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label"><label data-i18n="gradient.boundary">Gradient Boundary</label></div>
+                                    <label class="modern-checkbox">
+                                        <input type="checkbox" id="enable_grad_bound" checked>
+                                        <span class="checkmark">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label"><label data-i18n="phase.boundary">Phase Boundary</label></div>
+                                    <label class="modern-checkbox">
+                                        <input type="checkbox" id="enable_phase_bound" checked>
+                                        <span class="checkmark">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label"><label data-i18n="summary">Summary</label></div>
+                                    <label class="modern-checkbox">
+                                        <input type="checkbox" id="enable_summary" checked>
+                                        <span class="checkmark">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label"><label data-i18n="conclusion">Conclusion</label></div>
+                                    <label class="modern-checkbox">
+                                        <input type="checkbox" id="enable_concl" checked>
+                                        <span class="checkmark">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label"><label data-i18n="recommendations">Recommendations</label></div>
+                                    <label class="modern-checkbox">
+                                        <input type="checkbox" id="enable_rec" checked>
+                                        <span class="checkmark">
+                                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btnResetSettings" type="button" onclick="resetSettings()">Reset to
+                    Defaults</button>
+                <button class="btn btn-primary" id="btnSaveSettings" type="button" onclick="saveSettings()">Save
+                    Configuration</button>
+            </div>
+        </div>
+    </div>
+    <!-- Source Code Help Dialog -->
+    <div class="help-dialog-overlay" id="helpDialogOverlay" style="display:none;">
+        <div class="help-dialog">
+            <div class="help-dialog-header">
+                <div class="help-dialog-icon" id="helpDialogIcon"></div>
+                <h3 id="helpDialogTitle" data-i18n="format.information">Format Information</h3>
+                <button class="help-dialog-close" id="helpDialogClose" type="button">&times;</button>
+            </div>
+            <div class="help-dialog-body" id="helpDialogBody">
+                <!-- Content injected by JavaScript -->
+            </div>
+            <div class="help-dialog-footer">
+                <button class="btn btn-primary btn-sm" id="helpDialogDownload" type="button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span data-i18n="download.this.format">Download this format</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Development Modal -->
+    <div class="development-modal-overlay" id="developmentModal" style="display:none;">
+        <div class="development-modal">
+            <div class="development-modal-header">
+                <div class="development-logo-container">
+                    <img src="/static/images/logo_square_with_name_1024x1024.png" alt="Logo" class="development-logo">
+                </div>
+                <h1 class="development-title" data-i18n="development.title">Website Under Development</h1>
+                <p class="development-message" data-i18n="development.message">This website is currently under
+                    development.</p>
+            </div>
+
+            <div class="development-modal-body">
+                <div class="development-content">
+                    <p class="development-text" data-i18n="development.view.samples">You can view the results
+                        through
+                        the ready-made samples from the Samples section on the left side of the screen.</p>
+                    <p class="development-text" data-i18n="development.test.new">Or, to test new samples, download
+                        the
+                        source code (Python) and test it directly in the Google Colab environment.</p>
+
+                    <div class="development-logos-section">
+                        <p class="development-logos-note" data-i18n="development.logos.note">To obtain full results,
+                            these logos must be added to Google Colab with the same filenames.</p>
+                        <div class="development-logos-buttons">
+                            <button class="btn-logo-download" data-logo="logo_square_with_name_1024x1024.png"
+                                type="button">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                <span data-i18n="development.download.logo">Download logo</span>:
+                                logo_square_with_name_1024x1024
+                            </button>
+                            <button class="btn-logo-download" data-logo="logo_vertical_512x256.png" type="button">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                <span data-i18n="development.download.logo">Download logo</span>:
+                                logo_vertical_512x256
+                            </button>
+                            <button class="btn-logo-download" data-logo="logo_square_no_name_1024x1024.png"
+                                type="button">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                <span data-i18n="development.download.logo">Download logo</span>:
+                                logo_square_no_name_1024x1024
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="development-code-section" id="developmentCodeSection" style="display:none;">
+                        <h3 data-i18n="development.source.code">Source Code</h3>
+                        <pre class="development-code" id="developmentCodeContent"></pre>
+                        <div class="development-copy-section">
+                            <p class="development-copy-instruction" data-i18n="development.copy.instruction">Copy
+                                the
+                                code and paste it into the Google Colab environment.</p>
+                            <button class="btn btn-primary btn-copy-code" id="btnCopyCode" type="button">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                <span data-i18n="development.copy.code">Copy Code</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="development-modal-footer">
+                <button class="btn btn-primary" id="btnDevelopmentDownloadCode" type="button">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span data-i18n="development.download.code">Download the code available on the homepage</span>
+                </button>
+                <button class="btn btn-outline" id="btnDevelopmentClose" type="button"
+                    data-i18n="development.close">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <img src="/static/images/logo_vertical_512x256.png" alt="SpectroTXQS Logo" class="footer-logo">
+        <span data-i18n="copyright">© 2026 Textile Engineering Solutions | </span>
+
+        <button class="footer-contact-btn" id="footerContactBtn" type="button">Abdelbary Algamel PAÜ</button>
+    </footer>
+
+    <!-- Contact Popup -->
+    <div class="contact-popup-overlay" id="contactPopup" style="display:none;">
+        <div class="contact-popup">
+            <div class="contact-popup-header">
+                <h3 data-i18n="contact.title">Contact</h3>
+                <button class="contact-popup-close" id="contactPopupClose" type="button">&times;</button>
+            </div>
+            <div class="contact-popup-body">
+                <div class="contact-email-container">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                        </path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <a href="mailto:aalgamel23@posta.pau.edu.tr" class="contact-email">aalgamel23@posta.pau.edu.tr</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/i18n.js"></script>
+    <script src="/static/js/region-selector.js"></script>
+    <script src="/static/js/region-validator.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/alignment-studio.js"></script>
+    <script src="/static/js/development-modal.js"></script>
+
+    <!-- Datasheet Info Modal -->
+    <div class="modal-overlay" id="datasheetModal" style="display:none;">
+        <div class="modal modal-medium">
+            <div class="modal-header">
+                <h3 data-i18n="datasheet.modal.title">Technical Documentation</h3>
+                <button class="modal-close" onclick="closeDatasheetModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-description" data-i18n="datasheet.modal.description">The complete technical documentation is available in PDF format.</p>
+                
+                <p class="modal-available" data-i18n="datasheet.modal.available">Available in English and Turkish</p>
+                
+                <div class="modal-download-buttons">
+                    <button class="btn btn-primary" id="btnDownloadDatasheetPDF" type="button">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span data-i18n="download.pdf">Download PDF</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Fallback Dialog -->
+    <div class="dl-fallback-overlay" id="dlFallbackOverlay" style="display:none;">
+        <div class="dl-fallback-dialog">
+            <button class="dl-fallback-close" onclick="closeDlFallback()">&times;</button>
+            <div class="dl-fallback-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+            </div>
+            <div class="dl-fallback-title" data-i18n="dl.fallback.title">Your download should start automatically</div>
+            <div class="dl-fallback-timer-ring">
+                <svg class="dl-fallback-ring" viewBox="0 0 80 80">
+                    <circle class="dl-ring-bg" cx="40" cy="40" r="36" fill="none" stroke-width="4"/>
+                    <circle class="dl-ring-fg" id="dlRingFg" cx="40" cy="40" r="36" fill="none" stroke-width="4"
+                        stroke-dasharray="226.195" stroke-dashoffset="0"
+                        stroke-linecap="round" transform="rotate(-90 40 40)"/>
+                </svg>
+                <span class="dl-fallback-seconds" id="dlFallbackSeconds">20</span>
+            </div>
+            <div class="dl-fallback-hint" data-i18n="dl.fallback.hint">If the download didn't start, click the button below</div>
+            <a class="dl-fallback-btn" id="dlFallbackBtn" href="/static/downloads/SpectraMatch_Setup_3.0.0.exe" download>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                <span data-i18n="dl.fallback.btn">Download Now</span>
+            </a>
+            <div class="dl-fallback-version">SpectraMatch Desktop v3.0.0</div>
+        </div>
+    </div>
+
+    <!-- Custom Modal Overlay -->
+    <div class="custom-modal-overlay" id="customModalOverlay" style="display:none;">
+        <div class="custom-modal">
+            <div class="custom-modal-header">
+                <div class="custom-modal-icon" id="customModalIcon">
+                    <!-- Icon injected via JS -->
+                </div>
+                <h3 id="customModalTitle">Title</h3>
+                <button class="custom-modal-close" onclick="closeCustomModal()">&times;</button>
+            </div>
+            <div class="custom-modal-body" id="customModalBody">
+                <!-- Message injected via JS -->
+            </div>
+            <div class="custom-modal-footer" id="customModalFooter">
+                <!-- Buttons injected via JS -->
+            </div>
+        </div>
+    </div>
+    <!-- RTT Loading Indicator -->
+    <div class="rtt-loader-overlay" id="rttLoaderOverlay">
+        <div class="rtt-loader-card">
+            <div class="rtt-loader-track"><div class="rtt-loader-bar"></div></div>
+            <div class="rtt-loader-text" data-i18n="rtt.loader.text">Loading images into the interface and preparing the environment.</div>
+        </div>
+    </div>
+
+    <!-- Camera Capture Studio Modal -->
+    <div class="cam-studio-overlay" id="camStudioOverlay">
+        <div class="cam-studio-modal">
+            <div class="cam-studio-header">
+                <div class="cam-studio-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    <span data-i18n="cam.studio.title">Camera Capture Studio</span>
+                    <span class="cam-target-badge" id="camTargetBadge"></span>
+                </div>
+                <div class="cam-studio-controls-top">
+                    <select id="camDeviceSelect" class="cam-device-select">
+                        <option data-i18n="cam.select.camera">Select Camera</option>
+                    </select>
+                    <button type="button" class="cam-btn-icon" id="camMirrorBtn" data-i18n-title="cam.mirror" title="Mirror">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 23 7 1"/><polyline points="17 1 17 23"/><path d="M11 5H3v14h8"/><path d="M13 5h8v14h-8"/></svg>
+                    </button>
+                    <button type="button" class="cam-btn-close" id="camCloseBtn" data-i18n-title="cam.close" aria-label="Close">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="cam-studio-body">
+                <div class="cam-preview-area" id="camPreviewArea">
+                    <div class="cam-status-msg" id="camStatusMsg" data-i18n="cam.requesting">Requesting camera access...</div>
+                    <video id="camVideo" autoplay playsinline muted></video>
+                    <canvas id="camCaptureCanvas" style="display:none;"></canvas>
+                    <img id="camCapturedImg" class="cam-captured-img" style="display:none;">
+                    <div class="cam-crop-overlay" id="camCropOverlay" style="display:none;">
+                        <div class="cam-crop-box" id="camCropBox">
+                            <div class="cam-crop-handle cam-crop-n"></div>
+                            <div class="cam-crop-handle cam-crop-nw"></div>
+                            <div class="cam-crop-handle cam-crop-e"></div>
+                            <div class="cam-crop-handle cam-crop-ne"></div>
+                            <div class="cam-crop-handle cam-crop-s"></div>
+                            <div class="cam-crop-handle cam-crop-sw"></div>
+                            <div class="cam-crop-handle cam-crop-w"></div>
+                            <div class="cam-crop-handle cam-crop-se"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cam-adjust-bar" id="camAdjustBar" style="display:none;">
+                    <div class="cam-adjust-group">
+                        <button type="button" class="cam-adj-btn" id="camRotateLeft" data-i18n-title="cam.rotate.left" title="Rotate Left">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                        </button>
+                        <button type="button" class="cam-adj-btn" id="camRotateRight" data-i18n-title="cam.rotate.right" title="Rotate Right">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.13-9.36L23 10"/></svg>
+                        </button>
+                        <button type="button" class="cam-adj-btn" id="camFlipH" data-i18n-title="cam.flip.h" title="Flip Horizontal">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 23 7 1"/><polyline points="17 1 17 23"/><path d="M11 5H3v14h8"/><path d="M13 5h8v14h-8"/></svg>
+                        </button>
+                    </div>
+                    <div class="cam-adjust-group cam-sliders">
+                        <label class="cam-slider-label"><span data-i18n="cam.brightness">Brightness</span>
+                            <input type="range" id="camBrightness" min="-100" max="100" value="0" class="cam-slider">
+                        </label>
+                        <label class="cam-slider-label"><span data-i18n="cam.contrast">Contrast</span>
+                            <input type="range" id="camContrast" min="-100" max="100" value="0" class="cam-slider">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="cam-studio-footer">
+                <div class="cam-footer-left">
+                    <button type="button" class="cam-btn cam-btn-secondary" id="camCancelBtn" data-i18n="cam.cancel">Cancel</button>
+                </div>
+                <div class="cam-footer-center">
+                    <button type="button" class="cam-btn cam-btn-capture" id="camCaptureBtn" data-i18n="cam.capture">Capture</button>
+                    <button type="button" class="cam-btn cam-btn-secondary" id="camRetakeBtn" style="display:none;" data-i18n="cam.retake">Retake</button>
+                </div>
+                <div class="cam-footer-right">
+                    <button type="button" class="cam-btn cam-btn-primary" id="camUseBtn" style="display:none;" data-i18n="cam.use.image">Use Image</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

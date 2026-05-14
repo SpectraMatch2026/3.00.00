@@ -1,0 +1,61 @@
+/* ==========================================
+   Image Action Buttons (Delete & Replace)
+   ========================================== */
+
+.btn-image-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    margin-left: 6px;
+    background: rgba(100, 116, 139, 0.08);
+    border: 1px solid rgba(100, 116, 139, 0.15);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #64748b;
+}
+
+.btn-image-action:hover {
+    background: rgba(100, 116, 139, 0.12);
+    border-color: rgba(100, 116, 139, 0.25);
+    color: #475569;
+    transform: translateY(-1px);
+}
+
+.btn-image-action:active {
+    transform: translateY(0);
+}
+
+.btn-image-action svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+}
+
+/* Replace button - blue accent on hover */
+.btn-replace-image:hover {
+    background: rgba(0, 102, 204, 0.1);
+    border-color: rgba(0, 102, 204, 0.3);
+    color: #0066cc;
+}
+
+/* Delete button - red accent on hover */
+.btn-delete-image:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+/* Ensure buttons are aligned with dimensions display */
+.panel-info-right {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.panel-info-dimensions {
+    margin-right: 0;
+}

@@ -1,0 +1,1788 @@
+% SPECTRAMATCH Technical Datasheet (English) — v3.0.0
+% Pamukkale University, Dept. of Electrical and Electronic Engineering
+\documentclass[11pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{parskip}
+\usepackage{microtype}
+\usepackage{tikz}
+
+\definecolor{specblue}{HTML}{2980B9}
+\definecolor{specblue2}{HTML}{3498DB}
+\definecolor{specgreen}{HTML}{27AE60}
+\definecolor{specred}{HTML}{E74C3C}
+\definecolor{specorange}{HTML}{F39C12}
+\definecolor{specdark}{HTML}{2C3E50}
+\definecolor{specgray}{HTML}{7F8C8D}
+\definecolor{speclightgray}{HTML}{BDC3C7}
+
+\hypersetup{colorlinks=true,linkcolor=specblue,urlcolor=specblue2,pdftitle={SpectraMatch Technical Datasheet},pdfauthor={Abdelbary Algamel}}
+
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textcolor{specblue}{\textbf{SpectraMatch}} \textcolor{specgray}{| Technical Datasheet}}
+\fancyhead[R]{\small\textcolor{specgray}{v3.0.0}}
+\fancyfoot[C]{\small\textcolor{specgray}{\thepage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.2pt}
+
+\titleformat{\chapter}[display]{\normalfont\Huge\bfseries\color{specdark}}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{\section}{\Large\bfseries\color{specblue}}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries\color{specblue2}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{specdark}}{\thesubsubsection}{1em}{}
+
+\newcommand{\dE}{$\Delta E$}
+\newcommand{\dEoo}{$\Delta E_{2000}$}
+
+\begin{document}
+
+% COVER PAGE
+\begin{titlepage}
+\begin{center}
+\vspace*{1cm}
+\begin{tikzpicture}[remember picture, overlay]
+  \draw[specblue, line width=2pt] ([shift={(1cm,-1cm)}]current page.north west) rectangle ([shift={(-1cm,1cm)}]current page.south east);
+  \draw[speclightgray, line width=0.5pt] ([shift={(1.15cm,-1.15cm)}]current page.north west) rectangle ([shift={(-1.15cm,1.15cm)}]current page.south east);
+\end{tikzpicture}
+\vspace{1.5cm}
+
+\includegraphics[width=5cm]{logo.png}
+
+\vspace{0.4cm}
+
+{\Huge\bfseries\textcolor{specdark}{SPECTRAMATCH}}\\[0.4cm]
+{\Large\textcolor{specblue}{Technical Datasheet}}\\[0.3cm]
+{\large\textcolor{specgray}{Textile Quality Control System}}\\[0.2cm]
+{\normalsize\textcolor{specgray}{Professional Color \& Pattern Analysis}}
+
+\vspace{1.2cm}
+
+{\large\itshape\textcolor{specblue}{Version: 3.0.0}}
+
+\vspace{1.2cm}
+
+{\normalsize
+\textbf{Institution:} Pamukkale University\\[0.1cm]
+Department of Electrical and Electronic Engineering, Denizli, Turkey\\[0.4cm]
+\textbf{Author:} Abdelbary Algamel\\[0.1cm]
+\textbf{Supervisor:} Dr.\ Adem Ükte}
+\vfill
+{\small\textcolor{specgray}{This document reflects the actual capabilities of SpectraMatch v3.0.0.}}
+\end{center}
+\end{titlepage}
+
+\tableofcontents
+\clearpage
+
+% ════════════════════════════════════════════════════════════════════════════
+% CHAPTER 1 — SYSTEM OVERVIEW
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{System Overview}
+\label{ch:overview}
+
+\section{Definition}
+
+SpectraMatch is a research-grade image quality control system designed for the textile industry. It provides quantitative color and pattern analysis by comparing a \textbf{reference} image against a \textbf{sample} image, producing detailed metrics, visual diagnostics, and downloadable PDF reports. The system is developed as part of ongoing research at the Department of Electrical and Electronic Engineering, Pamukkale University (PAU), Denizli, Turkey.
+
+\section{Objectives}
+
+\begin{itemize}[leftmargin=1.5em]
+  \item Provide objective, quantitative measurement of color difference between textile samples using established colorimetric standards (CIE \dEoo{}, CIELAB).
+  \item Evaluate structural similarity and pattern fidelity between reference and production samples using image analysis techniques (SSIM, GLCM, FFT, Phase Correlation).
+  \item Support standalone single-image analysis for color distribution, texture uniformity, and defect indicators without requiring a reference.
+  \item Generate professional, multi-page PDF reports with charts, tables, and threshold-aware recommendations in English and Turkish.
+  \item Serve as a practical tool suitable for both laboratory evaluation and production-floor use.
+\end{itemize}
+
+\section{Practical Benefits}
+
+\begin{itemize}[leftmargin=1.5em]
+  \item Replaces subjective visual inspection with repeatable, numeric measurements.
+  \item Configurable pass/conditional/fail thresholds allow adaptation to different quality standards.
+  \item Bilingual interface and reports (English and Turkish) enable use by diverse teams.
+  \item Supports multiple illuminants (D65, D50, A, C, F2, TL84) to simulate different viewing conditions.
+  \item Generates comprehensive PDF documentation suitable for archival, audit, and inter-departmental communication.
+\end{itemize}
+
+\section{System Workflow}
+
+Figure~\ref{fig:workflow} illustrates the complete processing workflow of SpectraMatch.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{workflow.png}
+  \caption{SpectraMatch system workflow. The user provides images, selects operating mode, configures advanced settings, and the system processes images through the applicable units. Reports are generated as downloadable PDFs.}
+  \label{fig:workflow}
+\end{figure}
+
+The workflow proceeds as follows:
+
+\begin{enumerate}[leftmargin=1.5em]
+  \item \textbf{Image Input:} The user uploads a reference image and a sample image (Dual Image Mode) or a single sample image (Single Image Mode).
+  \item \textbf{Mode Selection:} The user selects between Dual Image Mode (for comparison) or Single Image Mode (for standalone analysis).
+  \item \textbf{Advanced Settings:} The user configures analysis parameters through the Settings panel.
+  \item \textbf{Processing:} The system routes images through the applicable units:
+    \begin{itemize}
+      \item \textbf{Color Unit} --- computes color difference metrics (\dEoo{}, CSI, illuminant analysis).
+      \item \textbf{Pattern Unit} --- evaluates structural similarity (SSIM, Gradient, Phase, Structural Match, Fourier, GLCM).
+      \item \textbf{Single Image Unit} --- performs standalone color distribution and texture analysis.
+    \end{itemize}
+  \item \textbf{Report Generation:} The system produces PDF reports:
+    \begin{itemize}
+    \item \textbf{Full Report} --- unified report merging a cover page, color pages, and pattern pages.
+      \item \textbf{Single Image Report} --- standalone analysis results.
+     
+      \item \textbf{Settings Report (Receipt)} --- a separate PDF documenting all configuration parameters used.
+    \end{itemize}
+\end{enumerate}
+
+\section{Application Forms}
+
+The system is delivered in two forms that share the same backend logic:
+
+\subsection{Web Application}
+Accessible via a browser at the configured server address. The web interface provides all analysis features and additionally allows the user to download the desktop application as a ready-to-use \texttt{.exe} installer. Figure~\ref{fig:webapp} shows the web application interface.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{webapp.png}
+  \caption{SpectraMatch web application interface.}
+  \label{fig:webapp}
+\end{figure}
+
+\subsection{Desktop Application}
+A native Windows application that wraps the same Flask backend inside a desktop window using pywebview. It includes a splash screen during startup, supports dark and light mode, and provides a toolbar with keyboard shortcuts. Figure~\ref{fig:desktop} shows the desktop application interface.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth,keepaspectratio]{desktop.png}
+  \caption{SpectraMatch desktop application interface.}
+  \label{fig:desktop}
+\end{figure}
+
+\newpage
+\subsection{Shared Features}
+Both application forms provide the following shared features:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Send Feedback:} A button used during the trial phase and for ongoing development to collect user observations and suggestions.
+  \item \textbf{Ready-to-Test Images:} A trial-only feature that provides predefined sample image pairs (six built-in test images organized as three pairs) for quick evaluation without requiring user-supplied images.
+  \item \textbf{Datasheet:} A button that generates and provides access to this technical document.
+\end{itemize}
+
+\section{Image Input Environment}
+
+\subsection{Dual Image Mode}
+The user uploads two images: a \textbf{reference} image (the standard or target) and a \textbf{sample} image (the production output to be evaluated). Both images are processed through the Color Unit and Pattern Unit.
+
+\subsection{Single Image Mode}
+The user uploads a single \textbf{sample} image. The system performs standalone analysis of color distribution, texture uniformity, and spectral characteristics without comparison to a reference.
+
+\subsection{Region Selection}
+Before analysis, the user may define a region of interest on the images using one of those tools:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Circle} --- circular selection with adjustable diameter.
+  \item \textbf{Square} --- square selection with adjustable side length.
+  \item \textbf{Rectangle} --- rectangular selection with independent width and height control.
+  \item \textbf{Freehand (Pen)} --- draw a custom closed polygon directly on the image.
+\end{itemize}
+All tools support click-to-place, drag-to-move, and scroll-to-resize (except Pen). The selected region is visually overlaid on both images simultaneously. If no region is selected, the full image is used.
+
+\section{Point Selection}
+
+The Color Unit and Single Image Unit sample colors at discrete points within the selected region. The system supports:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Manual placement} --- the user clicks directly on the image to place each sampling point.
+  \item \textbf{Random generation} --- the system automatically generates $N$ random points uniformly distributed within the selected region using rejection sampling.
+  \item \textbf{Hybrid} --- the user places some points manually, and the system fills the remainder with random points.
+\end{itemize}
+The backend enforces strict validation: every point (manual or random) must lie within the defined region and within the image bounds. Points placed outside the region are rejected. 
+\section{Advanced Settings}
+
+The Advanced Settings panel is organized into five subsections:
+
+\subsection{General}
+\begin{itemize}[leftmargin=1.5em]
+  \item Selection shape (circle, square, rectangle, pen).
+\item Report language (different from the application language)
+  \item Operator name (included in reports).
+  \item Timezone offset (UTC, used for report timestamps and ID generation).
+  \item Image alignment mode (preprocessing technique applied before analysis).
+\end{itemize}
+
+\subsubsection{Image Alignment Preprocessing}
+
+In real-world textile inspection, reference and sample images are rarely captured under perfectly identical conditions. Even small differences in camera position, viewing angle, or fabric placement can introduce rotations, scaling differences, or spatial misalignment between the two images. When images are misaligned, pixel-by-pixel comparison becomes unreliable: color difference scores are inflated by geometric offsets rather than genuine color variations, and structural similarity metrics drop at every misaligned boundary.
+
+Version 3.0.0 introduces image alignment as an integrated preprocessing step that runs automatically before the Color Unit and Pattern Unit receive the images. This is one of the most significant improvements in the system: it ensures that comparisons are always made between geometrically consistent regions of the fabric, regardless of how the images were captured. Three methods are available:
+
+\paragraph{Direct Pixel Comparison.}
+No preprocessing is applied. The reference and sample images are compared directly as captured, with only the user-defined region crop applied. This is the standard baseline method, appropriate when images are captured under tightly controlled conditions using a fixed camera mount with consistent framing and scale. It provides the fastest analysis and serves as the reference point against which the other methods can be evaluated.
+
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=0.44\textwidth]{align_direct_sample_orig.png} &
+    \includegraphics[width=0.44\textwidth]{align_direct_ref_orig.png} \\[3pt]
+    {\small (1) Original Sample} & {\small (2) Reference Image} \\[8pt]
+    \includegraphics[width=0.44\textwidth]{align_direct_sample_crop.png} &
+    \includegraphics[width=0.44\textwidth]{align_direct_ref_crop.png} \\[3pt]
+    {\small (3) Cropped Sample} & {\small (4) Cropped Reference} \\
+  \end{tabular}
+  \caption{Direct Pixel Comparison --- images are used as captured; only region cropping is applied before analysis.}
+  \label{fig:align_direct}
+\end{figure}
+
+\paragraph{AI-Based Matching.}
+The AI Smart Match method uses a multi-stage intelligent search to automatically locate and crop the region in the sample image that best corresponds to the reference. The system analyzes the content of both images across multiple scales, identifies the area of highest similarity, and crops both images to that region before analysis begins. This eliminates the effect of camera shifts, scale differences, or partial frame mismatches without requiring any manual adjustment. It is particularly useful when capture conditions cannot be fully standardized across measurements.
+
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=0.44\textwidth]{align_ai_sample_orig.png} &
+    \includegraphics[width=0.44\textwidth]{align_ai_ref_orig.png} \\[3pt]
+    {\small (1) Original Sample} & {\small (2) Reference Image} \\[8pt]
+    \includegraphics[width=0.44\textwidth]{align_ai_sample_crop.png} &
+    \includegraphics[width=0.44\textwidth]{align_ai_ref_crop.png} \\[3pt]
+    {\small (3) AI-Matched Sample Crop} & {\small (4) AI-Matched Reference Crop} \\
+  \end{tabular}
+  \caption{AI-Based Matching --- the system automatically identifies and crops the most similar region between the two images.}
+  \label{fig:align_ai}
+\end{figure}
+
+\paragraph{BESTCH (Best-Channel Matching).}
+BESTCH addresses a different challenge: for repetitive textile patterns such as woven or printed fabrics, evaluating the entire image area is not always necessary or reliable. BESTCH selects a representative region of approximately 25\% of the image area --- the crop that best captures the essential color and pattern characteristics of the fabric. By concentrating the analysis on this representative region, BESTCH reduces the influence of border effects, edge shadows, and areas of non-representative texture. This approach is well-suited for fabrics with regular repeating patterns, where a representative sample area is sufficient to assess overall color and pattern consistency holistically.
+
+\begin{figure}[H]
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics[width=0.44\textwidth]{align_bestch_sample_orig.png} &
+    \includegraphics[width=0.44\textwidth]{align_bestch_ref_orig.png} \\[3pt]
+    {\small (1) Original Sample} & {\small (2) Reference Image} \\[8pt]
+    \includegraphics[width=0.44\textwidth]{align_bestch_sample_crop.png} &
+    \includegraphics[width=0.44\textwidth]{align_bestch_ref_crop.png} \\[3pt]
+    {\small (3) BESTCH Selected Region} & {\small (4) BESTCH Reference Region} \\
+  \end{tabular}
+  \caption{BESTCH --- selects the most representative $\sim$25\% region for focused, holistic evaluation of repetitive patterns.}
+  \label{fig:align_bestch}
+\end{figure}
+
+The selected method is applied automatically during preprocessing, before any metric is computed. SPACTRA Studio, accessible from the General settings section, allows interactive preview and comparison of all three methods on the loaded images before committing to a selection.
+
+\subsection{Color}
+\begin{itemize}[leftmargin=1.5em]
+  \item Color scoring method (\dEoo{}, CSI, or CSI2000).
+    \item Number of sampling points ($N$).
+  \item Sampling mode (manual, random, hybrid).
+  \item Pass threshold (Parameter values which a point is classified as PASS).
+  \item Conditional threshold (Parameter values which a point is classified as CONDITIONAL).
+  \item Scores ( Good / Warning ) thresholds.
+  \item Lab* component thresholds ($\Delta L^*$, $\Delta a^*$, $\Delta b^*$).
+\end{itemize}
+
+\subsection{Pattern}
+\begin{itemize}[leftmargin=1.5em]
+  \item Global pattern threshold.
+  \item Per-method thresholds (SSIM, Gradient, Phase, Structural Match), each with pass and conditional values.
+\end{itemize}
+
+\subsection{Illuminant}
+\begin{itemize}[leftmargin=1.5em]
+  \item Primary illuminant selection (D65, D50, A, C, F2, CWF, TL84).
+  \item Test illuminants list (one or more illuminants for multi-illuminant comparison).
+\end{itemize}
+
+\subsection{Report Sections}
+\begin{itemize}[leftmargin=1.5em]
+  \item Toggles for individual report sections 
+\end{itemize}
+
+\section{Processing Time}
+
+Processing time depends on image size and the number of enabled report sections. Larger images require more computation for pixel-level operations (heatmaps, SSIM, FFT, structural analysis). Disabling sections such as GLCM or Fourier analysis removes their computation entirely, reducing total processing time.
+
+\section{Report Output}
+
+Reports are generated as PDF files in the selected language. Each report is named using an automatically generated analysis ID: \texttt{SPEC\_YYMMDD\_HHMMSS} where the timestamp uses the configured timezone offset. A language suffix (\texttt{\_EN} or \texttt{\_TR}) is appended. A separate \textbf{Settings Report} (configuration receipt) is generated alongside the analysis report, sharing the same base filename with an \texttt{\_AYARLAR} suffix, documenting all configuration parameters used. Figure~\ref{fig:settings_report} shows the cover page of a Settings Report.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.65\textwidth]{settingcover.png}
+  \caption{Settings Report --- Cover page of the configuration receipt PDF. Documents all analysis parameters including thresholds, illuminant selections, enabled sections, and scoring method.}
+  \label{fig:settings_report}
+\end{figure}
+
+\section{Continuous Improvement}
+
+The project is actively refined beyond version 3.0.0. Improvements are driven by real-world usage observations, structured testing, and academic research requirements.
+
+% ════════════════════════════════════════════════════════════════════════════
+% CHAPTER 2 — SYSTEM PROCESSING UNITS
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{System Processing Units}
+\label{ch:units}
+
+This chapter describes the backend processing backbone of SpectraMatch. Each processing unit is responsible for a specific category of analysis and produces a dedicated section within the generated PDF report. For every report section, table, and figure produced by the system, this chapter provides: (1)~definition and purpose, (2)~how it is calculated, (3)~how to read the result, and (4)~how to evaluate it.
+
+% ────────────────────────────────────────────────────────────────────────────
+\section{Color Unit}
+\label{sec:color_unit}
+
+The Color Unit performs quantitative color comparison between a reference image and a sample image. It extracts color values at $N$ sampling points, converts them through multiple color spaces, computes color difference metrics, and generates threshold-aware verdicts.
+
+\subsection{Cover Page}
+
+\subsubsection{Definition and Purpose}
+The cover page is the first page of the Color Report. It presents the report identity, metadata, and an executive summary of the overall color analysis result.
+
+\subsubsection{How It Is Generated}
+The cover page includes the company logo, report title, generation timestamp, operator name, primary illuminant, report ID, and software version. An Executive Summary banner displays the overall status (PASS, CONDITIONAL, or FAIL) with color coding (green, orange, red). Below the banner, the primary scoring metric is displayed (depending on the selected scoring method: \dEoo{}, CSI, or CSI2000), followed by a summary statistics table showing mean, standard deviation, minimum, and maximum values for $\Delta E_{76}$, $\Delta E_{94}$, and $\Delta E_{2000}$.
+
+\subsubsection{How to Read the Result}
+The executive summary banner provides an immediate visual indication of the overall color match quality. The primary score is displayed prominently with its value out of 100. The statistics table provides the distribution characteristics of the color difference across all sampling points.
+
+\newpage
+\subsubsection{How to Evaluate}
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{PASS} (green): The sample meets the defined quality thresholds.
+  \item \textbf{CONDITIONAL} (orange): The sample is near the quality limits; additional review is recommended.
+  \item \textbf{FAIL} (red): The sample does not meet the required quality standards.
+\end{itemize}
+
+\subsection{Input Images}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{1.png}
+  \caption{Color Unit --- Input Images. Reference (left) and sample (right) with sampling point overlays. Green circles indicate manually placed points; orange circles indicate randomly generated points.}
+  \label{fig:color_input}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+This section displays side-by-side the reference and sample images with the sampling point locations overlaid as numbered circles.
+
+\subsubsection{How It Is Generated}
+The system draws circles at each sampling point location on both images. Points are color-coded: green for manually placed points and orange for randomly generated points. Each point is numbered sequentially.
+
+\subsubsection{How to Read the Result}
+The overlay allows visual verification that sampling points are positioned on the intended areas of the fabric. The numbering corresponds to the rows in subsequent measurement tables.
+
+\subsubsection{How to Evaluate}
+Verify that all sampling points fall within the region of interest and on representative areas of the fabric. Points on edges, folds, or artifacts may produce unreliable measurements.
+
+\subsection{RGB Values}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{2.png}
+  \caption{Color Unit --- RGB Values table. Per-point Red, Green, and Blue channel values (0--255) for reference and sample.}
+  \label{fig:rgb_values}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+The RGB Values table presents the raw Red, Green, and Blue channel intensities (0--255 scale) extracted at each sampling point for both reference and sample images.
+
+\subsubsection{How It Is Calculated}
+At each sampling point, a circular patch of pixels is extracted. Pixels with valid alpha (non-transparent) are averaged to produce the mean RGB value. The patch radius is computed as $r = \max(12, \lfloor 0.04 \times \min(h, w) \rfloor)$ where $h$ and $w$ are the image dimensions.
+
+\subsubsection{How to Read the Result}
+Each row corresponds to one sampling point. The table shows Reference R, Sample R, Reference G, Sample G, Reference B, Sample B. Columns are color-coded (red background for R, green for G, blue for B).
+
+\subsubsection{How to Evaluate}
+Large differences between reference and sample values in any channel indicate a color shift. RGB values are device-dependent and should be interpreted alongside the Lab* values for perceptual accuracy.
+
+\subsection{Lab* Values}
+
+Figure below shows the table of mean CIELAB ($L^*$, $a^*$, $b^*$) values for the reference and sample images.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{3.png}
+  \caption{Mean CIELAB ($L^*$, $a^*$, $b^*$) values and component-wise differences.}
+  \label{fig:lab_mean}
+\end{figure}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{LAB.png}
+  \caption{Color Unit --- Lab* Visualization. a*b* chromaticity scatter plot and grouped bar chart of mean L*, a*, b* for reference and sample.}
+  \label{fig:lab_values}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+The Lab* section provides a perceptually uniform color space analysis. CIELAB separates lightness ($L^*$) from chromaticity ($a^*$: red--green axis; $b^*$: yellow--blue axis), making it suitable for quantifying perceived color differences.
+
+\subsubsection{How It Is Calculated}
+RGB values are converted through the pipeline: sRGB $\to$ linear RGB (inverse gamma) $\to$ XYZ (using the sRGB-to-XYZ matrix) $\to$ chromatic adaptation (Bradford transform to the selected illuminant) $\to$ CIELAB (using the illuminant white point). The mean values across all sampling points are computed for each component. Differences $\Delta L^*$, $\Delta a^*$, $\Delta b^*$ are calculated, and an overall magnitude $\sqrt{\Delta L^{*2} + \Delta a^{*2} + \Delta b^{*2}}$ is derived.
+\newpage
+
+A quality assessment table compares each component difference against user-defined thresholds and assigns PASS or FAIL per component. Interpretations are provided: negligible ($< 0.25 \times$ threshold), noticeable ($<$ threshold), significant ($< 2\times$ threshold), or critical ($\geq 2\times$ threshold).
+
+An $a^*$ vs.\ $b^*$ chromaticity scatter plot and a grouped bar chart of mean $L^*$, $a^*$, $b^*$ are generated.
+
+\subsubsection{How to Read the Result}
+\begin{itemize}[leftmargin=1.5em]
+  \item $\Delta L^* > 0$: sample is lighter; $\Delta L^* < 0$: sample is darker.
+  \item $\Delta a^* > 0$: sample is more red; $\Delta a^* < 0$: sample is more green.
+  \item $\Delta b^* > 0$: sample is more yellow; $\Delta b^* < 0$: sample is more blue.
+\end{itemize}
+
+\subsubsection{How to Evaluate}
+Each component is compared against its threshold. If all components pass, the report states ``within tight tolerance.'' If any fail, the failing parameters and their exceedance values are listed.
+
+\subsection{XYZ Values}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{4.png}
+  \caption{Color Unit --- XYZ Values table. Per-point CIE XYZ tristimulus values for reference and sample.}
+  \label{fig:xyz_values}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+The XYZ table presents the CIE 1931 XYZ tristimulus values at each sampling point. XYZ is the device-independent color space from which CIELAB is derived.
+
+\subsubsection{How It Is Calculated}
+sRGB values are linearized (inverse sRGB companding), then multiplied by the sRGB-to-XYZ transformation matrix and scaled by 100:
+\[
+\begin{pmatrix} X \\ Y \\ Z \end{pmatrix}
+= 100 \times
+\begin{pmatrix}
+0.4124564 & 0.3575761 & 0.1804375 \\
+0.2126729 & 0.7151522 & 0.0721750 \\
+0.0193339 & 0.1191920 & 0.9503041
+\end{pmatrix}
+\begin{pmatrix} R_{\text{lin}} \\ G_{\text{lin}} \\ B_{\text{lin}} \end{pmatrix}
+\]
+
+\subsubsection{How to Read the Result}
+$Y$ corresponds to luminance. $X$ and $Z$ encode chromaticity. Values are presented per sampling point for both reference and sample.
+
+\subsubsection{How to Evaluate}
+XYZ values are intermediate and primarily useful for specialists verifying the color conversion pipeline. For practical quality decisions, Lab* and \dEoo{} values are more directly interpretable.
+
+\subsection{CMYK Values}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{5.png}
+  \caption{Color Unit --- CMYK Values table. Per-point Cyan, Magenta, Yellow, Key (Black) percentages for reference and sample.}
+  \label{fig:cmyk_values}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+The CMYK table provides color values in the subtractive color model used in printing and dyeing processes. Values are expressed as percentages (0--100\%).
+
+\subsubsection{How It Is Calculated}
+From the normalized RGB values ($r, g, b \in [0,1]$):
+\[
+K = 1 - \max(r, g, b), \quad
+C = \frac{1 - r - K}{1 - K}, \quad
+M = \frac{1 - g - K}{1 - K}, \quad
+Y = \frac{1 - b - K}{1 - K}
+\]
+
+\subsubsection{How to Read the Result}
+Higher values indicate more ink/dye of that component. $K=100\%$ means pure black.
+
+\subsubsection{How to Evaluate}
+CMYK is informational for users working in dye formulation. Differences between reference and sample CMYK values indicate which dye components need adjustment.
+
+\subsection{Difference Metrics}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{6.png}
+  \caption{Color Unit --- Difference Metrics. Per-point $\Delta E_{76}$, $\Delta E_{94}$, and $\Delta E_{2000}$ values with per-point PASS/CONDITIONAL/FAIL status.}
+  \label{fig:delta_metrics}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+This section presents the core color difference metrics at each sampling point. Three \dE{} formulas are computed: $\Delta E_{76}$ (Euclidean distance in CIELAB), $\Delta E_{94}$ (improved weighting), and $\Delta E_{2000}$ (the current CIE standard, most perceptually uniform).
+
+\subsubsection{How It Is Calculated}
+
+\textbf{$\Delta E_{76}$} --- Simple Euclidean distance in CIELAB:
+\[
+\Delta E_{76} = \sqrt{(L_1^* - L_2^*)^2 + (a_1^* - a_2^*)^2 + (b_1^* - b_2^*)^2}
+\]
+
+\textbf{$\Delta E_{94}$} --- Adds weighting functions for lightness, chroma, and hue:
+\[
+\Delta E_{94} = \sqrt{\left(\frac{\Delta L^*}{k_L S_L}\right)^2 + \left(\frac{\Delta C^*}{k_C S_C}\right)^2 + \left(\frac{\Delta H^*}{k_H S_H}\right)^2}
+\]
+where $S_L = 1$, $S_C = 1 + 0.045\, C_1^*$, $S_H = 1 + 0.015\, C_1^*$.
+
+\textbf{$\Delta E_{2000}$} --- The full CIEDE2000 formula incorporating lightness, chroma, and hue weighting with rotation and interaction terms. The implementation follows the complete specification including the $G$ chroma adjustment factor, $T$ hue-dependent weighting, $R_T$ rotation term, and parametric weighting factors $k_L$, $k_C$, $k_H$.
+
+A summary statistics table follows, showing mean, standard deviation, minimum, and maximum for each metric across all sampling points. The $\Delta E_{2000}$ row carries the overall status.
+
+\subsubsection{How to Read the Result}
+Each row corresponds to one sampling point. The Status column shows PASS (green), CONDITIONAL (orange), or FAIL (red) based on user-defined thresholds applied to $\Delta E_{2000}$.
+
+\subsubsection{How to Evaluate}
+\begin{itemize}[leftmargin=1.5em]
+  \item $\Delta E_{2000} < 1.0$: imperceptible difference (instrument noise level).
+  \item $1.0 \leq \Delta E_{2000} < 2.0$: slight difference, visible only under controlled lighting.
+  \item $2.0 \leq \Delta E_{2000} < 3.5$: noticeable to trained observers.
+  \item $3.5 \leq \Delta E_{2000} < 5.0$: clearly visible.
+  \item $\Delta E_{2000} \geq 5.0$: significant mismatch.
+\end{itemize}
+The decision metric is $\Delta E_{2000}$. Points with $\Delta E_{2000} <$ pass threshold are PASS; points $\leq$ conditional threshold are CONDITIONAL; above that is FAIL.
+
+\subsection{Illuminant Analysis}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{7.png}
+  \caption{Color Unit --- Illuminant Analysis. Mean $\Delta E_{2000}$ and CSI computed under each configured illuminant, with per-illuminant status.}
+  \label{fig:illuminant}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+Illuminant Analysis evaluates how the color difference between reference and sample changes under different standard light sources. This detects metamerism --- the phenomenon where two samples match under one illuminant but differ under another.
+
+\subsubsection{How It Is Calculated}
+For the primary illuminant, the canonical $\Delta E_{2000}$ and CSI values from the main analysis are used. For each additional test illuminant, the XYZ values (originally computed under D65) are chromatically adapted to the target illuminant using the Bradford transform:
+\[
+\mathbf{XYZ}_{\text{target}} = \mathbf{M}_A^{-1} \cdot \mathrm{diag}\!\left(\frac{\rho_d}{\rho_s}, \frac{\gamma_d}{\gamma_s}, \frac{\beta_d}{\beta_s}\right) \cdot \mathbf{M}_A \cdot \mathbf{XYZ}_{D65}
+\]
+where $\mathbf{M}_A$ is the Bradford matrix. The adapted XYZ values are converted to CIELAB under the target illuminant's white point, and $\Delta E_{2000}$ is recomputed. The CSI for each illuminant is derived as $\mathrm{CSI} = \max(0, \min(100, 100 - \overline{\Delta E} \times 10))$. The per-illuminant status is determined using fixed thresholds: $\mathrm{CSI} \geq 90 \to$ PASS, $\mathrm{CSI} \geq 70 \to$ CONDITIONAL, otherwise FAIL.
+
+\subsubsection{How to Read the Result}
+Each row shows one illuminant with its mean $\Delta E_{2000}$, CSI score, and status.
+
+\subsubsection{How to Evaluate}
+If the status differs across illuminants (e.g., PASS under D65 but FAIL under TL84), metamerism is present. This is critical for textiles viewed under different lighting in retail, warehouse, or outdoor environments.
+
+\subsection{Delta Heatmap}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{8.png}
+  \caption{Color Unit --- $\Delta E$ Heatmap. Pixel-level color difference map using the Inferno colormap.}
+  \label{fig:heatmap}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+The \dE{} Heatmap provides a full-image, pixel-level visualization of color difference between reference and sample.
+
+\subsubsection{How It Is Calculated}
+Both images are converted to CIELAB. The per-pixel Euclidean distance in Lab space is computed:
+\[
+\Delta E(x,y) = \sqrt{(L_r - L_s)^2 + (a_r - a_s)^2 + (b_r - b_s)^2}
+\]
+The result is rendered as a heatmap using the ``inferno'' colormap, with a color bar indicating the scale. The maximum display value is clamped to the 99th percentile (minimum 5.0) to avoid outlier distortion.
+
+\subsubsection{How to Read the Result}
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Dark/black regions}: low or zero color difference (good match).
+  \item \textbf{Bright/yellow regions}: high color difference (poor match).
+\end{itemize}
+
+\subsubsection{How to Evaluate}
+Uniform dark appearance indicates consistent color match. Bright spots or bands reveal localized color deviations, which may indicate uneven dyeing, stains, or fabric defects.
+
+\subsection{Spectral Proxy}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{9.png}
+  \caption{Color Unit --- Spectral Distribution Proxy. Approximated spectral reflectance curves for reference (green) and sample (red dashed).}
+  \label{fig:spectral}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+The Spectral Proxy chart provides an approximate visualization of the spectral reflectance distribution of reference and sample, synthesized from their mean RGB values.
+
+\subsubsection{How It Is Calculated}
+Three Gaussian basis functions centered at 450\,nm (Blue, $\sigma=22$), 545\,nm (Green, $\sigma=25$), and 610\,nm (Red, $\sigma=28$) are weighted by the mean RGB values (normalized 0--1) of each image. The resulting curves are normalized to peak at 1.0. The wavelength range spans 380--700\,nm.
+
+\subsubsection{How to Read the Result}
+The green curve represents the reference and the red dashed curve represents the sample. Overlap indicates spectral similarity.
+
+\subsubsection{How to Evaluate}
+This is an approximation (proxy), not a measured spectral reflectance. It provides a qualitative visual comparison. For precise spectral data, a spectrophotometer is required.
+
+\subsection{RGB Histograms}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{RGBHISTO.png}
+  \caption{Color Unit --- RGB Histograms. Side-by-side Red, Green, and Blue channel histograms for reference and sample images.}
+  \label{fig:rgb_histograms}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+Side-by-side RGB histograms show the distribution of pixel intensities in each color channel for reference and sample images.
+
+\subsubsection{How It Is Calculated}
+For each channel (B, G, R), a 256-bin histogram is computed from the image pixels using OpenCV. The histograms are plotted as overlaid semi-transparent bar charts for each image.
+
+\subsubsection{How to Read the Result}
+Each histogram shows pixel count (y-axis) vs.\ intensity value 0--255 (x-axis). Similar histogram shapes between reference and sample indicate consistent color distribution.
+
+\subsubsection{How to Evaluate}
+Shifts in histogram peaks indicate brightness or color changes. Broadening indicates increased variation. Histograms are informational and complement the numeric \dE{} metrics.
+
+\subsection{Color Similarity Index (CSI)}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{11.png}
+  \caption{Color Unit --- CSI Score display on the cover page, showing the overall color similarity percentage.}
+  \label{fig:csi}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+The Color Similarity Index (CSI) provides a single 0--100 score representing overall color similarity between the reference and sample images at the full-image level.
+
+\subsubsection{How It Is Calculated}
+Both images are downsampled to 25\% resolution. Each is converted to OpenCV's Lab representation (L: 0--255, a/b: 0--255 centered at 128). The per-pixel Euclidean distance in this scaled Lab space is computed across all pixels, and the mean is taken:
+\[
+\mathrm{CSI} = \max\!\Big(0,\; \min\!\big(100,\; 100 \times (1 - \overline{\Delta E}_{\text{pixel}} / 100)\big)\Big)
+\]
+
+\subsubsection{How to Read the Result}
+CSI is displayed as a percentage. Higher values indicate better color match.
+
+\subsubsection{How to Evaluate}
+\begin{itemize}[leftmargin=1.5em]
+  \item CSI $\geq$ Good threshold (default 90): PASS.
+  \item CSI $\geq$ Warning threshold (default 70): CONDITIONAL.
+  \item CSI $<$ Warning threshold: FAIL.
+\end{itemize}
+CSI evaluates the \emph{entire image} pixel-by-pixel, whereas $\Delta E_{2000}$ evaluates only at the $N$ sampling points.
+
+\subsection{CSI2000}
+
+\subsubsection{Definition and Purpose}
+CSI2000 is a hybrid scoring metric that combines the full-image CSI with the sampling-point-based $\Delta E_{2000}$ score into a single value.
+
+\subsubsection{How It Is Calculated}
+A $\Delta E$ Score is derived as $\mathrm{Score}_{\Delta E} = \max(0, \min(100, 100 - \overline{\Delta E}_{2000} \times 10))$. Then:
+\[
+\mathrm{CSI2000} = \frac{\mathrm{CSI} + \mathrm{Score}_{\Delta E}}{2}
+\]
+
+\subsubsection{How to Read the Result}
+CSI2000 is displayed as a value out of 100. Higher is better.
+
+\subsubsection{How to Evaluate}
+CSI2000 balances global color similarity (CSI) with point-specific color accuracy ($\Delta E_{2000}$ Score). It is evaluated against the same good/warning thresholds as CSI.
+
+\subsection{DeltaEP2000\% (ΔE Percentage Score)}
+
+\subsubsection{Definition and Purpose}
+\textbf{DeltaEP2000\%} is the default color scoring method in SpectraMatch. It converts the mean $\Delta E_{2000}$ value into a 0--100 percentage score for use in the scoring interface. The ``P'' stands for \emph{Percentage}, and the ``\%'' suffix indicates that the result is a normalized score, not a raw colorimetric distance.
+
+\subsubsection{Difference from Standard $\Delta E_{2000}$}
+Standard $\Delta E_{2000}$ is an absolute perceptual distance with no fixed upper bound — a value of 0 means identical colors, and values above 5 are generally considered significant mismatches. It cannot be directly interpreted as a percentage.
+
+DeltaEP2000\% maps this unbounded value onto a 0--100 scale using a linear inversion, making it suitable for score-based comparison and display alongside other percentage-based metrics (CSI, pattern scores).
+
+\subsubsection{How It Is Calculated}
+\[
+\mathrm{DeltaEP2000\%} = \max\!\Big(0,\; \min\!\big(100,\; 100 - \overline{\Delta E}_{2000} \times 10\big)\Big)
+\]
+where $\overline{\Delta E}_{2000}$ is the mean $\Delta E_{2000}$ across all sampling points. A mean $\Delta E_{2000}$ of 0 yields a score of 100 (perfect match); a mean of 10 or above yields 0.
+
+\begin{quote}
+\small\textit{Note: DeltaEP2000\% is a derived scoring convenience metric. The underlying raw $\Delta E_{2000}$ values are always reported separately in the Difference Metrics table and summary statistics.}
+\end{quote}
+
+\subsection{Recommendations}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{12.png}
+  \caption{Color Unit --- Key Findings \& Recommendations. Card-based layout showing metric evaluations and actionable recommendations with a conclusion block.}
+  \label{fig:color_recommendations}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+The Recommendations section provides threshold-aware, contextual findings and actionable guidance based on the analysis results. It is generated by the Recommendations Engine.
+
+\subsubsection{How It Is Generated}
+Three metrics are evaluated:
+\begin{enumerate}[leftmargin=1.5em]
+  \item \textbf{Mean $\Delta E_{2000}$}: evaluated relative to the pass and conditional thresholds. Levels: imperceptible, slight, noticeable, significant, severe.
+  \item \textbf{Consistency (Std Dev of $\Delta E$)}: evaluated relative to the pass threshold. Levels: excellent ($< 0.25\times$ pass), good ($< 0.5\times$ pass), moderate ($<$ pass), high ($\geq$ pass).
+  \item \textbf{CSI Score}: evaluated relative to the good and warning thresholds.
+\end{enumerate}
+Each metric produces a finding card with: metric name, value, evaluation text, and a recommendation. A conclusion block summarizes the overall decision with a status color.
+
+\subsubsection{How to Read the Result}
+Each card is color-coded by severity: green (excellent/good), orange (marginal), red (poor). The conclusion provides the final decision with explanatory text.
+
+\subsubsection{How to Evaluate}
+Recommendations are calibrated to the user-defined thresholds. They provide textile-specific guidance such as ``Review dye concentration, temperature, and timing parameters'' or ``Reject batch and initiate corrective action procedure.''
+
+% ────────────────────────────────────────────────────────────────────────────
+\section{Pattern Unit}
+\label{sec:pattern_unit}
+
+The Pattern Unit evaluates structural similarity and pattern fidelity between reference and sample images using multiple complementary analysis methods. It produces a composite score from four primary methods, each weighted equally at 25\%.
+
+\subsection{Cover Page and Input Images}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{13.png}
+  \caption{Pattern Unit --- Input Images. Reference and sample images displayed side by side.}
+  \label{fig:pattern_input}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+The Pattern Unit cover page displays the executive summary with the composite pattern score and per-method scores in a summary table. Input images are shown side by side for visual reference.
+
+\subsubsection{How It Is Generated}
+The cover includes the same metadata structure as the Color Unit (logo, title, operator, report ID, version). The executive summary table lists each method (Structural SSIM, Gradient Similarity, Phase Correlation, Structural Match) with its score, weight (25\% each), and individual status. The composite score is the weighted sum.
+
+\subsubsection{How to Read the Result}
+The composite score (0--100\%) provides the overall pattern match quality. Individual method scores identify which aspect of pattern similarity is strongest or weakest.
+
+\subsubsection{How to Evaluate}
+\begin{itemize}[leftmargin=1.5em]
+  \item Composite $\geq$ global threshold: PASS.
+  \item Composite $\geq$ (global threshold $- 15$): CONDITIONAL.
+  \item Below that: FAIL.
+\end{itemize}
+Note : The user can adjust the threshold values
+\subsection{Structural SSIM}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{15.png}
+  \caption{Pattern Unit --- SSIM difference map. JET colormap where blue indicates high similarity.}
+  \label{fig:ssim}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+Structural Similarity Index Measure (SSIM) evaluates perceived structural similarity between two images, considering luminance, contrast, and structure.
+
+\subsubsection{How It Is Calculated}
+Both images are preprocessed: composited over black (if alpha channel present), converted to grayscale, and bilateral-filtered (kernel 9, $\sigma_\text{color}=75$, $\sigma_\text{space}=75$). SSIM is computed using scikit-image with a sliding window, producing a per-pixel similarity map and a scalar score. The score is scaled to 0--100\%. The difference map is computed as $255 - \mathrm{SSIM\_map} \times 255$ and rendered with the JET colormap.
+
+\subsubsection{How to Read the Result}
+In the JET-colored difference map: \textbf{blue} regions indicate high similarity; \textbf{red/yellow} regions indicate low similarity (structural differences).
+
+\subsubsection{How to Evaluate}
+Higher SSIM scores indicate better structural preservation. The score is compared against the per-method pass and conditional thresholds defined in settings.
+
+\subsection{Gradient Similarity}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{16.png}
+  \caption{Pattern Unit --- Gradient Similarity difference map. HOT colormap where dark indicates similarity and bright indicates edge/texture differences.}
+  \label{fig:gradient}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+Gradient Similarity compares the edge and texture structure of reference and sample by analyzing gradient magnitude fields.
+
+\subsubsection{How It Is Calculated}
+Sobel operators (horizontal and vertical, kernel size 3) are applied to compute gradient magnitude for each image: $G = \sqrt{G_x^2 + G_y^2}$. The gradient magnitudes are normalized to $[0, 1]$. SSIM is then applied to the normalized gradient magnitude images to produce a similarity score and difference map. The difference map is rendered with the HOT colormap.
+
+\subsubsection{How to Read the Result}
+\textbf{Dark} regions indicate matching edge/texture structure; \textbf{bright/white} regions indicate gradient differences.
+
+\subsubsection{How to Evaluate}
+High scores indicate consistent edge and texture patterns. Low scores may indicate pattern distortion, misalignment, or texture degradation.
+
+\subsection{Phase Correlation}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{17.png}
+  \caption{Pattern Unit --- Phase Correlation difference map. INFERNO colormap showing translational alignment differences.}
+  \label{fig:phase}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+Phase Correlation measures translational alignment between two images using the Fourier phase relationship.
+
+\subsubsection{How It Is Calculated}
+Both grayscale images are converted to float32. OpenCV's \texttt{phaseCorrelate} function computes the shift vector and a response value (confidence). The score is $\mathrm{response} \times 100$. The absolute pixel difference is computed and rendered with the INFERNO colormap.
+
+\subsubsection{How to Read the Result}
+\textbf{Dark} regions indicate aligned areas; \textbf{bright/yellow} regions indicate misaligned areas.
+
+\subsubsection{How to Evaluate}
+High scores indicate good translational alignment. Low scores suggest the sample is shifted, stretched, or distorted relative to the reference.
+
+\subsection{Structural Difference Analysis}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{20.png}
+  \caption{Pattern Unit --- Structural Difference Analysis. Multi-method difference visualization showing gradient magnitude difference, combined (all methods), and noise-filtered views.}
+  \label{fig:structural_diff}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+Structural Difference Analysis fuses multiple difference detection methods to identify pixel-level structural changes between reference and sample.
+
+\subsubsection{How It Is Calculated}
+Both images are converted to grayscale and enhanced with CLAHE (Contrast Limited Adaptive Histogram Equalization). Five methods are computed and fused:
+\begin{enumerate}[leftmargin=1.5em]
+  \item \textbf{Simple Difference} (25\% weight): absolute pixel difference, thresholded at 30, morphologically cleaned.
+  \item \textbf{Edge-based} (20\% weight): Canny edge detection on both images, absolute difference of edge maps, dilated.
+  \item \textbf{Gradient} (25\% weight): Sobel gradient magnitude difference, thresholded at 40, cleaned.
+  \item \textbf{Frequency} (15\% weight): FFT magnitude difference, inverse-transformed to spatial domain, thresholded.
+  \item \textbf{SSIM} (15\% weight): inverted SSIM similarity map, thresholded at 200.
+\end{enumerate}
+The fusion combines these five maps with the listed weights. The result is thresholded, morphologically cleaned, and noise-filtered by removing connected components smaller than 50 pixels.
+
+The similarity score is: $\mathrm{Score} = \max(0, 100 - \mathrm{change\_percentage})$.
+
+\subsubsection{How to Read the Result}
+The subplot shows three stages: gradient difference, combined (all methods), and noise-filtered. Bright/white regions indicate detected differences; dark/black regions indicate no change.
+
+A \textbf{Pure Difference} image is also generated: red pixels overlaid on the grayscale reference show only the detected difference regions (Figure~\ref{fig:pure_diff}).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{21.png}
+  \caption{Pattern Unit --- Pure Difference. Red pixels overlaid on the grayscale reference show only the detected difference regions.}
+  \label{fig:pure_diff}
+\end{figure}
+
+\subsubsection{How to Evaluate}
+\begin{itemize}[leftmargin=1.5em]
+
+  \item Similarity $\geq$ \textbf{Threshold\textsubscript{1}}: IDENTICAL.
+  \item Similarity $\geq$ \textbf{Threshold\textsubscript{2}}: VERY SIMILAR.
+  \item Similarity $\geq$ \textbf{Threshold\textsubscript{3}}: SIMILAR.
+  \item Similarity $<$ \textbf{Threshold\textsubscript{3}}: DIFFERENT.
+\end{itemize}
+
+\medskip
+\noindent\textit{Threshold values are defined by the user and can be adjusted according to evaluation requirements.}
+
+\end{itemize}
+
+\subsection{Gradient Boundary Detection}
+\label{sec:GBD}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{18.png}
+  \caption{Pattern Unit --- Gradient Boundary Detection. Left: red ( or blue ) contours outlining detected difference regions. Right: filled overlay highlighting difference areas.}
+  \label{fig:gradient_boundary}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+Gradient Boundary Detection identifies and outlines specific regions of the sample where gradient-based differences exceed a significance threshold.
+
+\subsubsection{How It Is Calculated}
+The gradient difference map is thresholded at the 70th percentile. Morphological closing (kernel $7\times7$, 2 iterations), opening (1 iteration), and dilation (kernel $5\times5$, 2 iterations) are applied. Contours are extracted; those with area $> 100$ pixels are retained. Two visualizations are produced: (1) red contour outlines on the sample image, and (2) red-filled overlay (40\% blend) on the sample image.
+
+Two metrics are computed:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Binary Similarity}: percentage of non-colored pixels.
+  \item \textbf{Weighted Similarity}: same formula but weighted by normalized gradient intensity.
+\end{itemize}
+
+\subsubsection{How to Read the Result}
+Red ( or blue ) contours/filled regions show where the system detected significant gradient differences. More red area indicates more deviation.
+
+\subsubsection{How to Evaluate}
+Fewer and smaller red ( or blue ) regions indicate better pattern match.
+
+\subsection{Phase Boundary Detection}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{19.png}
+  \caption{Pattern Unit --- Phase Boundary Detection. Same layout as Gradient Boundary but based on phase correlation differences.}
+  \label{fig:phase_boundary}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+Phase Boundary Detection identifies regions where phase-based differences exceed the significance threshold, using the same boundary extraction pipeline as Gradient Boundary but applied to the phase difference map.
+
+\subsubsection{How It Is Calculated}
+Identical to Gradient Boundary Detection (Section~\ref{sec:GBD}) but using the phase correlation difference map as input.
+
+\subsubsection{How to Read the Result}
+Same interpretation as Gradient Boundary: red ( or blue ) regions indicate detected phase-based differences.
+
+\subsubsection{How to Evaluate}
+Phase boundaries may detect different types of distortion (translational shifts) compared to gradient boundaries (edge/texture changes).
+
+\subsection{Fourier Domain Analysis}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{Fourier.png}
+  \caption{Pattern Unit --- Fourier Domain Analysis. FFT magnitude spectrum heatmap, dominant peaks table, and spectral metrics.}
+  \label{fig:fourier}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+Fourier Domain Analysis decomposes the image into its frequency components to characterize dominant periodic patterns, textures, and directional structures (e.g., warp/weft alignment in woven fabrics).
+
+\subsubsection{How It Is Calculated}
+A 2D Fast Fourier Transform (FFT) is applied to the grayscale image. The DC component (zero-frequency) is shifted to the center of the spectrum. The magnitude spectrum is log-transformed for visualization: $\mathrm{spectrum} = \log(1 + |\mathrm{FFT}|)$.
+
+\textbf{Peak Detection:} The DC component is masked. The top 5 peaks are identified by iterative maximum finding with adaptive neighborhood suppression (radius $\max(3, \lfloor 0.15 \times r_{\text{peak}} \rfloor)$). For each peak, the radius (spatial frequency), angle (orientation in degrees), and magnitude are recorded.
+
+\textbf{Metrics:} Three summary metrics are computed:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Fundamental Period:} $\max(h,w) / r_{\text{dominant}}$ --- the image dimension divided by the dominant peak's radius (spatial frequency).
+  \item \textbf{Dominant Orientation:} angle (degrees) of the strongest peak.
+  \item \textbf{Anisotropy Ratio:} ratio of the maximum to minimum peak radii among the detected peaks. A value of 1.0 indicates isotropic (uniform) frequency distribution.
+\end{itemize}
+
+
+
+\subsubsection{How to Read the Result}
+The FFT spectrum image shows bright spots at dominant spatial frequencies. The peaks table lists the top 5 peaks with their spatial frequency (radius), orientation (angle), and strength (magnitude).
+
+\subsubsection{How to Evaluate}
+High anisotropy ratio indicates directional texture (e.g., strong warp/weft alignment). Short fundamental period indicates fine texture; long period indicates coarse pattern. Comparing reference and sample metrics reveals whether the sample preserves the original texture characteristics.
+
+\subsection{GLCM Texture Analysis}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{GLCM.png}
+  \caption{Pattern Unit --- GLCM Texture Analysis. Property comparison bar chart and co-occurrence matrix heatmaps for reference and sample.}
+  \label{fig:glcm}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+Gray-Level Co-occurrence Matrix (GLCM) analysis quantifies texture properties by measuring the statistical distribution of pixel intensity pairs at a specified spatial relationship.
+
+\subsubsection{How It Is Calculated}
+The grayscale image is quantized to 64 levels. The GLCM is computed using scikit-image's \texttt{graycomatrix} at distance 1 with angles $[0, \pi/4, \pi/2, 3\pi/4]$, then averaged across angles. Six properties are extracted using \texttt{graycoprops}:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Contrast}: intensity difference between neighboring pixels.
+  \item \textbf{Dissimilarity}: average absolute difference between neighboring pixels.
+  \item \textbf{Homogeneity}: closeness of element distribution to the GLCM diagonal.
+  \item \textbf{Energy}: sum of squared elements (uniformity measure).
+  \item \textbf{Correlation}: linear dependency of gray levels on neighboring pixels.
+  \item \textbf{ASM} (Angular Second Moment): square of energy, measures orderliness.
+\end{itemize}
+
+A bar chart compares reference and sample properties. GLCM heatmaps visualize the co-occurrence matrices side by side.
+
+\subsubsection{How to Read the Result}
+The property comparison table shows reference and sample values for each property. The bar chart provides a visual comparison. The heatmaps show the raw co-occurrence patterns.
+
+\subsubsection{How to Evaluate}
+Similar values between reference and sample indicate consistent texture. Large differences in contrast or dissimilarity suggest texture degradation. High energy/ASM indicates uniform texture; low values indicate complex or irregular texture.
+
+\subsection{Verdict}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{22.png}
+  \caption{Pattern Unit --- Structural Difference Verdict. Changed pixels count, similarity score, and verdict (IDENTICAL / VERY SIMILAR / SIMILAR / DIFFERENT).}
+  \label{fig:verdict}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+The Verdict table summarizes the Structural Difference Analysis result with a single classification.
+
+\subsubsection{How It Is Generated}
+Changed pixels are counted from the noise-filtered mask. Similarity score is $100 - \mathrm{change\_percentage}$. The verdict is: IDENTICAL ($\geq 99.9\%$), VERY SIMILAR ($\geq 99.0\%$), SIMILAR ($\geq 95.0\%$), or DIFFERENT ($< 95.0\%$).
+
+\subsubsection{How to Read the Result}
+The verdict is displayed with an icon: \checkmark{} for IDENTICAL, $\approx$ for SIMILAR/VERY SIMILAR, $\times$ for DIFFERENT.
+
+\subsubsection{How to Evaluate}
+IDENTICAL or VERY SIMILAR indicates production consistency. DIFFERENT requires investigation of the manufacturing process.
+
+\subsection{Recommendations and Conclusion}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{23.png}
+  \caption{Pattern Unit --- Key Findings \& Recommendations. Card-based findings for composite score, structural match, and weakest metric.}
+  \label{fig:pattern_recommendations}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+Pattern recommendations provide threshold-aware findings and actionable guidance for the pattern analysis results.
+
+\subsubsection{How It Is Generated}
+Three metrics are evaluated:
+\begin{enumerate}[leftmargin=1.5em]
+  \item \textbf{Composite Score}: evaluated against the global pattern threshold. Levels: excellent, good, marginal, poor.
+  \item \textbf{Structural Match}: evaluated against fixed thresholds ($\geq 99.5\%$: identical, $\geq 97\%$: minor deviation, $\geq 90\%$: moderate distortion, $< 90\%$: severe distortion).
+  \item \textbf{Weakest Metric}: the individual method with the lowest score, flagged if below its pass threshold.
+\end{enumerate}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{24.png}
+  \caption{Pattern Unit --- Conclusion block with overall status and decision text.}
+  \label{fig:pattern_conclusion}
+\end{figure}
+
+\subsubsection{How to Read the Result}
+Same card-based layout as the Color Unit recommendations. The conclusion block provides the final decision with a color-coded status badge: green (PASS), orange (CONDITIONAL), red (FAIL).
+
+\subsubsection{How to Evaluate}
+Recommendations include textile-specific guidance such as ``Calibrate alignment sensors and verify fabric feed tension'' or ``Stop production. Perform full machine calibration and inspection.''
+
+% ────────────────────────────────────────────────────────────────────────────
+\section{Single Image Unit}
+\label{sec:single_unit}
+
+The Single Image Unit is an extension of the Color Unit adapted for standalone analysis of a single sample image without a reference. It evaluates color distribution, texture uniformity, and spectral characteristics.
+
+\subsection{Input}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.65\textwidth]{25.png}
+  \caption{Single Image Unit --- Input. Sample image with analysis point overlays.}
+  \label{fig:single_input}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+Displays the sample image with numbered sampling point overlays, identical in style to the Color Unit.
+
+\subsubsection{How It Is Generated}
+Same point placement and visualization as the Color Unit. Green circles for manual points; orange for random.
+
+\subsubsection{How to Read the Result}
+Verify that sampling points cover representative areas of the fabric.
+
+\subsubsection{How to Evaluate}
+Points should be distributed across the fabric to capture any spatial variation in color or texture.
+
+\subsection{Measurement Data}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{26.png}
+  \caption{Single Image Unit --- Measurement Data. RGB, Lab*, XYZ, and CMYK tables; Lab* statistics; per-illuminant Lab* values; and RGB histogram.}
+  \label{fig:single_measurements}
+\end{figure}
+
+\subsubsection{Definition and Purpose}
+The Measurements section provides per-point color values in multiple color spaces (RGB, Lab*, XYZ, CMYK), Lab* statistical summary (mean, std dev, min, max per component) and per-illuminant Lab* tables.
+
+\subsubsection{How It Is Calculated}
+At each sampling point, the same circular patch extraction and color conversion pipeline as the Color Unit is applied (sRGB $\to$ XYZ $\to$ chromatic adaptation $\to$ CIELAB; sRGB $\to$ CMYK). For multi-illuminant analysis, each illuminant produces a separate Lab* table with per-point and mean values. The RGB histogram is computed from the full sample image.
+
+\subsubsection{How to Read the Result}
+Tables provide numeric values per point. The Lab* statistics table shows the spread across sampling points. Multiple illuminant tables allow comparison of how the color appears under different lighting.
+
+\subsubsection{How to Evaluate}
+High standard deviation in $L^*$ across sampling points indicates poor color uniformity. Wide spread in $a^*$ or $b^*$ indicates chromaticity variation. The histogram shape reveals whether the color distribution is tight (uniform) or broad (variable).
+
+\subsection{Spectral Analysis, Fourier Analysis, and Recommendations}
+
+These sections are not newly defined here, they correspond to analysis components that already exist within the \textbf{Color Unit} and have been previously introduced and described in Section~\ref{sec:color_unit}. In this context, they are reused to provide single-image analysis results without repeating their methodological description.
+
+% ════════════════════════════════════════════════════════════════════════════
+% CHAPTER 3 — FREQUENTLY ASKED QUESTIONS
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Frequently Asked Questions}
+\label{ch:faq}
+
+\subsection*{Q1: What is the difference between RGB and CIELAB?}
+RGB is a device-dependent color model: the same RGB values may appear differently on different displays. CIELAB (CIE $L^*a^*b^*$) is a perceptually uniform, device-independent color space derived from CIE XYZ. In CIELAB, equal numeric differences correspond to approximately equal perceived color differences. For quality control, CIELAB and $\Delta E_{2000}$ (derived from CIELAB) are preferred over raw RGB differences because they align with human color perception.
+
+\subsection*{Q2: Why does the system compute three Delta E formulas?}
+$\Delta E_{76}$, $\Delta E_{94}$, and $\Delta E_{2000}$ represent successive improvements in modeling human color perception:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{$\Delta E_{76}$}: Euclidean distance in CIELAB. Simple but treats all color directions equally, which does not match human perception.
+  \item \textbf{$\Delta E_{94}$}: Adds weighting to account for the fact that the eye is more sensitive to lightness changes than chroma or hue changes, and sensitivity varies with chroma level.
+  \item \textbf{$\Delta E_{2000}$}: The current CIE standard. Adds hue rotation terms, improved chroma weighting, and an interaction term between chroma and hue differences. It is the most perceptually accurate and is the decision metric used by SpectraMatch.
+\end{itemize}
+All three are reported for completeness. $\Delta E_{76}$ and $\Delta E_{94}$ are labeled ``informational'' in the summary table; only $\Delta E_{2000}$ determines the pass/fail status.
+
+\subsection*{Q3: What is CSI and how does it differ from Delta E?}
+The Color Similarity Index (CSI) is a full-image, pixel-level metric computed by downsampling both images to 25\% resolution, converting to CIELAB, and computing the mean per-pixel $\Delta E_{76}$. It is then mapped to a 0--100 scale. In contrast, $\Delta E_{2000}$ is computed only at the $N$ discrete sampling points. CSI captures global color distribution across the entire image, while $\Delta E_{2000}$ captures point-specific color accuracy. They are complementary: CSI may detect overall shifts that sampling points miss, while $\Delta E_{2000}$ provides more precise local measurements.
+
+\subsection*{Q4: What is CSI2000?}
+CSI2000 is a hybrid metric that averages the CSI and a $\Delta E_{2000}$-derived score:
+\[
+\mathrm{CSI2000} = \frac{\mathrm{CSI} + \mathrm{Score}_{\Delta E}}{2}, \quad \mathrm{Score}_{\Delta E} = \max(0, \min(100, 100 - \overline{\Delta E}_{2000} \times 10))
+\]
+
+
+\subsection*{Q5: What is metamerism and why does the illuminant analysis matter?}
+Metamerism occurs when two color samples appear identical under one light source but different under another. This is a common problem in textiles: a fabric may match the reference under daylight (D65) but appear different under store lighting (F2, TL84). The illuminant analysis section tests this by re-computing $\Delta E_{2000}$ under each selected illuminant using the Bradford chromatic adaptation transform. If results differ significantly across illuminants, the dye formulation may need adjustment.
+
+\subsection*{Q6: What does the spectral proxy chart actually show?}
+The spectral proxy is an \emph{approximation} of spectral reflectance, synthesized from RGB values using three Gaussian basis functions (centered at 450, 545, and 610\,nm). It is \emph{not} a measured spectral reflectance curve. It provides a qualitative visual indication of how the color energy is distributed across wavelengths. For precise spectral data, a spectrophotometer is required.
+
+\subsection*{Q7: How does the composite pattern score work?}
+The composite pattern score is a weighted average of four analysis methods, each contributing 25\%:
+\begin{itemize}[leftmargin=1.5em]
+  \item Structural SSIM (25\%)
+  \item Gradient Similarity (25\%)
+  \item Phase Correlation (25\%)
+  \item Structural Match (25\%)
+\end{itemize}
+Each method produces a score from 0--100\%. The composite is evaluated against the global pattern threshold: $\geq$ threshold $\to$ PASS, $\geq$ (threshold $- 15$) $\to$ CONDITIONAL, below $\to$ FAIL.
+
+The user can, from the advanced settings, configure the report to rely on only one selected metric instead of all of them. The user can also adjust the threshold values according to what they consider appropriate.
+
+\subsection*{Q8: What is the structural difference analysis?}
+It is a multi-method fusion approach that combines five different pixel-level difference detection techniques (simple difference, edge-based, gradient, frequency, and SSIM) into a single noise-filtered binary mask. This mask identifies which pixels have structurally changed between reference and sample. The similarity score is the percentage of unchanged pixels. The analysis is independent of the four primary pattern methods and provides an additional structural assessment.
+
+\subsection*{Q9: What is GLCM and when should it be enabled?}
+The Gray-Level Co-occurrence Matrix (GLCM) quantifies texture by analyzing how often pairs of pixel values occur at specific spatial relationships. It produces six properties (contrast, dissimilarity, homogeneity, energy, correlation, ASM). GLCM is enabled by default but can be disabled in the Report Sections settings if texture analysis is not required for a given use case.
+\newpage
+\subsection*{Q10: How does the system handle region selection?}
+The user selects a region of interest using one of four tools (circle, square, rectangle, freehand polygon). The selected region is sent to the backend as geometry data (center/radius for circles, bounding box for rectangles). The backend crops both images to the region bounding box and applies a mask (e.g., circular alpha mask for circles). All sampling points must lie within the region; the backend validates each point using geometric containment checks and rejects invalid points.
+
+\subsection*{Q11: What happens if I do not select a region?}
+If no region is selected, the full image is used for analysis. All sampling points are generated within the full image bounds.
+
+\subsection*{Q12: What is the Settings Report?}
+The Settings Report (configuration receipt) is a separate PDF generated alongside the analysis report. It documents every configuration parameter used for the analysis, including thresholds, illuminant selections, enabled sections, and scoring method. It enables reproducibility and audit trail verification.
+
+\subsection*{Q13: Can I change the report language?}
+Yes. The report language (English or Turkish) is selected in the Report Sections tab of Advanced Settings. The interface language and the report language are independent: you can use the English interface but generate Turkish reports, or vice versa.
+
+\subsection*{Q14: What are the system requirements?}
+SpectraMatch requires Python 3.9 or later with the following packages: Flask, OpenCV (headless), NumPy, PyPDF, Pillow, matplotlib, scikit-image, SciPy, and ReportLab. The desktop application additionally requires pywebview. Maximum upload size is 100\,MB per image.
+
+\subsection*{Q15: How are temporary files managed?}
+Temporary files (cropped images, visualization plots, PDF intermediate files) are stored in the system temporary directory. A background cleanup thread runs every hour and removes temporary files older than 24 hours.
+\newpage
+\bigskip
+\noindent\rule{\textwidth}{0.6pt}
+\begin{center}
+{\large\bfseries\textcolor{specblue}{Comparative Discussion --- Why Similar Methods Coexist}}
+\end{center}
+\noindent\rule{\textwidth}{0.6pt}
+\medskip
+
+\noindent The following questions address a recurring observation: several analysis methods in SpectraMatch appear to measure similar aspects of the image, yet each is retained in the report. The answers below explain \emph{why} apparent redundancy is deliberate and what unique information each method contributes.
+
+\subsection*{Q16: Why are Gradient Similarity and Phase Correlation used even though they often produce similar results?}
+
+At first glance, both methods evaluate ``structural closeness'' between reference and sample, and their scores frequently land in a comparable range. However, they capture fundamentally different aspects of the image:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Gradient Similarity} operates in the \emph{spatial domain}. It computes Sobel gradient magnitudes for each image, then applies SSIM to the gradient fields. It is sensitive to edge sharpness, texture density, and local contrast changes. A blurred or slightly out-of-focus sample will show a gradient drop even if the pattern is positionally correct.
+  \item \textbf{Phase Correlation} operates in the \emph{frequency domain}. It uses the Fourier phase relationship to detect translational (shift) misalignment. It is largely insensitive to uniform brightness or contrast changes but highly sensitive to geometric displacement.
+\end{itemize}
+
+\noindent\textbf{When they diverge:}
+\begin{itemize}[leftmargin=1.5em]
+  \item A sample that is \emph{correctly positioned} but has \emph{softer edges} (e.g., due to different weave tension) will score high on Phase Correlation but lower on Gradient Similarity.
+  \item A sample that is \emph{slightly shifted} during capture but otherwise identical in texture will score high on Gradient Similarity but lower on Phase Correlation.
+\end{itemize}
+
+\noindent Retaining both methods ensures that the composite pattern score reflects \emph{both} positional accuracy and edge/texture fidelity. Relying on only one would leave a blind spot for the failure mode the other detects.
+
+\subsection*{Q17: Why are both CSI and $\Delta E_{2000}$ used when they both measure color difference?}
+
+CSI and $\Delta E_{2000}$ appear to answer the same question (``how different are the colors?'') but they differ in \emph{scope}, \emph{spatial resolution}, and \emph{sensitivity}:
+
+\begin{center}
+\small
+\begin{tabularx}{0.95\textwidth}{l X X}
+\toprule
+\textbf{Aspect} & \textbf{$\Delta E_{2000}$} & \textbf{CSI} \\
+\midrule
+Sampling & $N$ discrete points placed by the user or randomly & Every pixel (at 25\% resolution) \\
+Formula & Full CIEDE2000 with hue rotation and interaction terms & Euclidean $\Delta E_{76}$ in scaled Lab \\
+Strength & High perceptual accuracy at each point & Captures global distribution shifts across the full image \\
+Weakness & May miss defects between sampling points & Uses a simpler formula, less perceptually accurate per pixel \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\newpage
+\noindent\textbf{When they diverge:}
+\begin{itemize}[leftmargin=1.5em]
+  \item A localized stain or streak that falls \emph{between} sampling points will not affect $\Delta E_{2000}$ but will reduce CSI.
+  \item A subtle, perceptually significant hue shift that is uniform across the fabric will be detected more precisely by $\Delta E_{2000}$ (which uses the advanced CIEDE2000 formula) than by CSI (which uses the simpler $\Delta E_{76}$).
+\end{itemize}
+
+\noindent The hybrid metric \textbf{CSI2000} exists precisely because neither alone is sufficient. Together, they provide both breadth (full-image coverage) and depth (perceptual precision at critical points).
+
+\subsection*{Q18: Why do Gradient Boundary Detection and Phase Boundary Detection both exist if they use the same pipeline?}
+
+Both boundary detection methods share identical morphological post-processing (thresholding, closing, opening, dilation, contour extraction). The difference lies entirely in their \emph{input map}:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Gradient Boundary} uses the Sobel gradient difference map. It highlights regions where \emph{edge intensity or texture sharpness} differs.
+  \item \textbf{Phase Boundary} uses the phase correlation absolute difference map. It highlights regions where \emph{pixel-level translational alignment} differs.
+\end{itemize}
+
+\noindent Because the same contour-extraction pipeline is applied to two different source maps, the resulting boundary regions can differ substantially:
+\begin{itemize}[leftmargin=1.5em]
+  \item Gradient boundaries tend to appear at \emph{pattern edges} where weave structure or print definition has changed.
+  \item Phase boundaries tend to appear in \emph{broad areas} where the sample is spatially displaced relative to the reference.
+\end{itemize}
+
+\noindent In practice, when both boundary maps overlap, it provides strong evidence of a genuine defect. When only one fires, it narrows the root cause (texture degradation vs.\ positional shift).
+
+\subsection*{Q19: SSIM is used in the Pattern Unit score and also inside the Structural Difference Analysis --- is that double counting?}
+
+No. Although the abbreviation ``SSIM'' appears in both contexts, the two uses serve different purposes and operate on different inputs:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Structural SSIM (Pattern Method~1)} applies SSIM to the full grayscale images after bilateral filtering. It produces a 0--100\% score and contributes 25\% to the composite pattern score. Its role is to provide a \emph{single perceptual similarity number}.
+  \item \textbf{SSIM inside Structural Difference Analysis} uses the inverted SSIM map (thresholded at 200) as one of \emph{five} binary difference masks. It contributes only 15\% of the fused mask. Its role is to help \emph{localize changed pixels} for the structural verdict (IDENTICAL / VERY SIMILAR / SIMILAR / DIFFERENT).
+\end{itemize}
+
+\noindent The first use produces a \emph{score}; the second produces a \emph{spatial mask}. They answer different questions: ``How similar overall?'' vs.\ ``Where exactly are the differences?'' The Structural Difference Analysis deliberately includes SSIM as one of five complementary detectors because each detector has different false-positive and false-negative characteristics. The fusion reduces the weaknesses of any individual method.
+
+% ════════════════════════════════════════════════════════════════════════════
+% CHAPTER 4 — SOFTWARE IMPLEMENTATION
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{Software Implementation}
+\label{ch:implementation}
+
+\section{Programming Tools and Technologies}
+
+SpectraMatch is built using the following technologies:
+
+\begin{table}[H]
+\centering
+\caption{Technology stack used in SpectraMatch v3.0.0.}
+\label{tab:tech_stack}
+\begin{tabularx}{\textwidth}{l l X}
+\toprule
+\textbf{Category} & \textbf{Technology} & \textbf{Role} \\
+\midrule
+Web Framework & Flask & Backend HTTP server, API routing, template rendering \\
+Image Processing & OpenCV (headless) & Image I/O, color space conversion, filtering, morphology, FFT, phase correlation \\
+Numerical Computing & NumPy & Array operations, linear algebra, statistical computations \\
+Scientific Computing & SciPy & Signal processing utilities \\
+Image Analysis & scikit-image & SSIM computation, GLCM texture analysis \\
+Plotting & matplotlib & Chart generation (histograms, scatter plots, bar charts, heatmaps, spectral curves) \\
+PDF Generation & ReportLab & Multi-page PDF report construction with tables, images, styled text, and custom flowables \\
+PDF Merging & PyPDF & Merging cover page, color report, and pattern report PDFs into a single file \\
+Image Handling & Pillow (PIL) & Image format conversion, NumPy-to-PIL bridging for PDF embedding \\
+Desktop Shell & pywebview & Native window wrapper for the Flask backend, JavaScript--Python bridge \\
+Frontend & Vanilla JavaScript & UI controller, region selection, point selection, internationalization \\
+Styling & CSS & Interface styling, responsive layout, dark/light mode \\
+\bottomrule
+\end{tabularx}
+\end{table}
+\newpage
+\section{Codebase Language Distribution}
+
+The following is an approximate distribution of the codebase by programming language, estimated from file sizes:
+
+\begin{table}[H]
+\centering
+\caption{Approximate codebase language distribution.}
+\label{tab:lang_dist}
+\begin{tabular}{l r r}
+\toprule
+\textbf{Language} & \textbf{Approximate Size} & \textbf{Percentage} \\
+\midrule
+Python (backend modules) & $\sim$240\,KB & $\sim$30\% \\
+JavaScript (frontend) & $\sim$365\,KB & $\sim$45\% \\
+HTML (templates) & $\sim$196\,KB & $\sim$20\% \\
+CSS / Config / Other & $\sim$40\,KB & $\sim$5\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{File and Folder Structure}
+
+\begin{verbatim}
+SPECTRAMATCH_PROJECT/
+├── app.py                          # Flask application entry point
+├── wsgi.py                         # WSGI deployment entry point
+├── requirements.txt                # Python dependencies
+├── README.md                       # Project documentation
+├── modules/
+│   ├── ColorUnitBackend.py         # Color analysis and PDF generation
+│   ├── PatternUnitBackend.py       # Pattern analysis and PDF generation
+│   ├── SingleImageUnitBackend.py   # Single image analysis and PDF
+│   ├── RecommendationsEngine.py    # Threshold-aware recommendations
+│   ├── ReportUtils.py              # Shared PDF utilities and styles
+│   ├── ReportTranslations.py       # EN/TR translation dictionary
+│   └── SettingsReceipt.py          # Settings receipt PDF generator
+├── desktop/
+│   └── app_desktop.py              # pywebview desktop launcher
+├── templates/
+│   ├── index.html                  # Web application template
+│   └── desktop.html                # Desktop application template
+├── static/
+│   ├── js/
+│   │   ├── app.js                  # Main UI controller
+│   │   ├── region-selector.js      # Region selection tools
+│   │   ├── region-validator.js     # Point-in-region validation
+│   │   ├── point-selector-enhanced.js  # Enhanced point selection
+│   │   ├── i18n.js                 # Internationalization (EN/TR)
+│   │   └── development-modal.js    # Development modal
+│   ├── css/                        # Stylesheets
+│   ├── images/                     # Logo and static images
+│   ├── desktop/                    # Desktop-specific JS and CSS
+│   └── READYTOTEST/                # Built-in test image pairs
+\end{verbatim}
+\newpage
+\section{Key Functions and Classes}
+
+The following tables list the primary functions and classes in each module with their location and role.
+
+\subsection{app.py --- Flask Application}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.8cm} >{\raggedright\arraybackslash}p{9.2cm}}
+\toprule
+\textbf{Function / Route} & \textbf{Role} \\
+\midrule
+\texttt{crop\_image()} & Crops uploaded images to the selected region; applies circular alpha masks for circle selections. \\
+\texttt{@app.route("/")} & Serves the web application template. \\
+\texttt{@app.route("/desktop")} & Serves the desktop application template. \\
+\texttt{/api/analyze} & Main analysis endpoint. Accepts images, settings, region data. Orchestrates Color Unit, Pattern Unit, or Single Image Unit. Generates PDFs, saves visualization images, constructs JSON response. \\
+\texttt{/api/download\_report/} & Serves generated PDF reports (merged, color, pattern). \\
+\texttt{/api/download\_receipt/} & Serves the settings receipt PDF. \\
+\texttt{/api/report\_image/} & Serves visualization images for frontend display. \\
+\texttt{cleanup\_old\_files()} & Background thread that removes temp files older than 24 hours. \\
+\texttt{\_sanitize\_for\_json()} & Converts NumPy types to Python-native types for JSON serialization. \\
+\bottomrule
+\end{longtable}
+
+\subsection{ColorUnitBackend.py --- Color Analysis}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.8cm} >{\raggedright\arraybackslash}p{9.2cm}}
+\toprule
+\textbf{Function} & \textbf{Role} \\
+\midrule
+\texttt{srgb\_to\_xyz()} & Converts normalized sRGB to CIE XYZ. \\
+\texttt{adapt\_to\_illuminant()} & Chromatically adapts XYZ from D65 to a target illuminant using the Bradford transform. \\
+\texttt{xyz\_to\_lab()} & Converts XYZ to CIELAB. \\
+\texttt{deltaE76()} & Computes $\Delta E_{76}$ (Euclidean distance in CIELAB). \\
+\texttt{deltaE94()} & Computes $\Delta E_{94}$ with lightness/chroma/hue weighting. \\
+\texttt{deltaE2000()} & Computes CIEDE2000 color difference. \\
+\texttt{region\_stats()} & Extracts mean RGB, XYZ, Lab, CMYK from a circular patch at a point. \\
+\texttt{is\_point\_valid()} & Validates whether a point lies within the defined region. \\
+\texttt{make\_points\_strict()} & Generates $N$ random points within a region using rejection sampling. \\
+\texttt{analyze\_color()} & Main analysis function: extracts colors at points, computes all metrics, CSI. \\
+\texttt{generate\_pdf\_headless()} & Generates the Color Unit PDF report with all sections. \\
+\texttt{analyze\_and\_generate()} & Entry point: runs analysis then generates PDF. \\
+\texttt{plot\_spectral\_proxy()} & Generates spectral proxy chart. \\
+\texttt{plot\_rgb\_... histograms\_dual()} & Generates side-by-side RGB histograms. \\
+\texttt{plot\_heatmap()} & Generates $\Delta E$ heatmap visualization. \\
+\texttt{plot\_lab\_scatter()} & Generates $a^*$ vs $b^*$ chromaticity scatter plot. \\
+\texttt{plot\_lab\_bars()} & Generates grouped bar chart of mean $L^*$, $a^*$, $b^*$. \\
+\bottomrule
+\end{longtable}
+
+\subsection{PatternUnitBackend.py --- Pattern Analysis}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{5.8cm} >{\raggedright\arraybackslash}p{8.2cm}}
+\toprule
+\textbf{Function} & \textbf{Role} \\
+\midrule
+\texttt{method1\_structural\_ssim()} & Computes SSIM with bilateral filtering and JET-colored difference map. \\
+\texttt{method3\_gradient\_similarity()} & Computes Sobel gradient magnitude comparison with SSIM scoring. \\
+\texttt{method6\_phase\_correlation()} & Computes phase correlation alignment score using OpenCV. \\
+\texttt{structural\_difference\_... analysis()} & Multi-method fusion: simple diff, edge, gradient, frequency, SSIM with noise filtering. \\
+\texttt{fourier\_domain\_analysis()} & 2D FFT, peak detection, fundamental period, orientation, anisotropy. \\
+\texttt{glcm\_texture\_analysis()} & GLCM computation and property extraction (contrast, homogeneity, etc.). \\
+\texttt{create\_gradient\_... red\_boundaries()} & Generates gradient-based boundary detection visualizations. \\
+\texttt{create\_phase\_...}\newline\texttt{red\_boundaries()} & Generates phase-based boundary detection visualizations. \\
+\texttt{determine\_status()} & Generic pass/conditional/fail logic based on thresholds. \\
+\texttt{generate\_pdf\_headless()} & Generates the Pattern Unit PDF report with all sections. \\
+\texttt{analyze\_and\_generate()} & Entry point: runs all analyses, computes composite score, generates PDF. \\
+\texttt{plot\_fft\_spectrum()} & Generates FFT magnitude spectrum heatmap. \\
+\texttt{plot\_glcm\_comparison()} & Generates GLCM property comparison bar chart. \\
+\texttt{plot\_glcm\_heatmaps()} & Generates side-by-side GLCM heatmaps. \\
+\bottomrule
+\end{longtable}
+
+\subsection{SingleImageUnitBackend.py --- Single Image Analysis}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{5.2cm} >{\raggedright\arraybackslash}p{8.8cm}}
+\toprule
+\textbf{Function} & \textbf{Role} \\
+\midrule
+\texttt{analyze\_and\_generate()} & Entry point: sampling, color extraction, spectral proxy, PDF generation. \\
+\texttt{\_generate\_pdf()} & Internal PDF generation with cover, visuals, measurements, Fourier, recommendations. \\
+\texttt{plot\_single\_... spectral\_proxy()} & Generates single-image spectral proxy chart. \\
+\texttt{is\_point\_valid()} & Point validation (circle/rectangle containment). \\
+\texttt{make\_points\_strict()} & Random point generation within region bounds. \\
+\bottomrule
+\end{longtable}
+\newpage
+\subsection{RecommendationsEngine.py --- Findings and Recommendations}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{5.6cm} >{\raggedright\arraybackslash}p{8.4cm}}
+\toprule
+\textbf{Function} & \textbf{Role} \\
+\midrule
+\texttt{generate\_color\_... recommendations()} & Produces findings for Mean $\Delta E$, Consistency, and CSI with threshold-relative evaluations. \\
+\texttt{generate\_pattern\_... recommendations()} & Produces findings for Composite Score, Structural Match, and Weakest Metric. \\
+\texttt{generate\_single\_image\_... recommendations()} & Produces findings for Luminance, Chroma Spread, Color Uniformity, and Dominant Channel. \\
+\texttt{render\_findings\_... to\_flowables()} & Converts findings into styled ReportLab flowables (card-based layout with conclusion block). \\
+\texttt{\_relative\_position()} & Maps a numeric value to a qualitative level (excellent/good/marginal/poor) relative to thresholds. \\
+\bottomrule
+\end{longtable}
+
+\subsection{ReportUtils.py --- Shared PDF Utilities}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.8cm} >{\raggedright\arraybackslash}p{9.2cm}}
+\toprule
+\textbf{Function / Constant} & \textbf{Role} \\
+\midrule
+\texttt{setup\_fonts()} & Registers TrueType fonts with Turkish character support (Arial $\to$ Segoe UI $\to$ Tahoma $\to$ Helvetica fallback chain). \\
+\texttt{numpy\_to\_rl()} & Converts a NumPy image array to a ReportLab Image object, handling BGRA alpha compositing. \\
+\texttt{make\_table()} & Creates consistently styled tables with alternating row backgrounds. \\
+\texttt{badge()} & Creates a colored rounded-rectangle badge flowable. \\
+\texttt{make\_header\_footer()} & Returns a callback function that draws page headers (company name, subtitle) and footers (page number, timestamp, logo). \\
+\texttt{generate\_unified\_cover()} & Generates the unified cover page PDF for merged reports with dual score cards. \\
+\texttt{pick\_logo()} & Locates the company logo file from primary and fallback paths. \\
+\texttt{STATUS\_COLORS} & Dictionary mapping status strings (PASS, CONDITIONAL, FAIL) to ReportLab colors. \\
+\bottomrule
+\end{longtable}
+
+\subsection{ReportTranslations.py --- Bilingual Dictionary}
+
+Contains a comprehensive \texttt{TRANSLATIONS} dictionary with English and Turkish entries for all report elements: section titles, table headers, metric labels, status strings, evaluation texts, and interpretive descriptions. Provides \texttt{get\_translator(lang)} which returns a lookup function for the selected language, and \texttt{translate\_status(status, lang)} for status string translation.
+
+\subsection{SettingsReceipt.py --- Configuration Receipt}
+
+Generates a one-page PDF documenting all analysis configuration parameters: general settings, color thresholds, pattern thresholds, illuminant selections, enabled report sections, and scoring method. The receipt shares the same report ID and timestamp as the corresponding analysis report.
+
+\subsection{desktop/app\_desktop.py --- Desktop Launcher}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.8cm} >{\raggedright\arraybackslash}p{9.2cm}}
+\toprule
+\textbf{Component} & \textbf{Role} \\
+\midrule
+\texttt{find\_free\_port()} & Scans for an available TCP port for the Flask backend. \\
+\texttt{start\_flask()} & Starts the Flask server in a background thread. \\
+\texttt{Api} class & JavaScript--Python bridge providing \texttt{save\_report()} for native file save dialogs. \\
+Splash screen & Displays a loading window while the Flask backend initializes. \\
+\texttt{webview.create\_window()} & Creates the native desktop window pointing to the Flask URL. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Frontend JavaScript}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.8cm} >{\raggedright\arraybackslash}p{9.2cm}}
+\toprule
+\textbf{File} & \textbf{Role} \\
+\midrule
+\texttt{app.js} & Main UI controller: image upload handling, settings management, analysis initiation, result display, report download, feedback submission. \\
+\texttt{region-selector.js} & Interactive canvas-based region selection tools: circle, square, rectangle, freehand polygon with drag, resize, and synchronized dual-image overlay. \\
+\texttt{region-validator.js} & Client-side point-in-region validation for sampling point placement. \\
+\texttt{pointselectorenhanced.js} &   Enhanced point selection UI: click-to-place manual points, visual feedback, point count management. \\
+\texttt{i18n.js} & Full English/Turkish internationalization dictionary and language switching logic. \\
+\texttt{development-modal.js} & Development information modal. \\
+\bottomrule
+\end{longtable}
+
+% ════════════════════════════════════════════════════════════════════════════
+% APPENDICES
+% ════════════════════════════════════════════════════════════════════════════
+\appendix
+
+% ────────────────────────────────────────────────────────────────────────────
+% APPENDIX A — GLOSSARY OF ABBREVIATIONS
+% ────────────────────────────────────────────────────────────────────────────
+\chapter{Glossary of Abbreviations}
+\label{app:glossary}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{10.8cm}}
+\toprule
+\textbf{Abbreviation} & \textbf{Definition} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Abbreviation} & \textbf{Definition} \\
+\midrule
+\endhead
+ASM        & Angular Second Moment \\
+BGR        & Blue–Green–Red \\
+CIE        & International Commission on Illumination \\
+CIELAB     & CIE L*a*b* color space \\
+CIEDE2000  & CIE Delta E 2000 \\
+CLAHE      & Contrast Limited Adaptive Histogram Equalization \\
+CMYK       & Cyan–Magenta–Yellow–Black \\
+CSI        & Color Similarity Index \\
+CSI2000    & Color Similarity Index 2000 \\
+CSS        & Cascading Style Sheets \\
+DC         & Direct Current \\
+$\Delta E$ & Color Difference \\
+$\Delta E_{76}$  & CIE76 Color Difference \\
+$\Delta E_{94}$  & CIE94 Color Difference \\
+$\Delta E_{2000}$ & CIEDE2000 Color Difference \\
+EN/TR      & English / Turkish \\
+FFT        & Fast Fourier Transform \\
+GLCM       & Gray-Level Co-occurrence Matrix \\
+HTML       & HyperText Markup Language \\
+ISO        & International Organization for Standardization \\
+JS         & JavaScript \\
+Lab        & CIELAB \\
+PDF        & Portable Document Format \\
+RGB        & Red–Green–Blue \\
+sRGB       & Standard RGB \\
+SSIM       & Structural Similarity Index \\
+UTC        & Coordinated Universal Time \\
+WSGI       & Web Server Gateway Interface \\
+XYZ        & CIE XYZ Color Space \\
+
+\bottomrule
+\end{longtable}
+
+% ────────────────────────────────────────────────────────────────────────────
+% APPENDIX B — LIST OF FIGURES (COMPACT LAYOUT)
+% ────────────────────────────────────────────────────────────────────────────
+\newgeometry{
+  top=1.8cm,
+  bottom=1.8cm,
+  left=2cm,
+  right=2cm,
+  headsep=6pt,
+  footskip=10pt
+}
+
+\chapter{List of Figures}
+\label{app:figures}
+
+\vspace{-0.5cm}
+
+\renewcommand{\arraystretch}{0.95}
+
+\begin{longtable}{>{\centering\arraybackslash}p{1.5cm} >{\raggedright\arraybackslash}p{11.5cm}}
+\toprule
+\textbf{Figure} & \textbf{Title} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Figure} & \textbf{Title} \\
+\midrule
+\endhead
+
+\hyperref[fig:workflow]{\textcolor{specblue}{1}} & System Workflow \\
+\hyperref[fig:webapp]{\textcolor{specblue}{2}} & Web Application Interface \\
+\hyperref[fig:desktop]{\textcolor{specblue}{3}} & Desktop Application Interface \\
+\hyperref[fig:settings_report]{\textcolor{specblue}{4}} & Settings Report Cover Page \\
+
+\midrule
+\multicolumn{2}{l}{\textit{\textcolor{specgray}{Color Unit}}} \\
+\midrule
+\hyperref[fig:color_input]{\textcolor{specblue}{5}} & Input Images with Sampling Points \\
+\hyperref[fig:rgb_values]{\textcolor{specblue}{6}} & RGB Values Table \\
+\hyperref[fig:lab_mean]{\textcolor{specblue}{7}} & Mean CIELAB Values and Component-wise Differences \\
+\hyperref[fig:lab_values]{\textcolor{specblue}{8}} & Lab* Visualization \\
+\hyperref[fig:xyz_values]{\textcolor{specblue}{9}} & XYZ Values Table \\
+\hyperref[fig:cmyk_values]{\textcolor{specblue}{10}} & CMYK Values Table \\
+\hyperref[fig:delta_metrics]{\textcolor{specblue}{11}} & Difference Metrics ($\Delta E$) \\
+\hyperref[fig:illuminant]{\textcolor{specblue}{12}} & Illuminant Analysis \\
+\hyperref[fig:heatmap]{\textcolor{specblue}{13}} & $\Delta E$ Heatmap \\
+\hyperref[fig:spectral]{\textcolor{specblue}{14}} & Spectral Distribution Proxy \\
+\hyperref[fig:rgb_histograms]{\textcolor{specblue}{15}} & RGB Histograms \\
+\hyperref[fig:csi]{\textcolor{specblue}{16}} & Color Similarity Index (CSI) \\
+\hyperref[fig:color_recommendations]{\textcolor{specblue}{17}} & Color Findings \& Recommendations \\
+
+\midrule
+\multicolumn{2}{l}{\textit{\textcolor{specgray}{Pattern Unit}}} \\
+\midrule
+\hyperref[fig:pattern_input]{\textcolor{specblue}{18}} & Pattern Input Images \\
+\hyperref[fig:ssim]{\textcolor{specblue}{19}} & SSIM Difference Map \\
+\hyperref[fig:gradient]{\textcolor{specblue}{20}} & Gradient Similarity Map \\
+\hyperref[fig:phase]{\textcolor{specblue}{21}} & Phase Correlation Map \\
+\hyperref[fig:structural_diff]{\textcolor{specblue}{22}} & Structural Difference Analysis \\
+\hyperref[fig:pure_diff]{\textcolor{specblue}{23}} & Pure Difference Overlay \\
+\hyperref[fig:gradient_boundary]{\textcolor{specblue}{24}} & Gradient Boundary Detection \\
+\hyperref[fig:phase_boundary]{\textcolor{specblue}{25}} & Phase Boundary Detection \\
+\hyperref[fig:fourier]{\textcolor{specblue}{26}} & Fourier Domain Analysis \\
+\hyperref[fig:glcm]{\textcolor{specblue}{27}} & GLCM Texture Analysis \\
+\hyperref[fig:verdict]{\textcolor{specblue}{28}} & Structural Difference Verdict \\
+\hyperref[fig:pattern_recommendations]{\textcolor{specblue}{29}} & Pattern Findings \& Recommendations \\
+\hyperref[fig:pattern_conclusion]{\textcolor{specblue}{30}} & Pattern Conclusion \\
+
+\midrule
+\multicolumn{2}{l}{\textit{\textcolor{specgray}{Single Image Unit}}} \\
+\midrule
+\hyperref[fig:single_input]{\textcolor{specblue}{31}} & Single Image Input \\
+\hyperref[fig:single_measurements]{\textcolor{specblue}{32}} & Measurement Data \\
+
+\bottomrule
+\end{longtable}
+
+\restoregeometry
+
+% ────────────────────────────────────────────────────────────────────────────
+% APPENDIX C — KNOWN LIMITATIONS AND PLANNED IMPROVEMENTS
+% ────────────────────────────────────────────────────────────────────────────
+\chapter{Known Limitations}
+\label{app:limitations}
+
+\vspace{-0.3cm}
+
+\begin{center}
+\begin{tikzpicture}
+  \node[rounded corners=6pt, draw=specorange, line width=1.2pt, fill=specorange!6, inner sep=10pt, text width=0.88\textwidth, align=center] {
+    {\large\bfseries\textcolor{specorange}{\symbol{"26A0}~Pending Improvements}}\\[4pt]
+    {\small\textcolor{specdark}{The items listed below are known limitations of SpectraMatch v3.0.0.\\They are documented here for transparency and are planned to be addressed in a future release.}}
+  };
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.4cm}
+
+\noindent\textcolor{specgray}{\small Each item is marked with a status indicator:
+\;\textcolor{specorange}{\rule{8pt}{8pt}}\;\textbf{Pending}\;---\;feature is not yet available in v3.0.0.}
+
+\vspace{0.6cm}
+
+% ─── Limitation 1 ─────────────────────────────────────────────────────────
+\noindent
+\begin{tikzpicture}
+  \node[rounded corners=4pt, draw=speclightgray, line width=0.6pt, fill=white, inner sep=0pt, text width=\textwidth] {
+    \begin{minipage}{\textwidth}
+      % Header bar
+      \begin{tikzpicture}
+        \fill[specred!12, rounded corners=4pt] (0,0) rectangle (\textwidth, 0.7cm);
+        \node[anchor=west] at (0.3cm, 0.35cm) {\textcolor{specred}{\scriptsize\textbf{\rule{6pt}{6pt}}}};
+        \node[anchor=west] at (0.7cm, 0.35cm) {\textbf{\textcolor{specdark}{L-1\;\;$\vert$\;\;Single Image Report --- Organizational Restructuring}}};
+        \node[anchor=east] at (\textwidth-0.3cm, 0.35cm) {\scriptsize\textcolor{specred}{\textit{NOT IMPLEMENTED}}};
+      \end{tikzpicture}
+      \vspace{2pt}
+      \begin{minipage}[t]{0.94\textwidth}
+        \centering
+        \small
+        \textbf{Current State:}
+        The Single Image Report reuses section definitions from the Color Unit (see Section~\ref{sec:single_unit}). Its internal page flow and section ordering have not been independently optimized for the single-image use case.
+
+        \medskip
+        \textbf{Planned Change:}
+        Organizational-only restructuring of the Single Image Report. No new analysis methods will be added; the existing sections will be reordered and reformatted to improve readability and logical flow when no reference image is present. This includes adjusting section titles, page breaks, and the recommendations layout to better suit standalone analysis.
+
+        \medskip
+        \textbf{Impact:} \textcolor{specgray}{Low --- visual/organizational only. No effect on analysis accuracy or metrics.}
+        \vspace{6pt}
+      \end{minipage}
+    \end{minipage}
+  };
+\end{tikzpicture}
+
+\vspace{0.5cm}
+
+% ─── Limitation 2 ─────────────────────────────────────────────────────────
+\noindent
+\begin{tikzpicture}
+  \node[rounded corners=4pt, draw=speclightgray, line width=0.6pt, fill=white, inner sep=0pt, text width=\textwidth] {
+    \begin{minipage}{\textwidth}
+      % Header bar
+      \begin{tikzpicture}
+        \fill[specred!12, rounded corners=4pt] (0,0) rectangle (\textwidth, 0.7cm);
+        \node[anchor=west] at (0.3cm, 0.35cm) {\textcolor{specred}{\scriptsize\textbf{\rule{6pt}{6pt}}}};
+        \node[anchor=west] at (0.7cm, 0.35cm) {\textbf{\textcolor{specdark}{L-2\;\;$\vert$\;\;Per-Image Illuminant Settings}}};
+        \node[anchor=east] at (\textwidth-0.3cm, 0.35cm) {\scriptsize\textcolor{specred}{\textit{NOT IMPLEMENTED}}};
+      \end{tikzpicture}
+      \vspace{2pt}
+      \begin{minipage}[t]{0.94\textwidth}
+        \centering
+        \small
+        \textbf{Current State:}
+        The illuminant setting is global: the same primary illuminant and the same set of test illuminants are applied to \emph{both} the reference and the sample image. This works well when both images are captured under identical lighting conditions.
+
+        \medskip
+        \textbf{Limitation:}
+        In practice, the reference and sample images may have been captured under          different lighting environments (e.g., the reference under controlled D65 daylight and the sample under warehouse fluorescent TL84). Applying the same illuminant to both introduces a systematic bias in the chromatic adaptation step, which can inflate or deflate $\Delta E$ values.
+
+        \medskip
+        \textbf{Planned Change:}
+        Allow independent illuminant selection for the reference image and the sample image. The settings panel will provide two separate illuminant selectors. The Color Unit will apply each image's designated illuminant independently during the sRGB\,$\to$\,XYZ\,$\to$\,CIELAB conversion pipeline.
+
+        \medskip
+        \textbf{Impact:} \textcolor{specorange}{Medium --- improves accuracy when images are captured under different lighting. Requires UI and backend changes.}
+        \vspace{6pt}
+      \end{minipage}
+    \end{minipage}
+  };
+\end{tikzpicture}
+
+\vspace{0.5cm}
+
+\begin{center}
+\begin{tikzpicture}
+  \node[rounded corners=4pt, draw=speclightgray, line width=0.5pt, fill=speclightgray!15, inner sep=8pt, text width=0.85\textwidth, align=center] {
+    {\small\textcolor{specgray}{\textit{This appendix is provided for transparency. The limitations listed above do not affect the validity of results when the system is used within its documented operating assumptions.}}}
+  };
+\end{tikzpicture}
+\end{center}
+
+% ════════════════════════════════════════════════════════════════════════════
+% CLOSING COVER PAGE
+% ════════════════════════════════════════════════════════════════════════════
+\clearpage
+\thispagestyle{empty}
+
+\begin{tikzpicture}[remember picture, overlay]
+  % Outer decorative frame
+  \draw[specblue, line width=2pt] ([shift={(1cm,-1cm)}]current page.north west) rectangle ([shift={(-1cm,1cm)}]current page.south east);
+  % Inner accent line
+  \draw[speclightgray, line width=0.5pt] ([shift={(1.15cm,-1.15cm)}]current page.north west) rectangle ([shift={(-1.15cm,1.15cm)}]current page.south east);
+  % Corner accents
+  \fill[specblue] ([shift={(1cm,-1cm)}]current page.north west) rectangle ([shift={(1.6cm,-1.6cm)}]current page.north west);
+  \fill[specblue] ([shift={(-1cm,-1cm)}]current page.north east) rectangle ([shift={(-1.6cm,-1.6cm)}]current page.north east);
+  \fill[specblue] ([shift={(1cm,1cm)}]current page.south west) rectangle ([shift={(1.6cm,1.6cm)}]current page.south west);
+  \fill[specblue] ([shift={(-1cm,1cm)}]current page.south east) rectangle ([shift={(-1.6cm,1.6cm)}]current page.south east);
+\end{tikzpicture}
+
+\begin{center}
+\vspace*{2.5cm}
+
+\includegraphics[width=4.5cm]{logo.png}\\[0.4cm]
+{\Huge\bfseries\textcolor{specdark}{SPECTRAMATCH}}\\[0.3cm]
+{\Large\textcolor{specblue}{Technical Datasheet}}
+
+\vspace{0.6cm}
+
+{\large\itshape\textcolor{specgray}{Version 3.0.0}}
+
+\vspace{0.1cm}
+
+\rule{0.5\textwidth}{0.4pt}
+
+\vspace{1cm}
+
+{\large\textcolor{specdark}{\textbf{Author}}}\\[0.3cm]
+{\Large\textbf{Abdelbary Algamel}}\\[0.2cm]
+{\normalsize\textcolor{specblue}{\href{mailto:aalgamel23@posta.pau.edu.tr}{aalgamel23@posta.pau.edu.tr}}}
+
+\vspace{1cm}
+
+{\large\textcolor{specdark}{\textbf{Supervisor}}}\\[0.3cm]
+{\Large\textbf{Dr.\ Adem Ükte}}\\[0.2cm]
+{\normalsize\textcolor{specgray}{Department of Electrical and Electronic Engineering}}\\[0.1cm]
+{\normalsize\textcolor{specgray}{Pamukkale University, Denizli, Turkey}}
+
+\vspace{1.5cm}
+
+\rule{0.5\textwidth}{0.4pt}
+
+\vspace{0.8cm}
+
+{\small\textcolor{specgray}{This document is part of the SpectraMatch v3.0.0 distribution.}}\\[0.15cm]
+{\small\textcolor{specgray}{All content is derived from the project source code and reflects}}\\[0.15cm]
+{\small\textcolor{specgray}{the actual capabilities of the system at the time of publication.}}
+
+\vfill
+
+{\footnotesize\textcolor{speclightgray}{\copyright\ 2026 --- Pamukkale University}}
+
+\end{center}
+
+\end{document}
