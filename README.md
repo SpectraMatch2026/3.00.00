@@ -32,7 +32,3 @@ Masaüstü sürümü:
 ```bash
 python desktop/app_desktop.py
 ```
-
-## Not
-
-Bu depo, üniversite teslimi ve akademik gösterim amacıyla düzenlenmiş proje dosyalarını içerir.
